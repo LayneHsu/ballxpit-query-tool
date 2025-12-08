@@ -512,8 +512,9 @@
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      max-width: min(480px, calc(100vw - 40px));
-      width: 100%;
+      max-width: calc(100vw - 40px);
+      width: fit-content;
+      min-width: 320px;
       max-height: 90vh;
       overflow-y: auto;
       animation: modalIn 0.25s ease;
@@ -583,6 +584,7 @@
 
     .modal-body {
       padding: 20px;
+      min-width: min-content;
     }
 
     .modal-section {
@@ -603,13 +605,13 @@
     }
 
     .combo-formula {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 12px;
       padding: 12px;
       background: var(--bg-tertiary);
       border-radius: var(--radius-md);
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
     }
 
     .combo-ball {
@@ -621,6 +623,7 @@
       padding: 8px;
       border-radius: var(--radius-sm);
       transition: var(--transition-fast);
+      flex-shrink: 0;
     }
 
     .combo-ball:hover {
@@ -638,6 +641,12 @@
       font-size: 11px;
       color: var(--text-secondary);
       text-align: center;
+      white-space: nowrap;
+    }
+
+    .combo-plus,
+    .combo-equals {
+      flex-shrink: 0;
     }
 
     .combo-plus {
@@ -978,7 +987,8 @@
       .combo-formula {
         gap: 8px;
         padding: 10px;
-        flex-wrap: wrap;
+        flex-wrap: wrap !important;
+        white-space: normal !important;
       }
 
       .combo-ball {
@@ -1146,15 +1156,15 @@
       border: 1px solid var(--accent-primary);
       border-radius: var(--radius-md);
       padding: 12px;
-      max-width: min(90vw, 400px);
+      max-width: calc(100vw - 40px);
       min-width: 0;
-      width: max-content;
+      width: fit-content;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
       pointer-events: none;
       opacity: 0;
       transform: translateY(8px);
       transition: opacity 0.15s ease, transform 0.15s ease;
-      overflow: hidden;
+      overflow: visible;
       box-sizing: border-box;
     }
 
@@ -1193,7 +1203,7 @@
     }
 
     .tooltip-formula {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       flex-wrap: nowrap;
@@ -1204,9 +1214,7 @@
       border-radius: 6px;
       font-size: 12px;
       color: var(--text-secondary);
-      max-width: 100%;
       box-sizing: border-box;
-      overflow: hidden;
     }
 
     .tooltip-formula img {
