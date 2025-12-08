@@ -779,17 +779,18 @@
         height: 48px;
       }
 
-      /* 移动端 tooltip 优化 */
+      /* 移动端 tooltip 优化 - 宽度自适应屏幕 */
       .tooltip {
-        max-width: calc(100vw - 20px) !important;
+        left: 10px !important;
+        right: 10px !important;
         width: auto !important;
+        max-width: none !important;
+        min-width: unset !important;
       }
 
       .tooltip-formula {
         flex-wrap: wrap !important;
         white-space: normal !important;
-        overflow: hidden;
-        max-width: 100%;
         justify-content: flex-start;
       }
 
@@ -801,12 +802,7 @@
 
       .tooltip-formula span {
         word-break: break-word;
-        flex-shrink: 1;
-        min-width: 0;
-      }
-
-      .tooltip-header {
-        flex-wrap: nowrap;
+        overflow-wrap: break-word;
       }
 
       .tooltip-header img {
@@ -817,6 +813,7 @@
 
       .tooltip-effect {
         word-break: break-word;
+        overflow-wrap: break-word;
       }
     }
 
@@ -1371,27 +1368,25 @@
       
       let left, top;
       
-      // 移动端: 优先放在目标上方或下方
+      // 移动端: 水平位置由 CSS 控制, 只计算垂直位置
       if (isMobile) {
-        // 水平居中或靠左对齐
-        left = Math.max(padding, Math.min(
-          targetRect.left,
-          viewportWidth - tooltipRect.width - padding
-        ));
+        left = padding; // CSS 会用 !important 覆盖
         
         // 优先放在上方
         const spaceAbove = targetRect.top;
         const spaceBelow = viewportHeight - targetRect.bottom;
         
         if (spaceAbove >= tooltipRect.height + padding) {
-          // 上方空间足够
           top = targetRect.top - tooltipRect.height - padding;
         } else if (spaceBelow >= tooltipRect.height + padding) {
-          // 下方空间足够
           top = targetRect.bottom + padding;
         } else {
-          // 都不够, 放在上方并滚动到可见位置
-          top = Math.max(padding, targetRect.top - tooltipRect.height - padding);
+          // 空间都不够, 选择空间大的一侧
+          if (spaceAbove > spaceBelow) {
+            top = padding;
+          } else {
+            top = viewportHeight - tooltipRect.height - padding;
+          }
         }
       } else {
         // 桌面端: 优先放在右侧
@@ -1407,24 +1402,18 @@
           left = Math.max(padding, targetRect.left);
           top = targetRect.bottom + padding;
         }
-      }
-      
-      // 确保不超出右边界
-      if (left + tooltipRect.width > viewportWidth - padding) {
-        left = viewportWidth - tooltipRect.width - padding;
-      }
-      // 确保不超出左边界
-      if (left < padding) left = padding;
-      
-      // 确保不超出下边界 - 如果下方空间不够, 尝试放到上方
-      if (top + tooltipRect.height > viewportHeight - padding) {
-        const newTop = targetRect.top - tooltipRect.height - padding;
-        if (newTop >= padding) {
-          top = newTop;
-        } else {
-          // 上下都放不下, 尽量靠近顶部显示
-          top = Math.max(padding, viewportHeight - tooltipRect.height - padding);
+        
+        // 确保不超出右边界
+        if (left + tooltipRect.width > viewportWidth - padding) {
+          left = viewportWidth - tooltipRect.width - padding;
         }
+        // 确保不超出左边界
+        if (left < padding) left = padding;
+      }
+      
+      // 确保不超出下边界
+      if (top + tooltipRect.height > viewportHeight - padding) {
+        top = viewportHeight - tooltipRect.height - padding;
       }
       // 确保不超出上边界
       if (top < padding) top = padding;
@@ -1447,10 +1436,19 @@
       DOM.tooltipFormula.innerHTML = formulaHtml;
       DOM.tooltipFormula.style.display = formulaHtml ? 'flex' : 'none';
 
+      const isMobile = window.innerWidth < 768;
+      
       // 先临时显示以获取实际尺寸
       DOM.tooltip.style.visibility = 'hidden';
-      DOM.tooltip.style.left = '0';
       DOM.tooltip.style.top = '0';
+      // 移动端不设置 left, 让 CSS 控制水平位置
+      if (!isMobile) {
+        DOM.tooltip.style.left = '0';
+        DOM.tooltip.style.right = '';
+      } else {
+        DOM.tooltip.style.left = '';
+        DOM.tooltip.style.right = '';
+      }
       DOM.tooltip.classList.add('visible');
 
       // 获取目标和 tooltip 的实际尺寸
@@ -1466,7 +1464,10 @@
       
       // 计算最终位置
       const pos = calcTooltipPosition(targetRect, tooltipRect);
-      DOM.tooltip.style.left = pos.left + 'px';
+      // 移动端只设置 top, 水平位置由 CSS 控制
+      if (!isMobile) {
+        DOM.tooltip.style.left = pos.left + 'px';
+      }
       DOM.tooltip.style.top = pos.top + 'px';
       DOM.tooltip.style.visibility = '';
     }
