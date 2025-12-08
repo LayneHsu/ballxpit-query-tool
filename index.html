@@ -1294,7 +1294,8 @@
       const advGrid = document.getElementById('advancedGrid');
       let advHtml = '';
       ADVANCED_EVOLUTIONS.forEach(evo => {
-        advHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${evo.name}', 'evo')" onmouseleave="hideTooltip()">
+        const safeName = evo.name.replace(/'/g, "\\'");
+        advHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="advanced-card-info">
             <h4>${getName(evo)}</h4>
@@ -1308,7 +1309,8 @@
       const passGrid = document.getElementById('passiveGrid');
       let passHtml = '';
       PASSIVE_EVOLUTIONS.forEach(evo => {
-        passHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${evo.name}', 'evo')" onmouseleave="hideTooltip()">
+        const safeName = evo.name.replace(/'/g, "\\'");
+        passHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="advanced-card-info">
             <h4>${getName(evo)}</h4>
