@@ -778,6 +778,27 @@
         width: 48px;
         height: 48px;
       }
+
+      /* 移动端 tooltip 优化 */
+      .tooltip {
+        max-width: calc(100vw - 20px);
+        width: auto;
+      }
+
+      .tooltip-formula {
+        flex-wrap: wrap;
+        white-space: normal;
+      }
+
+      .tooltip-formula img {
+        width: 20px;
+        height: 20px;
+      }
+
+      .tooltip-header img {
+        width: 40px;
+        height: 40px;
+      }
     }
 
     /* ========== 滚动条 ========== */
@@ -1317,28 +1338,69 @@
       return html;
     }
 
-    // 计算 tooltip 位置 (动态获取实际尺寸)
+    // 计算 tooltip 位置 (动态获取实际尺寸, 优化移动端显示)
     function calcTooltipPosition(targetRect, tooltipRect) {
       const padding = 10;
-      let left = targetRect.right + padding;
-      let top = targetRect.top;
-
-      // 右侧放不下, 尝试左侧
-      if (left + tooltipRect.width > window.innerWidth) {
-        left = targetRect.left - tooltipRect.width - padding;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const isMobile = viewportWidth < 768;
+      
+      let left, top;
+      
+      // 移动端: 优先放在目标上方或下方
+      if (isMobile) {
+        // 水平居中或靠左对齐
+        left = Math.max(padding, Math.min(
+          targetRect.left,
+          viewportWidth - tooltipRect.width - padding
+        ));
+        
+        // 优先放在上方
+        const spaceAbove = targetRect.top;
+        const spaceBelow = viewportHeight - targetRect.bottom;
+        
+        if (spaceAbove >= tooltipRect.height + padding) {
+          // 上方空间足够
+          top = targetRect.top - tooltipRect.height - padding;
+        } else if (spaceBelow >= tooltipRect.height + padding) {
+          // 下方空间足够
+          top = targetRect.bottom + padding;
+        } else {
+          // 都不够, 放在上方并滚动到可见位置
+          top = Math.max(padding, targetRect.top - tooltipRect.height - padding);
+        }
+      } else {
+        // 桌面端: 优先放在右侧
+        left = targetRect.right + padding;
+        top = targetRect.top;
+        
+        // 右侧放不下, 尝试左侧
+        if (left + tooltipRect.width > viewportWidth - padding) {
+          left = targetRect.left - tooltipRect.width - padding;
+        }
+        // 左侧也放不下, 放在目标下方
+        if (left < padding) {
+          left = Math.max(padding, targetRect.left);
+          top = targetRect.bottom + padding;
+        }
       }
-      // 左侧也放不下, 放在目标下方
-      if (left < padding) {
-        left = Math.max(padding, targetRect.left);
-        top = targetRect.bottom + padding;
-      }
+      
       // 确保不超出右边界
-      if (left + tooltipRect.width > window.innerWidth - padding) {
-        left = window.innerWidth - tooltipRect.width - padding;
+      if (left + tooltipRect.width > viewportWidth - padding) {
+        left = viewportWidth - tooltipRect.width - padding;
       }
-      // 确保不超出下边界
-      if (top + tooltipRect.height > window.innerHeight - padding) {
-        top = window.innerHeight - tooltipRect.height - padding;
+      // 确保不超出左边界
+      if (left < padding) left = padding;
+      
+      // 确保不超出下边界 - 如果下方空间不够, 尝试放到上方
+      if (top + tooltipRect.height > viewportHeight - padding) {
+        const newTop = targetRect.top - tooltipRect.height - padding;
+        if (newTop >= padding) {
+          top = newTop;
+        } else {
+          // 上下都放不下, 尽量靠近顶部显示
+          top = Math.max(padding, viewportHeight - tooltipRect.height - padding);
+        }
       }
       // 确保不超出上边界
       if (top < padding) top = padding;
