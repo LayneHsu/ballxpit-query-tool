@@ -38,12 +38,20 @@
       box-sizing: border-box;
     }
 
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
     body {
       font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
       line-height: 1.5;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
     }
 
     /* ========== 头部 ========== */
@@ -89,7 +97,7 @@
       position: relative;
       flex: 1;
       max-width: 320px;
-      min-width: 200px;
+      min-width: 0;
     }
 
     .search-box input {
@@ -504,11 +512,12 @@
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      max-width: 480px;
+      max-width: min(480px, calc(100vw - 40px));
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
       animation: modalIn 0.25s ease;
+      box-sizing: border-box;
     }
 
     @keyframes modalIn {
@@ -738,45 +747,159 @@
 
     /* ========== 响应式 ========== */
     @media (max-width: 768px) {
+      /* 全局容器限制 */
+      .header,
+      .controls,
+      .main-content,
+      .advanced-section {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .header {
+        padding: 16px 12px;
+      }
+
       .header h1 {
-        font-size: 22px;
+        font-size: 20px;
+      }
+
+      .header p {
+        font-size: 12px;
       }
 
       .controls {
-        padding: 12px;
+        padding: 10px;
+        gap: 8px;
+        flex-direction: column;
       }
 
       .search-box {
-        min-width: 100%;
+        min-width: unset;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .view-tabs {
+        width: 100%;
+        justify-content: center;
       }
 
       .main-content {
-        padding: 12px;
+        padding: 10px;
+      }
+
+      /* 矩阵表格 - 允许水平滚动 */
+      .matrix-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        margin: 0 -10px;
+        padding: 0 10px;
       }
 
       .matrix-table th,
       .matrix-table td {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
       }
 
       .matrix-table th img {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
+      }
+
+      .matrix-table th span {
+        font-size: 7px;
       }
 
       .matrix-cell img {
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
+      }
+
+      .matrix-cell .cell-name {
+        font-size: 7px;
+      }
+
+      /* 列表视图 */
+      .list-view {
+        grid-template-columns: 1fr;
+      }
+
+      .list-card {
+        max-width: 100%;
+      }
+
+      /* 图鉴视图 */
+      .gallery-section {
+        max-width: 100%;
       }
 
       .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 8px;
+      }
+
+      .gallery-item {
+        padding: 10px;
       }
 
       .gallery-item img {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
+      }
+
+      .gallery-item .item-name {
+        font-size: 11px;
+        word-break: break-word;
+      }
+
+      .gallery-item .item-name-cn {
+        font-size: 10px;
+      }
+
+      /* 高级进化区域 */
+      .advanced-section {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .section-title {
+        font-size: 16px;
+        padding: 0 10px;
+      }
+
+      .advanced-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .advanced-card {
+        padding: 10px;
+        max-width: 100%;
+      }
+
+      .advanced-card img {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+      }
+
+      .advanced-card-info {
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .advanced-card-info h4 {
+        font-size: 13px;
+        word-break: break-word;
+      }
+
+      .advanced-card-info p {
+        font-size: 11px;
+        word-break: break-word;
       }
 
       /* 移动端 tooltip 优化 - 宽度自适应屏幕 */
@@ -815,6 +938,185 @@
         word-break: break-word;
         overflow-wrap: break-word;
       }
+
+      /* 弹窗优化 */
+      .modal-overlay {
+        padding: 10px;
+      }
+
+      .modal {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+      }
+
+      .modal-header {
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .modal-header img {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+      }
+
+      .modal-header-info {
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .modal-header-info h2 {
+        font-size: 16px;
+        word-break: break-word;
+      }
+
+      .modal-body {
+        padding: 16px;
+      }
+
+      .combo-formula {
+        gap: 8px;
+        padding: 10px;
+        flex-wrap: wrap;
+      }
+
+      .combo-ball {
+        padding: 4px;
+      }
+
+      .combo-ball img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .combo-ball span {
+        font-size: 10px;
+        word-break: break-word;
+      }
+
+      .combo-plus,
+      .combo-equals {
+        font-size: 18px;
+      }
+
+      .effect-text {
+        font-size: 13px;
+      }
+    }
+
+    /* 更小屏幕适配 */
+    @media (max-width: 480px) {
+      .header {
+        padding: 12px 10px;
+      }
+
+      .header h1 {
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+
+      .controls {
+        padding: 8px;
+      }
+
+      .main-content {
+        padding: 8px;
+      }
+
+      .matrix-wrapper {
+        margin: 0 -8px;
+        padding: 0 8px;
+      }
+
+      .matrix-table th,
+      .matrix-table td {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+      }
+
+      .matrix-table th img {
+        width: 18px;
+        height: 18px;
+      }
+
+      .matrix-table th span {
+        font-size: 6px;
+      }
+
+      .matrix-cell img {
+        width: 22px;
+        height: 22px;
+      }
+
+      .matrix-cell .cell-name {
+        display: none;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 6px;
+      }
+
+      .gallery-item {
+        padding: 8px;
+      }
+
+      .gallery-item img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .gallery-item .item-name {
+        font-size: 10px;
+      }
+
+      .gallery-item .item-name-cn {
+        font-size: 9px;
+      }
+
+      .advanced-card {
+        padding: 8px;
+      }
+
+      .advanced-card img {
+        width: 36px;
+        height: 36px;
+      }
+
+      /* tooltip */
+      .tooltip {
+        left: 8px !important;
+        right: 8px !important;
+      }
+
+      /* 弹窗 */
+      .modal-overlay {
+        padding: 8px;
+      }
+
+      .modal-header {
+        padding: 12px;
+      }
+
+      .modal-header img {
+        width: 48px;
+        height: 48px;
+      }
+
+      .modal-body {
+        padding: 12px;
+      }
+
+      .combo-ball img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .combo-ball span {
+        font-size: 9px;
+      }
     }
 
     /* ========== 滚动条 ========== */
@@ -844,8 +1146,8 @@
       border: 1px solid var(--accent-primary);
       border-radius: var(--radius-md);
       padding: 12px;
-      max-width: 90vw;
-      min-width: 200px;
+      max-width: min(90vw, 400px);
+      min-width: 0;
       width: max-content;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
       pointer-events: none;
