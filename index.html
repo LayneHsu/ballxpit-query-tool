@@ -1283,6 +1283,27 @@
       }
     }
 
+    /* ========== 页脚 ========== */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer .divider {
+      margin: 0 12px;
+      opacity: 0.5;
+    }
+
+    .footer span#busuanzi_value_site_pv,
+    .footer span#busuanzi_value_site_uv {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
     /* ========== 标签系统 ========== */
     .tags-container {
       display: flex;
@@ -1590,6 +1611,13 @@
 
   </main>
 
+  <!-- 页脚统计 -->
+  <footer class="footer">
+    <span>📊 本站访问量: <span id="busuanzi_value_site_pv">--</span> 次</span>
+    <span class="divider">|</span>
+    <span>👥 访客数: <span id="busuanzi_value_site_uv">--</span> 人</span>
+  </footer>
+
   <!-- 悬浮提示框 -->
   <div class="tooltip" id="tooltip">
     <div class="tooltip-header">
@@ -1635,6 +1663,9 @@
 
   <!-- 引入外部数据文件 -->
   <script src="data/gameData.js"></script>
+  
+  <!-- 不蒜子访问统计 -->
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   
   <script>
     // ========== 从外部数据文件加载 ==========
