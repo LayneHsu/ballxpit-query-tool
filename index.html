@@ -1109,6 +1109,28 @@
       { name: "Nosferatu", nameCn: "诺斯费拉图", components: ["Vampire Lord", "Mosquito King", "Spider Queen"], img: "ball_icon_nosferatu.png", effectCn: "吸血鬼、蚊子和蜘蛛的终极融合体，拥有无与伦比的生命汲取能力和仆从大军，是真正的不死君王。" }
     ];
 
+    // 基础装备(用于被动道具进化配方显示)
+    const BASE_ITEMS = [
+      { name: "Everflowing Goblet", nameCn: "永流圣杯", img: "everflowingGoblet.png" },
+      { name: "Vampiric Sword", nameCn: "吸血剑", img: "vampiricSword.png" },
+      { name: "Baby Rattle", nameCn: "婴儿摇铃", img: "babyRattle.png" },
+      { name: "War Horn", nameCn: "战争号角", img: "warHorn.png" },
+      { name: "Ethereal Cloak", nameCn: "虚无斗篷", img: "etherealCloak.png" },
+      { name: "Ghostly Corset", nameCn: "幽灵胸衣", img: "ghostlyCorset.png" },
+      { name: "Breastplate", nameCn: "胸甲", img: "breastplate.png" },
+      { name: "Corrupted Onion", nameCn: "腐烂洋葱", img: "wretchedOnion.png" },
+      { name: "Reacher's Spear", nameCn: "延伸者之矛", img: "reachersSpear.png" },
+      { name: "Deadeye's Amulet", nameCn: "神射手护符", img: "deadeyesAmulet.png" },
+      { name: "Crown of Thorns", nameCn: "荆棘王冠", img: "crownOfThorns.png" },
+      { name: "Spiked Collar", nameCn: "尖刺项圈", img: "spikedCollar.png" },
+      { name: "Fleet Feet", nameCn: "疾行之靴", img: "fleetFeet.png" },
+      { name: "Radiant Feather", nameCn: "光辉羽毛", img: "radiantFeather.png" },
+      { name: "Diamond-Hilted Dagger", nameCn: "钻石柄匕首", img: "diamondHiltedDagger.png" },
+      { name: "Emerald-Hilted Dagger", nameCn: "翡翠柄匕首", img: "emeraldHiltedDagger.png" },
+      { name: "Ruby-Hilted Dagger", nameCn: "红宝石柄匕首", img: "rubyHiltedDagger.png" },
+      { name: "Sapphire-Hilted Dagger", nameCn: "蓝宝石柄匕首", img: "sapphireHiltedDagger.png" }
+    ];
+
     const PASSIVE_EVOLUTIONS = [
       { name: "Soul Reaver", nameCn: "灵魂掠夺者", components: ["Everflowing Goblet", "Vampiric Sword"], img: "soulReaver.png", effectCn: "极大地增强你的生命偷取效果，并将溢出的治疗量转化为一个可以吸收伤害的护盾。" },
       { name: "Cornucopia", nameCn: "丰饶之角", components: ["Baby Rattle", "War Horn"], img: "cornucopia.png", effectCn: "周期性地产生各种资源，包括金币、宝石和生命恢复，是持续作战的强大保障。" },
@@ -1117,7 +1139,7 @@
       { name: "Gracious Impaler", nameCn: "优雅穿刺者", components: ["Reacher's Spear", "Deadeye's Amulet"], img: "graciousImpaler.png", effectCn: "你的所有投射物都将获得穿透效果，并对被穿透的每个敌人造成递增的伤害。" },
       { name: "Tormentor's Mask", nameCn: "折磨者面具", components: ["Crown of Thorns", "Spiked Collar"], img: "tormentorsMask.png", effectCn: "将你受到的部分伤害反弹给攻击者，并且你的攻击会对生命值低于50%的敌人造成额外伤害。" },
       { name: "Wings of the Anointed", nameCn: "受膏者之翼", components: ["Fleet Feet", "Radiant Feather"], img: "wingsOfTheAnnointed.png", effectCn: "极大地提升你的移动速度，并让你能够免疫地面上的陷阱和减速效果。" },
-      { name: "Deadeye's Cross", nameCn: "神射手十字", components: ["All 4 Daggers"], img: "deadeyesCross.png", effectCn: "融合四把元素匕首的力量，大幅提升暴击率、暴击伤害和投射物速度，每一击都精准而致命。" }
+      { name: "Deadeye's Cross", nameCn: "神射手十字", components: ["Diamond-Hilted Dagger", "Emerald-Hilted Dagger", "Ruby-Hilted Dagger", "Sapphire-Hilted Dagger"], img: "deadeyesCross.png", effectCn: "融合四把元素匕首的力量，大幅提升暴击率、暴击伤害和投射物速度，每一击都精准而致命。" }
     ];
 
     // ========== 全局变量 ==========
@@ -1141,6 +1163,28 @@
 
     function getBaseBall(id) {
       return BASE_BALLS.find(b => b.id === id);
+    }
+
+    function getBaseItem(name) {
+      return BASE_ITEMS.find(i => i.name === name);
+    }
+
+    // 获取组件的中文名称
+    function getComponentNameCn(name) {
+      // 查找基础球
+      const baseBall = BASE_BALLS.find(b => b.name === name);
+      if (baseBall && baseBall.nameCn) return baseBall.nameCn;
+      
+      // 查找进化球
+      const evo = EVOLUTIONS.find(e => e.name === name) ||
+                  ADVANCED_EVOLUTIONS.find(e => e.name === name);
+      if (evo && evo.nameCn) return evo.nameCn;
+      
+      // 查找基础装备
+      const item = BASE_ITEMS.find(i => i.name === name);
+      if (item && item.nameCn) return item.nameCn;
+      
+      return name;
     }
 
     function getEvolution(name) {
@@ -1257,7 +1301,8 @@
         }
       });
       uniqueEvos.forEach(evo => {
-        evolvedHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${evo.name}', 'evo')" onmouseleave="hideTooltip()">
+        const safeName = evo.name.replace(/'/g, "\\'");
+        evolvedHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="item-name">${evo.name}</div>
           <div class="item-name-cn">${evo.nameCn || ''}</div>
@@ -1268,7 +1313,8 @@
       // 高级进化
       let advancedHtml = '';
       ADVANCED_EVOLUTIONS.forEach(evo => {
-        advancedHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${evo.name}', 'evo')" onmouseleave="hideTooltip()">
+        const safeName = evo.name.replace(/'/g, "\\'");
+        advancedHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="item-name">${evo.name}</div>
           <div class="item-name-cn">${evo.nameCn || ''}</div>
@@ -1279,7 +1325,8 @@
       // 被动道具
       let passiveHtml = '';
       PASSIVE_EVOLUTIONS.forEach(evo => {
-        passiveHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${evo.name}', 'evo')" onmouseleave="hideTooltip()">
+        const safeName = evo.name.replace(/'/g, "\\'");
+        passiveHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="item-name">${evo.name}</div>
           <div class="item-name-cn">${evo.nameCn || ''}</div>
@@ -1295,11 +1342,12 @@
       let advHtml = '';
       ADVANCED_EVOLUTIONS.forEach(evo => {
         const safeName = evo.name.replace(/'/g, "\\'");
+        const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
         advHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="advanced-card-info">
             <h4>${getName(evo)}</h4>
-            <p>${evo.components.join(' + ')}</p>
+            <p>${componentsCn}</p>
           </div>
         </div>`;
       });
@@ -1310,11 +1358,12 @@
       let passHtml = '';
       PASSIVE_EVOLUTIONS.forEach(evo => {
         const safeName = evo.name.replace(/'/g, "\\'");
+        const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
         passHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
           <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
           <div class="advanced-card-info">
             <h4>${getName(evo)}</h4>
-            <p>${evo.components.join(' + ')}</p>
+            <p>${componentsCn}</p>
           </div>
         </div>`;
       });
@@ -1361,10 +1410,21 @@
       }
       else if (item.components) {
         item.components.forEach((comp, i) => {
+          // 依次查找: 基础球 -> 进化球 -> 基础装备
+          const compBall = BASE_BALLS.find(b => b.name === comp);
           const compEvo = getEvolution(comp);
-          if (compEvo) {
+          const compItem = getBaseItem(comp);
+          if (compBall) {
+            formulaHtml += `<img src="${getImg(compBall.img)}" alt="${comp}">`;
+            formulaHtml += `<span>${compBall.nameCn || comp}</span>`;
+          }
+          else if (compEvo) {
             formulaHtml += `<img src="${getImg(compEvo.img)}" alt="${comp}">`;
-            formulaHtml += `<span>${currentLang === 'cn' ? compEvo.nameCn : comp}</span>`;
+            formulaHtml += `<span>${compEvo.nameCn || comp}</span>`;
+          }
+          else if (compItem) {
+            formulaHtml += `<img src="${getImg(compItem.img)}" alt="${comp}">`;
+            formulaHtml += `<span>${compItem.nameCn || comp}</span>`;
           }
           else {
             formulaHtml += `<span>${comp}</span>`;
