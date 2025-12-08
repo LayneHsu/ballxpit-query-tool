@@ -781,23 +781,42 @@
 
       /* 移动端 tooltip 优化 */
       .tooltip {
-        max-width: calc(100vw - 20px);
-        width: auto;
+        max-width: calc(100vw - 20px) !important;
+        width: auto !important;
       }
 
       .tooltip-formula {
-        flex-wrap: wrap;
-        white-space: normal;
+        flex-wrap: wrap !important;
+        white-space: normal !important;
+        overflow: hidden;
+        max-width: 100%;
+        justify-content: flex-start;
       }
 
       .tooltip-formula img {
         width: 20px;
         height: 20px;
+        flex-shrink: 0;
+      }
+
+      .tooltip-formula span {
+        word-break: break-word;
+        flex-shrink: 1;
+        min-width: 0;
+      }
+
+      .tooltip-header {
+        flex-wrap: nowrap;
       }
 
       .tooltip-header img {
         width: 40px;
         height: 40px;
+        flex-shrink: 0;
+      }
+
+      .tooltip-effect {
+        word-break: break-word;
       }
     }
 
@@ -836,6 +855,8 @@
       opacity: 0;
       transform: translateY(8px);
       transition: opacity 0.15s ease, transform 0.15s ease;
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     .tooltip.visible {
@@ -884,6 +905,9 @@
       border-radius: 6px;
       font-size: 12px;
       color: var(--text-secondary);
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .tooltip-formula img {
