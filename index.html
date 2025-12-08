@@ -1143,72 +1143,123 @@
     ];
 
     // ========== 全局变量 ==========
-    let currentLang = 'cn';
     let currentView = 'matrix';
     const IMG_BASE = 'img/';
+    let searchTimeout = null;
+
+    // ========== 数据索引 (O(1) 查找) ==========
+    const ballById = new Map();
+    const ballByName = new Map();
+    const evoByName = new Map();
+    const itemByName = new Map();
+    const evoMatrix = new Map();
+
+    function buildIndexes() {
+      BASE_BALLS.forEach(b => {
+        ballById.set(b.id, b);
+        ballByName.set(b.name, b);
+      });
+      EVOLUTIONS.forEach(e => evoByName.set(e.name, e));
+      ADVANCED_EVOLUTIONS.forEach(e => evoByName.set(e.name, e));
+      PASSIVE_EVOLUTIONS.forEach(e => evoByName.set(e.name, e));
+      BASE_ITEMS.forEach(i => itemByName.set(i.name, i));
+      // 矩阵索引: "ROW_COL" -> evolution
+      EVOLUTIONS.forEach(e => {
+        evoMatrix.set(`${e.row}_${e.col}`, e);
+        evoMatrix.set(`${e.col}_${e.row}`, e);
+      });
+    }
+
+    // ========== DOM 缓存 ==========
+    const DOM = {};
+    function cacheDOM() {
+      DOM.tooltip = document.getElementById('tooltip');
+      DOM.tooltipImg = document.getElementById('tooltipImg');
+      DOM.tooltipTitle = document.getElementById('tooltipTitle');
+      DOM.tooltipTitleCn = document.getElementById('tooltipTitleCn');
+      DOM.tooltipEffect = document.getElementById('tooltipEffect');
+      DOM.tooltipFormula = document.getElementById('tooltipFormula');
+      DOM.modalOverlay = document.getElementById('modalOverlay');
+      DOM.modalImg = document.getElementById('modalImg');
+      DOM.modalTitle = document.getElementById('modalTitle');
+      DOM.modalTitleCn = document.getElementById('modalTitleCn');
+      DOM.modalEffect = document.getElementById('modalEffect');
+      DOM.modalFormula = document.getElementById('modalFormula');
+      DOM.searchInput = document.getElementById('searchInput');
+      DOM.matrixTable = document.getElementById('matrixTable');
+      DOM.listContainer = document.getElementById('listContainer');
+      DOM.galleryBasic = document.getElementById('galleryBasic');
+      DOM.galleryEvolved = document.getElementById('galleryEvolved');
+      DOM.galleryAdvanced = document.getElementById('galleryAdvanced');
+      DOM.galleryPassive = document.getElementById('galleryPassive');
+      DOM.advancedGrid = document.getElementById('advancedGrid');
+      DOM.passiveGrid = document.getElementById('passiveGrid');
+      DOM.advancedSection = document.getElementById('advancedSection');
+      DOM.passiveSection = document.getElementById('passiveSection');
+    }
 
     // ========== 工具函数 ==========
     function getImg(filename) {
-      if (!filename) return IMG_BASE + 'ball_icon_bleed.png';
-      return IMG_BASE + filename;
+      return IMG_BASE + (filename || 'ball_icon_bleed.png');
+    }
+
+    // 转义撇号, 仅用于内联 JavaScript 字符串
+    // 正确用法: onclick="func('${safeName(name)}')"
+    // 错误用法: data-evo="${safeName(name)}"  (data-* 属性不需要转义!)
+    // 原因: data-* 属性值会被浏览器原样保存, 转义字符会变成字面字符
+    function safeName(str) {
+      return str ? str.replace(/'/g, "\\'") : '';
+    }
+
+    // 生成图片 HTML
+    function imgHtml(src, alt, className) {
+      const cls = className ? ` class="${className}"` : '';
+      return `<img${cls} src="${getImg(src)}" alt="${alt || ''}" onerror="this.src='${getImg('placeholder.png')}'">`;
     }
 
     function getName(item) {
-      return currentLang === 'cn' ? (item.nameCn || item.name) : item.name;
+      return item.nameCn || item.name;
     }
 
     function getEffect(item) {
-      return currentLang === 'cn' ? (item.effectCn || item.effect) : item.effect;
+      return item.effectCn || item.effect || '';
     }
 
     function getBaseBall(id) {
-      return BASE_BALLS.find(b => b.id === id);
+      return ballById.get(id);
     }
 
     function getBaseItem(name) {
-      return BASE_ITEMS.find(i => i.name === name);
+      return itemByName.get(name);
+    }
+
+    function getEvolution(name) {
+      return evoByName.get(name);
+    }
+
+    function findEvolution(rowId, colId) {
+      return evoMatrix.get(`${rowId}_${colId}`);
+    }
+
+    // 统一查找组件 (基础球/进化球/装备)
+    function findComponent(name) {
+      return ballByName.get(name) || evoByName.get(name) || itemByName.get(name);
     }
 
     // 获取组件的中文名称
     function getComponentNameCn(name) {
-      // 查找基础球
-      const baseBall = BASE_BALLS.find(b => b.name === name);
-      if (baseBall && baseBall.nameCn) return baseBall.nameCn;
-      
-      // 查找进化球
-      const evo = EVOLUTIONS.find(e => e.name === name) ||
-                  ADVANCED_EVOLUTIONS.find(e => e.name === name);
-      if (evo && evo.nameCn) return evo.nameCn;
-      
-      // 查找基础装备
-      const item = BASE_ITEMS.find(i => i.name === name);
-      if (item && item.nameCn) return item.nameCn;
-      
-      return name;
-    }
-
-    function getEvolution(name) {
-      return EVOLUTIONS.find(e => e.name === name) || 
-             ADVANCED_EVOLUTIONS.find(e => e.name === name) ||
-             PASSIVE_EVOLUTIONS.find(e => e.name === name);
-    }
-
-    function findEvolution(rowId, colId) {
-      return EVOLUTIONS.find(e => 
-        (e.row === rowId && e.col === colId) || 
-        (e.row === colId && e.col === rowId)
-      );
+      const comp = findComponent(name);
+      return comp ? (comp.nameCn || name) : name;
     }
 
     // ========== 矩阵视图 ==========
     function renderMatrix() {
-      const table = document.getElementById('matrixTable');
       let html = '<tr><th></th>';
       
       // 表头
       BASE_BALLS.forEach(ball => {
-        html += `<th onmouseenter="showTooltip(event, '${ball.id}', 'base')" onmouseleave="hideTooltip()">
-          <img src="${getImg(ball.img)}" alt="${ball.name}" onerror="this.src='${getImg('placeholder.png')}'">
+        html += `<th data-id="${ball.id}" data-type="base">
+          ${imgHtml(ball.img, ball.name)}
           <span>${getName(ball)}</span>
         </th>`;
       });
@@ -1216,19 +1267,20 @@
 
       // 表体
       BASE_BALLS.forEach(rowBall => {
-        html += `<tr><th onmouseenter="showTooltip(event, '${rowBall.id}', 'base')" onmouseleave="hideTooltip()">
-          <img src="${getImg(rowBall.img)}" alt="${rowBall.name}" onerror="this.src='${getImg('placeholder.png')}'">
+        html += `<tr><th data-id="${rowBall.id}" data-type="base">
+          ${imgHtml(rowBall.img, rowBall.name)}
           <span>${getName(rowBall)}</span>
         </th>`;
 
         BASE_BALLS.forEach(colBall => {
           const evo = findEvolution(rowBall.id, colBall.id);
           if (evo) {
-            html += `<td class="matrix-cell" data-evo="${evo.name}" onmouseenter="showTooltip(event, '${evo.name}', 'evo')" onmouseleave="hideTooltip()">
-              <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
+            html += `<td class="matrix-cell" data-evo="${evo.name}" data-type="evo">
+              ${imgHtml(evo.img, evo.name)}
               <div class="cell-name">${getName(evo)}${evo.alt ? '*' : ''}</div>
             </td>`;
-          } else {
+          }
+          else {
             html += `<td class="matrix-cell empty"></td>`;
           }
         });
@@ -1236,12 +1288,11 @@
         html += '</tr>';
       });
 
-      table.innerHTML = html;
+      DOM.matrixTable.innerHTML = html;
     }
 
     // ========== 列表视图 ==========
     function renderList() {
-      const container = document.getElementById('listContainer');
       let html = '';
 
       BASE_BALLS.forEach(baseBall => {
@@ -1250,10 +1301,10 @@
 
         html += `<div class="list-card">
           <div class="list-card-header">
-            <img src="${getImg(baseBall.img)}" alt="${baseBall.name}" onerror="this.src='${getImg('placeholder.png')}'">
+            ${imgHtml(baseBall.img, baseBall.name)}
             <div>
               <h3>${getName(baseBall)}</h3>
-              <div class="subtitle">${combos.length} ${currentLang === 'cn' ? '种组合' : 'combinations'}</div>
+              <div class="subtitle">${combos.length} 种组合</div>
             </div>
           </div>
           <div class="list-card-body">`;
@@ -1263,8 +1314,8 @@
           const partner = getBaseBall(partnerId);
           if (!partner) return;
 
-          html += `<div class="combo-item" onclick="openModal('${evo.name}')">
-            <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
+          html += `<div class="combo-item" data-evo="${evo.name}">
+            ${imgHtml(evo.img, evo.name)}
             <div class="combo-text">
               <span class="partner">+ ${getName(partner)}</span>
               <span class="arrow">→</span>
@@ -1276,255 +1327,179 @@
         html += '</div></div>';
       });
 
-      container.innerHTML = html;
+      DOM.listContainer.innerHTML = html;
     }
 
     // ========== 图鉴视图 ==========
+    // 生成图鉴项 HTML
+    // 注意: data-* 属性使用原始值, 不需要 safeName() 转义
+    function galleryItemHtml(item, type, idOrName) {
+      const dataAttr = type === 'base' ? `data-id="${idOrName}"` : `data-evo="${idOrName}"`;
+      return `<div class="gallery-item" ${dataAttr} data-type="${type}">
+        ${imgHtml(item.img, item.name)}
+        <div class="item-name">${item.name}</div>
+        <div class="item-name-cn">${item.nameCn || ''}</div>
+      </div>`;
+    }
+
     function renderGallery() {
       // 基础球
-      let basicHtml = '';
-      BASE_BALLS.forEach(ball => {
-        basicHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${ball.id}', 'base')" onmouseleave="hideTooltip()">
-          <img src="${getImg(ball.img)}" alt="${ball.name}" onerror="this.src='${getImg('placeholder.png')}'">
-          <div class="item-name">${ball.name}</div>
-          <div class="item-name-cn">${ball.nameCn || ''}</div>
-        </div>`;
-      });
-      document.getElementById('galleryBasic').innerHTML = basicHtml;
+      DOM.galleryBasic.innerHTML = BASE_BALLS.map(b => galleryItemHtml(b, 'base', b.id)).join('');
 
-      // 进化球
-      let evolvedHtml = '';
-      const uniqueEvos = [];
-      EVOLUTIONS.forEach(evo => {
-        if (!uniqueEvos.find(e => e.name === evo.name)) {
-          uniqueEvos.push(evo);
-        }
-      });
-      uniqueEvos.forEach(evo => {
-        const safeName = evo.name.replace(/'/g, "\\'");
-        evolvedHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
-          <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
-          <div class="item-name">${evo.name}</div>
-          <div class="item-name-cn">${evo.nameCn || ''}</div>
-        </div>`;
-      });
-      document.getElementById('galleryEvolved').innerHTML = evolvedHtml;
+      // 进化球 (去重)
+      const uniqueEvos = [...new Map(EVOLUTIONS.map(e => [e.name, e])).values()];
+      DOM.galleryEvolved.innerHTML = uniqueEvos.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
 
       // 高级进化
-      let advancedHtml = '';
-      ADVANCED_EVOLUTIONS.forEach(evo => {
-        const safeName = evo.name.replace(/'/g, "\\'");
-        advancedHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
-          <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
-          <div class="item-name">${evo.name}</div>
-          <div class="item-name-cn">${evo.nameCn || ''}</div>
-        </div>`;
-      });
-      document.getElementById('galleryAdvanced').innerHTML = advancedHtml;
+      DOM.galleryAdvanced.innerHTML = ADVANCED_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
 
       // 被动道具
-      let passiveHtml = '';
-      PASSIVE_EVOLUTIONS.forEach(evo => {
-        const safeName = evo.name.replace(/'/g, "\\'");
-        passiveHtml += `<div class="gallery-item" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
-          <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
-          <div class="item-name">${evo.name}</div>
-          <div class="item-name-cn">${evo.nameCn || ''}</div>
-        </div>`;
-      });
-      document.getElementById('galleryPassive').innerHTML = passiveHtml;
+      DOM.galleryPassive.innerHTML = PASSIVE_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
     }
 
     // ========== 高级/被动进化区 ==========
-    function renderAdvancedSections() {
-      // 高级进化
-      const advGrid = document.getElementById('advancedGrid');
-      let advHtml = '';
-      ADVANCED_EVOLUTIONS.forEach(evo => {
-        const safeName = evo.name.replace(/'/g, "\\'");
-        const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
-        advHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
-          <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
-          <div class="advanced-card-info">
-            <h4>${getName(evo)}</h4>
-            <p>${componentsCn}</p>
-          </div>
-        </div>`;
-      });
-      advGrid.innerHTML = advHtml;
+    // 生成高级卡片 HTML
+    // 注意: data-evo 使用原始值, 不需要 safeName() 转义
+    function advancedCardHtml(evo) {
+      const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
+      return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo">
+        ${imgHtml(evo.img, evo.name)}
+        <div class="advanced-card-info">
+          <h4>${getName(evo)}</h4>
+          <p>${componentsCn}</p>
+        </div>
+      </div>`;
+    }
 
-      // 被动进化
-      const passGrid = document.getElementById('passiveGrid');
-      let passHtml = '';
-      PASSIVE_EVOLUTIONS.forEach(evo => {
-        const safeName = evo.name.replace(/'/g, "\\'");
-        const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
-        passHtml += `<div class="advanced-card" onmouseenter="showTooltip(event, '${safeName}', 'evo')" onmouseleave="hideTooltip()">
-          <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
-          <div class="advanced-card-info">
-            <h4>${getName(evo)}</h4>
-            <p>${componentsCn}</p>
-          </div>
-        </div>`;
-      });
-      passGrid.innerHTML = passHtml;
+    function renderAdvancedSections() {
+      DOM.advancedGrid.innerHTML = ADVANCED_EVOLUTIONS.map(advancedCardHtml).join('');
+      DOM.passiveGrid.innerHTML = PASSIVE_EVOLUTIONS.map(advancedCardHtml).join('');
     }
 
     // ========== 悬浮提示框 ==========
-    // type: 'base' 或 'evo'
-    function showTooltip(event, name, type) {
-      let item = null;
-      if (type === 'base') {
-        item = getBaseBall(name);
-      }
-      else {
-        item = getEvolution(name);
-      }
-      if (!item) return;
+    const TOOLTIP_WIDTH = 320;
+    const TOOLTIP_HEIGHT = 200;
 
-      const tooltip = document.getElementById('tooltip');
+    // 构建配方 HTML
+    function buildFormulaHtml(item) {
+      let html = '';
       
-      // 填充内容
-      document.getElementById('tooltipImg').src = getImg(item.img);
-      document.getElementById('tooltipTitle').textContent = item.name;
-      document.getElementById('tooltipTitleCn').textContent = item.nameCn || '';
-      document.getElementById('tooltipEffect').textContent = getEffect(item);
-
-      // 构建配方(基础球没有配方)
-      let formulaHtml = '';
       if (item.row && item.col) {
+        // 基础进化: 两个基础球组合
         const ball1 = getBaseBall(item.row);
         const ball2 = getBaseBall(item.col);
-        if (ball1) {
-          formulaHtml += `<img src="${getImg(ball1.img)}" alt="${ball1.name}">`;
-          formulaHtml += `<span>${getName(ball1)}</span>`;
-        }
-        formulaHtml += '<span class="plus">+</span>';
-        if (ball2) {
-          formulaHtml += `<img src="${getImg(ball2.img)}" alt="${ball2.name}">`;
-          formulaHtml += `<span>${getName(ball2)}</span>`;
-        }
-        formulaHtml += '<span class="equals">=</span>';
-        formulaHtml += `<img src="${getImg(item.img)}" alt="${item.name}">`;
-        formulaHtml += `<span>${getName(item)}</span>`;
+        if (ball1) html += `<img src="${getImg(ball1.img)}"><span>${getName(ball1)}</span>`;
+        html += '<span class="plus">+</span>';
+        if (ball2) html += `<img src="${getImg(ball2.img)}"><span>${getName(ball2)}</span>`;
+        html += '<span class="equals">=</span>';
+        html += `<img src="${getImg(item.img)}"><span>${getName(item)}</span>`;
       }
       else if (item.components) {
+        // 高级/被动进化: 多个组件
         item.components.forEach((comp, i) => {
-          // 依次查找: 基础球 -> 进化球 -> 基础装备
-          const compBall = BASE_BALLS.find(b => b.name === comp);
-          const compEvo = getEvolution(comp);
-          const compItem = getBaseItem(comp);
-          if (compBall) {
-            formulaHtml += `<img src="${getImg(compBall.img)}" alt="${comp}">`;
-            formulaHtml += `<span>${compBall.nameCn || comp}</span>`;
-          }
-          else if (compEvo) {
-            formulaHtml += `<img src="${getImg(compEvo.img)}" alt="${comp}">`;
-            formulaHtml += `<span>${compEvo.nameCn || comp}</span>`;
-          }
-          else if (compItem) {
-            formulaHtml += `<img src="${getImg(compItem.img)}" alt="${comp}">`;
-            formulaHtml += `<span>${compItem.nameCn || comp}</span>`;
+          const c = findComponent(comp);
+          if (c) {
+            html += `<img src="${getImg(c.img)}"><span>${c.nameCn || comp}</span>`;
           }
           else {
-            formulaHtml += `<span>${comp}</span>`;
+            html += `<span>${comp}</span>`;
           }
-          if (i < item.components.length - 1) {
-            formulaHtml += '<span class="plus">+</span>';
-          }
+          if (i < item.components.length - 1) html += '<span class="plus">+</span>';
         });
-        formulaHtml += '<span class="equals">=</span>';
-        formulaHtml += `<img src="${getImg(item.img)}" alt="${item.name}">`;
-        formulaHtml += `<span>${getName(item)}</span>`;
+        html += '<span class="equals">=</span>';
+        html += `<img src="${getImg(item.img)}"><span>${getName(item)}</span>`;
       }
-      const formulaEl = document.getElementById('tooltipFormula');
-      formulaEl.innerHTML = formulaHtml;
-      formulaEl.style.display = formulaHtml ? 'flex' : 'none';
-
-      // 计算位置
-      const rect = event.target.closest('th, .matrix-cell, .gallery-item, .advanced-card').getBoundingClientRect();
-      const tooltipWidth = 320;
-      const tooltipHeight = 200;
       
+      return html;
+    }
+
+    // 计算 tooltip 位置
+    function calcTooltipPosition(rect) {
       let left = rect.right + 10;
       let top = rect.top;
 
-      // 右侧空间不足时显示在左侧
-      if (left + tooltipWidth > window.innerWidth) {
-        left = rect.left - tooltipWidth - 10;
+      if (left + TOOLTIP_WIDTH > window.innerWidth) {
+        left = rect.left - TOOLTIP_WIDTH - 10;
       }
-      // 左侧也不足时显示在下方
       if (left < 0) {
         left = rect.left;
         top = rect.bottom + 10;
       }
-      // 底部空间不足时向上调整
-      if (top + tooltipHeight > window.innerHeight) {
-        top = window.innerHeight - tooltipHeight - 10;
+      if (top + TOOLTIP_HEIGHT > window.innerHeight) {
+        top = window.innerHeight - TOOLTIP_HEIGHT - 10;
       }
-      // 顶部空间不足时向下调整
-      if (top < 10) {
-        top = 10;
-      }
+      if (top < 10) top = 10;
 
-      tooltip.style.left = left + 'px';
-      tooltip.style.top = top + 'px';
-      tooltip.classList.add('visible');
+      return { left, top };
+    }
+
+    function showTooltip(event, name, type) {
+      const item = type === 'base' ? getBaseBall(name) : getEvolution(name);
+      if (!item) return;
+
+      // 填充内容 (使用缓存的 DOM)
+      DOM.tooltipImg.src = getImg(item.img);
+      DOM.tooltipTitle.textContent = item.name;
+      DOM.tooltipTitleCn.textContent = item.nameCn || '';
+      DOM.tooltipEffect.textContent = getEffect(item);
+
+      // 配方
+      const formulaHtml = buildFormulaHtml(item);
+      DOM.tooltipFormula.innerHTML = formulaHtml;
+      DOM.tooltipFormula.style.display = formulaHtml ? 'flex' : 'none';
+
+      // 位置
+      const target = event.target.closest('th, .matrix-cell, .gallery-item, .advanced-card');
+      if (!target) return;
+      
+      const pos = calcTooltipPosition(target.getBoundingClientRect());
+      DOM.tooltip.style.left = pos.left + 'px';
+      DOM.tooltip.style.top = pos.top + 'px';
+      DOM.tooltip.classList.add('visible');
     }
 
     function hideTooltip() {
-      document.getElementById('tooltip').classList.remove('visible');
+      DOM.tooltip.classList.remove('visible');
     }
 
     // ========== 弹窗 ==========
+    // 生成弹窗中的组件球 HTML
+    function comboBallHtml(item, clickable) {
+      const onclick = clickable ? ` data-modal="${safeName(item.name)}"` : '';
+      return `<div class="combo-ball"${onclick}>
+        ${imgHtml(item.img, item.name)}
+        <span>${getName(item)}</span>
+      </div>`;
+    }
+
     function openModal(evoName) {
       const evo = getEvolution(evoName);
       if (!evo) return;
 
-      document.getElementById('modalImg').src = getImg(evo.img);
-      document.getElementById('modalTitle').textContent = evo.name;
-      document.getElementById('modalTitleCn').textContent = evo.nameCn || '';
-      document.getElementById('modalEffect').textContent = getEffect(evo);
+      DOM.modalImg.src = getImg(evo.img);
+      DOM.modalTitle.textContent = evo.name;
+      DOM.modalTitleCn.textContent = evo.nameCn || '';
+      DOM.modalEffect.textContent = getEffect(evo);
 
-      // 构建配方
       let formulaHtml = '';
       
       if (evo.row && evo.col) {
-        // 基础进化
         const ball1 = getBaseBall(evo.row);
         const ball2 = getBaseBall(evo.col);
-        
-        if (ball1) {
-          formulaHtml += `<div class="combo-ball">
-            <img src="${getImg(ball1.img)}" alt="${ball1.name}" onerror="this.src='${getImg('placeholder.png')}'">
-            <span>${getName(ball1)}</span>
-          </div>`;
-        }
-        
+        if (ball1) formulaHtml += comboBallHtml(ball1, false);
         formulaHtml += '<span class="combo-plus">+</span>';
-        
-        if (ball2) {
-          formulaHtml += `<div class="combo-ball">
-            <img src="${getImg(ball2.img)}" alt="${ball2.name}" onerror="this.src='${getImg('placeholder.png')}'">
-            <span>${getName(ball2)}</span>
-          </div>`;
-        }
-      } else if (evo.components) {
-        // 高级/被动进化
+        if (ball2) formulaHtml += comboBallHtml(ball2, false);
+      }
+      else if (evo.components) {
         evo.components.forEach((comp, i) => {
-          const compEvo = getEvolution(comp);
-          if (compEvo) {
-            formulaHtml += `<div class="combo-ball" onclick="openModal('${comp}')">
-              <img src="${getImg(compEvo.img)}" alt="${comp}" onerror="this.src='${getImg('placeholder.png')}'">
-              <span>${currentLang === 'cn' ? compEvo.nameCn : comp}</span>
-            </div>`;
-          } else {
-            formulaHtml += `<div class="combo-ball">
-              <img src="${getImg('placeholder.png')}" alt="${comp}">
-              <span>${comp}</span>
-            </div>`;
+          const c = findComponent(comp);
+          if (c) {
+            const isEvo = evoByName.has(comp);
+            formulaHtml += comboBallHtml(c, isEvo);
           }
-          
+          else {
+            formulaHtml += `<div class="combo-ball"><span>${comp}</span></div>`;
+          }
           if (i < evo.components.length - 1) {
             formulaHtml += '<span class="combo-plus">+</span>';
           }
@@ -1532,49 +1507,51 @@
       }
 
       formulaHtml += '<span class="combo-equals">=</span>';
-      formulaHtml += `<div class="combo-ball">
-        <img src="${getImg(evo.img)}" alt="${evo.name}" onerror="this.src='${getImg('placeholder.png')}'">
-        <span>${getName(evo)}</span>
-      </div>`;
+      formulaHtml += comboBallHtml(evo, false);
 
-      document.getElementById('modalFormula').innerHTML = formulaHtml;
-      document.getElementById('modalOverlay').classList.add('active');
+      DOM.modalFormula.innerHTML = formulaHtml;
+      DOM.modalOverlay.classList.add('active');
     }
 
     function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('active');
+      DOM.modalOverlay.classList.remove('active');
     }
 
-    // ========== 搜索 ==========
-    function handleSearch(query) {
+    // ========== 搜索 (带防抖) ==========
+    function doSearch(query) {
       query = query.toLowerCase().trim();
       
+      // 矩阵视图
       document.querySelectorAll('.matrix-cell:not(.empty)').forEach(cell => {
         const evoName = cell.dataset.evo?.toLowerCase() || '';
         const evo = getEvolution(cell.dataset.evo);
         const nameCn = evo?.nameCn?.toLowerCase() || '';
-        
-        if (query && !evoName.includes(query) && !nameCn.includes(query)) {
-          cell.style.opacity = '0.2';
-        } else {
-          cell.style.opacity = '1';
-        }
+        cell.style.opacity = (query && !evoName.includes(query) && !nameCn.includes(query)) ? '0.2' : '1';
       });
 
+      // 列表视图
       document.querySelectorAll('.list-card').forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = query && !text.includes(query) ? 'none' : 'block';
+        const match = !query || card.textContent.toLowerCase().includes(query);
+        card.style.display = match ? 'block' : 'none';
       });
 
+      // 图鉴视图
       document.querySelectorAll('.gallery-item').forEach(item => {
-        const text = item.textContent.toLowerCase();
-        item.style.display = query && !text.includes(query) ? 'none' : 'block';
+        const match = !query || item.textContent.toLowerCase().includes(query);
+        item.style.display = match ? 'block' : 'none';
       });
 
+      // 高级/被动区域
       document.querySelectorAll('.advanced-card').forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = query && !text.includes(query) ? 'none' : 'flex';
+        const match = !query || card.textContent.toLowerCase().includes(query);
+        card.style.display = match ? 'flex' : 'none';
       });
+    }
+
+    // 防抖搜索
+    function handleSearch(query) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => doSearch(query), 150);
     }
 
     // ========== 视图切换 ==========
@@ -1589,10 +1566,10 @@
         container.classList.toggle('active', container.id === view + 'View');
       });
 
-      // 根据视图显示/隐藏高级区域
+      // 图鉴视图自带高级区域, 其他视图显示底部区域
       const showAdvanced = view !== 'gallery';
-      document.getElementById('advancedSection').style.display = showAdvanced ? 'block' : 'none';
-      document.getElementById('passiveSection').style.display = showAdvanced ? 'block' : 'none';
+      DOM.advancedSection.style.display = showAdvanced ? 'block' : 'none';
+      DOM.passiveSection.style.display = showAdvanced ? 'block' : 'none';
     }
 
     // ========== 渲染全部 ==========
@@ -1603,29 +1580,94 @@
       renderAdvancedSections();
     }
 
-    // ========== 事件绑定 ==========
+    // ========== 事件委托 ==========
+    function setupEventDelegation() {
+      // 矩阵表格: 悬停提示
+      DOM.matrixTable.addEventListener('mouseenter', (e) => {
+        const cell = e.target.closest('[data-type]');
+        if (!cell) return;
+        const type = cell.dataset.type;
+        const name = type === 'base' ? cell.dataset.id : cell.dataset.evo;
+        if (name) showTooltip(e, name, type);
+      }, true);
+      
+      DOM.matrixTable.addEventListener('mouseleave', (e) => {
+        if (e.target.closest('[data-type]')) hideTooltip();
+      }, true);
+
+      // 图鉴视图: 悬停提示
+      const galleryContainer = document.getElementById('galleryView');
+      galleryContainer.addEventListener('mouseenter', (e) => {
+        const item = e.target.closest('.gallery-item');
+        if (!item) return;
+        const type = item.dataset.type;
+        const name = type === 'base' ? item.dataset.id : item.dataset.evo;
+        if (name) showTooltip(e, name, type);
+      }, true);
+      
+      galleryContainer.addEventListener('mouseleave', (e) => {
+        if (e.target.closest('.gallery-item')) hideTooltip();
+      }, true);
+
+      // 高级/被动区域: 悬停提示
+      [DOM.advancedGrid, DOM.passiveGrid].forEach(grid => {
+        grid.addEventListener('mouseenter', (e) => {
+          const card = e.target.closest('.advanced-card');
+          if (card && card.dataset.evo) showTooltip(e, card.dataset.evo, 'evo');
+        }, true);
+        
+        grid.addEventListener('mouseleave', (e) => {
+          if (e.target.closest('.advanced-card')) hideTooltip();
+        }, true);
+      });
+
+      // 列表视图: 点击打开弹窗
+      DOM.listContainer.addEventListener('click', (e) => {
+        const item = e.target.closest('.combo-item');
+        if (item && item.dataset.evo) openModal(item.dataset.evo);
+      });
+
+      // 弹窗内组件点击
+      DOM.modalFormula.addEventListener('click', (e) => {
+        const ball = e.target.closest('[data-modal]');
+        if (ball) openModal(ball.dataset.modal);
+      });
+    }
+
+    // ========== 初始化 ==========
     document.addEventListener('DOMContentLoaded', () => {
+      // 构建数据索引
+      buildIndexes();
+      
+      // 缓存 DOM 元素
+      cacheDOM();
+      
+      // 渲染视图
       renderAll();
+      
+      // 设置事件委托
+      setupEventDelegation();
 
       // 视图切换
       document.querySelectorAll('.view-tab').forEach(tab => {
         tab.addEventListener('click', () => switchView(tab.dataset.view));
       });
 
-      // 搜索
-      document.getElementById('searchInput').addEventListener('input', (e) => {
-        handleSearch(e.target.value);
-      });
+      // 搜索 (防抖)
+      DOM.searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
 
       // 弹窗关闭
       document.getElementById('modalClose').addEventListener('click', closeModal);
-      document.getElementById('modalOverlay').addEventListener('click', (e) => {
+      DOM.modalOverlay.addEventListener('click', (e) => {
         if (e.target === e.currentTarget) closeModal();
       });
 
-      // ESC 关闭弹窗
+      // ESC 关闭弹窗和提示框
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape') {
+          closeModal();
+          hideTooltip();
+        }
       });
     });
   </script>
