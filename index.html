@@ -741,6 +741,15 @@
       color: var(--text-secondary);
     }
 
+    .advanced-card-info .tags-container {
+      margin-top: 6px;
+    }
+
+    .advanced-card-info .mini-tag {
+      padding: 2px 8px;
+      font-size: 10px;
+    }
+
     /* ========== 空状态 ========== */
     .empty-state {
       text-align: center;
@@ -1273,6 +1282,224 @@
         transform: rotate(360deg);
       }
     }
+
+    /* ========== 标签系统 ========== */
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag, .mini-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .tag[class*="tag-"], .mini-tag[class*="tag-"] {
+      color: white;
+    }
+
+    /* ========== 伤害类型 ========== */
+    .damage-types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .damage-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+    }
+
+    .damage-type .icon {
+      font-size: 14px;
+    }
+
+    /* ========== 状态效果 ========== */
+    .status-effects {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .status-effect {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      background: rgba(248, 81, 73, 0.15);
+      border: 1px solid rgba(248, 81, 73, 0.3);
+      color: #f85149;
+    }
+
+    .status-effect .icon {
+      font-size: 13px;
+    }
+
+    /* ========== AOE类型 ========== */
+    .aoe-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      background: rgba(243, 156, 18, 0.15);
+      border: 1px solid rgba(243, 156, 18, 0.3);
+      color: #f39c12;
+      margin-bottom: 8px;
+    }
+
+    /* ========== Tooltip 增强 ========== */
+    .tooltip-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .tooltip-meta {
+      margin-bottom: 8px;
+    }
+
+    .tooltip-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    /* ========== Modal 增强 ========== */
+    .modal-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-meta-section {
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+    }
+
+    .modal-meta-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modal-tag {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ========== 图鉴卡片标签 ========== */
+    .gallery-item .item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .gallery-item .mini-tag {
+      padding: 2px 8px;
+      font-size: 9px;
+    }
+
+    /* ========== 筛选栏 ========== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px 20px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+    }
+
+    .filter-btn .icon {
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .filter-bar {
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .filter-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+      .tag, .mini-tag {
+        font-size: 9px;
+        padding: 2px 8px;
+      }
+      .damage-type, .status-effect, .aoe-badge {
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1299,7 +1526,17 @@
       <button class="view-tab" data-view="list">列表</button>
       <button class="view-tab" data-view="gallery">图鉴</button>
     </div>
+  </div>
 
+  <!-- 筛选栏 -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all"><span class="icon">🎯</span>全部</button>
+    <button class="filter-btn" data-filter="dot"><span class="icon">🔥</span>持续伤害</button>
+    <button class="filter-btn" data-filter="cc"><span class="icon">❄️</span>控制</button>
+    <button class="filter-btn" data-filter="aoe"><span class="icon">💥</span>范围</button>
+    <button class="filter-btn" data-filter="summon"><span class="icon">🕷️</span>召唤</button>
+    <button class="filter-btn" data-filter="lifesteal"><span class="icon">🧛</span>吸血</button>
+    <button class="filter-btn" data-filter="penetrate"><span class="icon">👻</span>穿透</button>
   </div>
 
   <!-- 主内容 -->
@@ -1362,8 +1599,10 @@
         <div class="tooltip-title-cn" id="tooltipTitleCn"></div>
       </div>
     </div>
+    <div class="tooltip-meta" id="tooltipMeta"></div>
     <div class="tooltip-effect" id="tooltipEffect"></div>
     <div class="tooltip-formula" id="tooltipFormula"></div>
+    <div class="tooltip-tags" id="tooltipTags"></div>
   </div>
 
   <!-- 详情弹窗 -->
@@ -1381,6 +1620,10 @@
         <div class="modal-section">
           <h4>合成配方 / Recipe</h4>
           <div class="combo-formula" id="modalFormula"></div>
+        </div>
+        <div class="modal-section" id="modalMetaSection">
+          <h4>属性信息 / Attributes</h4>
+          <div class="modal-meta" id="modalMeta"></div>
         </div>
         <div class="modal-section">
           <h4>效果描述 / Effect</h4>
@@ -1438,12 +1681,16 @@
       DOM.tooltipTitleCn = document.getElementById('tooltipTitleCn');
       DOM.tooltipEffect = document.getElementById('tooltipEffect');
       DOM.tooltipFormula = document.getElementById('tooltipFormula');
+      DOM.tooltipMeta = document.getElementById('tooltipMeta');
+      DOM.tooltipTags = document.getElementById('tooltipTags');
       DOM.modalOverlay = document.getElementById('modalOverlay');
       DOM.modalImg = document.getElementById('modalImg');
       DOM.modalTitle = document.getElementById('modalTitle');
       DOM.modalTitleCn = document.getElementById('modalTitleCn');
       DOM.modalEffect = document.getElementById('modalEffect');
       DOM.modalFormula = document.getElementById('modalFormula');
+      DOM.modalMeta = document.getElementById('modalMeta');
+      DOM.modalMetaSection = document.getElementById('modalMetaSection');
       DOM.searchInput = document.getElementById('searchInput');
       DOM.matrixTable = document.getElementById('matrixTable');
       DOM.listContainer = document.getElementById('listContainer');
@@ -1455,6 +1702,67 @@
       DOM.passiveGrid = document.getElementById('passiveGrid');
       DOM.advancedSection = document.getElementById('advancedSection');
       DOM.passiveSection = document.getElementById('passiveSection');
+      DOM.filterBar = document.getElementById('filterBar');
+    }
+
+    // ========== 当前筛选状态 ==========
+    let currentFilter = 'all';
+
+    // ========== 生成标签 HTML ==========
+    function buildTagsHtml(item, size = 'normal') {
+      if (!item.tags || item.tags.length === 0) return '';
+      const cls = size === 'mini' ? 'mini-tag' : 'tag';
+      return item.tags.map(tag => 
+        `<span class="${cls} tag-${tag.id}" style="background-color: ${tag.color}">${tag.nameCn}</span>`
+      ).join('');
+    }
+
+    // ========== 生成伤害类型 HTML ==========
+    // 过滤掉与状态效果重复的伤害类型 (同名元素只在状态效果区显示)
+    function buildDamageTypesHtml(item) {
+      // 获取伤害类型列表
+      let types = [];
+      if (item.damageType) types.push(item.damageType);
+      if (item.damageTypes) types = types.concat(item.damageTypes);
+      if (types.length === 0) return '';
+      
+      // 去重
+      let unique = [...new Map(types.map(t => [t.id, t])).values()];
+      
+      // 过滤掉与状态效果名称重复的伤害类型
+      if (item.statusEffects && item.statusEffects.length > 0) {
+        const statusNames = new Set(item.statusEffects.map(s => s.nameCn));
+        unique = unique.filter(t => !statusNames.has(t.nameCn));
+      }
+      
+      if (unique.length === 0) return '';
+      return `<div class="damage-types">${unique.map(t => 
+        `<span class="damage-type"><span class="icon">${t.icon}</span>${t.nameCn}</span>`
+      ).join('')}</div>`;
+    }
+
+    // ========== 生成状态效果 HTML ==========
+    function buildStatusEffectsHtml(item) {
+      if (!item.statusEffects || item.statusEffects.length === 0) return '';
+      // 去重
+      const unique = [...new Map(item.statusEffects.map(s => [s.id, s])).values()];
+      return `<div class="status-effects">${unique.map(s => 
+        `<span class="status-effect" title="${s.desc}"><span class="icon">${s.icon}</span>${s.nameCn}</span>`
+      ).join('')}</div>`;
+    }
+
+    // ========== 生成AOE类型 HTML ==========
+    function buildAoeHtml(item) {
+      if (!item.aoeType) return '';
+      const aoe = item.aoeType;
+      return `<div class="aoe-badge"><span class="icon">${aoe.icon}</span>${aoe.nameCn}: ${aoe.desc}</div>`;
+    }
+
+    // ========== 检查item是否匹配筛选 ==========
+    function matchesFilter(item, filter) {
+      if (filter === 'all') return true;
+      if (!item.tags) return false;
+      return item.tags.some(tag => tag.id === filter);
     }
 
     // ========== 工具函数 ==========
@@ -1572,8 +1880,9 @@
           const partnerId = evo.row === baseBall.id ? evo.col : evo.row;
           const partner = getBaseBall(partnerId);
           if (!partner) return;
+          const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
 
-          html += `<div class="combo-item" data-evo="${evo.name}">
+          html += `<div class="combo-item" data-evo="${evo.name}" data-tags="${tagsData}">
             ${imgHtml(evo.img, evo.name)}
             <div class="combo-text">
               <span class="partner">+ ${getName(partner)}</span>
@@ -1594,10 +1903,13 @@
     // 注意: data-* 属性使用原始值, 不需要 safeName() 转义
     function galleryItemHtml(item, type, idOrName) {
       const dataAttr = type === 'base' ? `data-id="${idOrName}"` : `data-evo="${idOrName}"`;
-      return `<div class="gallery-item" ${dataAttr} data-type="${type}">
+      const tagsData = item.tags ? item.tags.map(t => t.id).join(',') : '';
+      const tagsHtml = buildTagsHtml(item, 'mini');
+      return `<div class="gallery-item" ${dataAttr} data-type="${type}" data-tags="${tagsData}">
         ${imgHtml(item.img, item.name)}
         <div class="item-name">${item.name}</div>
         <div class="item-name-cn">${item.nameCn || ''}</div>
+        ${tagsHtml ? `<div class="item-tags">${tagsHtml}</div>` : ''}
       </div>`;
     }
 
@@ -1621,11 +1933,14 @@
     // 注意: data-evo 使用原始值, 不需要 safeName() 转义
     function advancedCardHtml(evo) {
       const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
-      return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo">
+      const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
+      const tagsHtml = buildTagsHtml(evo, 'mini');
+      return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo" data-tags="${tagsData}">
         ${imgHtml(evo.img, evo.name)}
         <div class="advanced-card-info">
           <h4>${getName(evo)}</h4>
           <p>${componentsCn}</p>
+          ${tagsHtml ? `<div class="tags-container">${tagsHtml}</div>` : ''}
         </div>
       </div>`;
     }
@@ -1741,6 +2056,16 @@
       DOM.tooltipTitleCn.textContent = item.nameCn || '';
       DOM.tooltipEffect.textContent = getEffect(item);
 
+      // 元数据 (伤害类型, 状态效果, AOE)
+      let metaHtml = buildDamageTypesHtml(item) + buildStatusEffectsHtml(item) + buildAoeHtml(item);
+      DOM.tooltipMeta.innerHTML = metaHtml;
+      DOM.tooltipMeta.style.display = metaHtml ? 'block' : 'none';
+
+      // 标签
+      const tagsHtml = buildTagsHtml(item);
+      DOM.tooltipTags.innerHTML = tagsHtml;
+      DOM.tooltipTags.style.display = tagsHtml ? 'flex' : 'none';
+
       // 配方
       const formulaHtml = buildFormulaHtml(item);
       DOM.tooltipFormula.innerHTML = formulaHtml;
@@ -1805,6 +2130,50 @@
       DOM.modalTitleCn.textContent = evo.nameCn || '';
       DOM.modalEffect.textContent = getEffect(evo);
 
+      // 构建元数据 HTML
+      let metaHtml = '';
+      
+      // 伤害类型
+      const damageHtml = buildDamageTypesHtml(evo);
+      if (damageHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">伤害类型</div>
+          ${damageHtml}
+        </div>`;
+      }
+      
+      // 状态效果
+      const statusHtml = buildStatusEffectsHtml(evo);
+      if (statusHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">状态效果</div>
+          ${statusHtml}
+        </div>`;
+      }
+      
+      // AOE类型
+      const aoeHtml = buildAoeHtml(evo);
+      if (aoeHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">范围类型</div>
+          ${aoeHtml}
+        </div>`;
+      }
+      
+      // 标签
+      const tagsHtml = buildTagsHtml(evo);
+      if (tagsHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">特性标签</div>
+          <div class="modal-tags">${evo.tags.map(tag => 
+            `<span class="modal-tag" style="background-color: ${tag.color}">${tag.nameCn}</span>`
+          ).join('')}</div>
+        </div>`;
+      }
+      
+      DOM.modalMeta.innerHTML = metaHtml;
+      DOM.modalMetaSection.style.display = metaHtml ? 'block' : 'none';
+
       let formulaHtml = '';
       
       if (evo.row && evo.col) {
@@ -1841,9 +2210,69 @@
       DOM.modalOverlay.classList.remove('active');
     }
 
+    // ========== 筛选功能 ==========
+    function applyFilter(filter) {
+      currentFilter = filter;
+      
+      // 更新按钮状态
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      
+      // 矩阵视图 - 根据标签筛选
+      document.querySelectorAll('.matrix-cell:not(.empty)').forEach(cell => {
+        const evo = getEvolution(cell.dataset.evo);
+        const match = filter === 'all' || (evo && matchesFilter(evo, filter));
+        cell.style.opacity = match ? '1' : '0.15';
+      });
+      
+      // 图鉴视图
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        const tags = item.dataset.tags || '';
+        const match = filter === 'all' || tags.includes(filter);
+        item.style.display = match ? 'block' : 'none';
+      });
+      
+      // 高级/被动区域
+      document.querySelectorAll('.advanced-card').forEach(card => {
+        const tags = card.dataset.tags || '';
+        const match = filter === 'all' || tags.includes(filter);
+        card.style.display = match ? 'flex' : 'none';
+      });
+      
+      // 列表视图 - 根据内容匹配
+      document.querySelectorAll('.list-card').forEach(card => {
+        if (filter === 'all') {
+          card.style.display = 'block';
+          return;
+        }
+        // 检查卡片中的进化是否匹配
+        const combos = card.querySelectorAll('.combo-item');
+        let hasMatch = false;
+        combos.forEach(combo => {
+          const evo = getEvolution(combo.dataset.evo);
+          if (evo && matchesFilter(evo, filter)) {
+            hasMatch = true;
+            combo.style.display = 'flex';
+          } else {
+            combo.style.display = 'none';
+          }
+        });
+        card.style.display = hasMatch ? 'block' : 'none';
+      });
+    }
+
     // ========== 搜索 (带防抖) ==========
     function doSearch(query) {
       query = query.toLowerCase().trim();
+      
+      // 先重置筛选
+      if (query) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.filter === 'all');
+        });
+        currentFilter = 'all';
+      }
       
       // 矩阵视图
       document.querySelectorAll('.matrix-cell:not(.empty)').forEach(cell => {
@@ -1857,6 +2286,10 @@
       document.querySelectorAll('.list-card').forEach(card => {
         const match = !query || card.textContent.toLowerCase().includes(query);
         card.style.display = match ? 'block' : 'none';
+        // 重置combo-item显示
+        card.querySelectorAll('.combo-item').forEach(combo => {
+          combo.style.display = 'flex';
+        });
       });
 
       // 图鉴视图
@@ -2005,6 +2438,15 @@
       // 视图切换
       document.querySelectorAll('.view-tab').forEach(tab => {
         tab.addEventListener('click', () => switchView(tab.dataset.view));
+      });
+
+      // 筛选按钮
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 清空搜索框
+          DOM.searchInput.value = '';
+          applyFilter(btn.dataset.filter);
+        });
       });
 
       // 搜索 (防抖)
