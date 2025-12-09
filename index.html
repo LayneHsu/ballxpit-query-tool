@@ -81,6 +81,25 @@
       font-size: 14px;
     }
 
+    .lang-switch {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+      border: none;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .lang-switch:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+    }
+
     /* ========== 控制栏 ========== */
     .controls {
       display: flex;
@@ -784,6 +803,13 @@
 
       .header p {
         font-size: 12px;
+      }
+
+      .lang-switch {
+        padding: 6px 12px;
+        font-size: 12px;
+        order: -1;
+        width: 100%;
       }
 
       .controls {
@@ -1528,8 +1554,8 @@
 
   <!-- 头部 -->
   <header class="header">
-    <h1>BALL x PIT 进化图鉴</h1>
-    <p>完整进化组合参考 | Complete Evolution Guide</p>
+    <h1 data-i18n="title">BALL x PIT 进化图鉴</h1>
+    <p data-i18n="subtitle">完整进化组合参考</p>
   </header>
 
   <!-- 控制栏 -->
@@ -1538,27 +1564,30 @@
       <input 
         type="text" 
         id="searchInput" 
-        placeholder="搜索球名... / Search balls..."
+        data-i18n-placeholder="searchPlaceholder"
+        placeholder="搜索球名..."
         autocomplete="off"
       >
     </div>
     
     <div class="view-tabs">
-      <button class="view-tab active" data-view="matrix">矩阵</button>
-      <button class="view-tab" data-view="list">列表</button>
-      <button class="view-tab" data-view="gallery">图鉴</button>
+      <button class="view-tab active" data-view="matrix" data-i18n="viewMatrix">矩阵</button>
+      <button class="view-tab" data-view="list" data-i18n="viewList">列表</button>
+      <button class="view-tab" data-view="gallery" data-i18n="viewGallery">图鉴</button>
     </div>
+    
+    <button class="lang-switch" id="langSwitch" title="Switch Language">🌐 English</button>
   </div>
 
   <!-- 筛选栏 -->
   <div class="filter-bar" id="filterBar">
-    <button class="filter-btn active" data-filter="all"><span class="icon">🎯</span>全部</button>
-    <button class="filter-btn" data-filter="dot"><span class="icon">🔥</span>持续伤害</button>
-    <button class="filter-btn" data-filter="cc"><span class="icon">❄️</span>控制</button>
-    <button class="filter-btn" data-filter="aoe"><span class="icon">💥</span>范围</button>
-    <button class="filter-btn" data-filter="summon"><span class="icon">🕷️</span>召唤</button>
-    <button class="filter-btn" data-filter="lifesteal"><span class="icon">🧛</span>吸血</button>
-    <button class="filter-btn" data-filter="penetrate"><span class="icon">👻</span>穿透</button>
+    <button class="filter-btn active" data-filter="all"><span class="icon">🎯</span><span data-i18n="filterAll">全部</span></button>
+    <button class="filter-btn" data-filter="dot"><span class="icon">🔥</span><span data-i18n="filterDot">持续伤害</span></button>
+    <button class="filter-btn" data-filter="cc"><span class="icon">❄️</span><span data-i18n="filterCc">控制</span></button>
+    <button class="filter-btn" data-filter="aoe"><span class="icon">💥</span><span data-i18n="filterAoe">范围</span></button>
+    <button class="filter-btn" data-filter="summon"><span class="icon">🕷️</span><span data-i18n="filterSummon">召唤</span></button>
+    <button class="filter-btn" data-filter="lifesteal"><span class="icon">🧛</span><span data-i18n="filterLifesteal">吸血</span></button>
+    <button class="filter-btn" data-filter="penetrate"><span class="icon">👻</span><span data-i18n="filterPenetrate">穿透</span></button>
   </div>
 
   <!-- 主内容 -->
@@ -1581,32 +1610,32 @@
     <!-- 图鉴视图 -->
     <div id="galleryView" class="view-container">
       <div class="gallery-section">
-        <h3 class="gallery-section-title">基础球 Basic Balls</h3>
+        <h3 class="gallery-section-title" data-i18n="sectionBasic">基础球 Basic Balls</h3>
         <div class="gallery-grid" id="galleryBasic"></div>
       </div>
       <div class="gallery-section">
-        <h3 class="gallery-section-title">进化球 Evolved Balls</h3>
+        <h3 class="gallery-section-title" data-i18n="sectionEvolved">进化球 Evolved Balls</h3>
         <div class="gallery-grid" id="galleryEvolved"></div>
       </div>
       <div class="gallery-section">
-        <h3 class="gallery-section-title">高级进化 Advanced Evolutions</h3>
+        <h3 class="gallery-section-title" data-i18n="sectionAdvanced">高级进化 Advanced Evolutions</h3>
         <div class="gallery-grid" id="galleryAdvanced"></div>
       </div>
       <div class="gallery-section">
-        <h3 class="gallery-section-title">被动道具 Passive Items</h3>
+        <h3 class="gallery-section-title" data-i18n="sectionPassive">被动道具 Passive Items</h3>
         <div class="gallery-grid" id="galleryPassive"></div>
       </div>
     </div>
 
     <!-- 高级进化区 -->
     <section class="advanced-section" id="advancedSection">
-      <h3 class="section-title">高级弹珠进化</h3>
+      <h3 class="section-title" data-i18n="advancedTitle">高级弹珠进化</h3>
       <div class="advanced-grid" id="advancedGrid"></div>
     </section>
 
     <!-- 被动道具进化区 -->
     <section class="advanced-section" id="passiveSection">
-      <h3 class="section-title">被动道具进化</h3>
+      <h3 class="section-title" data-i18n="passiveTitle">被动道具进化</h3>
       <div class="advanced-grid" id="passiveGrid"></div>
     </section>
 
@@ -1614,11 +1643,11 @@
 
   <!-- 页脚统计 -->
   <footer class="footer">
-    <span>📊 总访问量: <span id="busuanzi_value_site_pv">--</span> 次</span>
+    <span>📊 <span data-i18n="footerVisits">总访问量</span>: <span id="busuanzi_value_site_pv">--</span> <span data-i18n="footerTimes">次</span></span>
     <span class="divider">|</span>
-    <span>👥 总访客: <span id="busuanzi_value_site_uv">--</span> 人</span>
+    <span>👥 <span data-i18n="footerVisitors">总访客</span>: <span id="busuanzi_value_site_uv">--</span> <span data-i18n="footerPeople">人</span></span>
     <span class="divider">|</span>
-    <span>📄 本页浏览: <span id="busuanzi_value_page_pv">--</span> 次</span>
+    <span>📄 <span data-i18n="footerPageViews">本页浏览</span>: <span id="busuanzi_value_page_pv">--</span> <span data-i18n="footerTimes">次</span></span>
   </footer>
 
   <!-- 悬浮提示框 -->
@@ -1649,15 +1678,15 @@
       </div>
       <div class="modal-body">
         <div class="modal-section">
-          <h4>合成配方 / Recipe</h4>
+          <h4 data-i18n="modalRecipe">合成配方 / Recipe</h4>
           <div class="combo-formula" id="modalFormula"></div>
         </div>
         <div class="modal-section" id="modalMetaSection">
-          <h4>属性信息 / Attributes</h4>
+          <h4 data-i18n="modalAttributes">属性信息 / Attributes</h4>
           <div class="modal-meta" id="modalMeta"></div>
         </div>
         <div class="modal-section">
-          <h4>效果描述 / Effect</h4>
+          <h4 data-i18n="modalEffect">效果描述 / Effect</h4>
           <div class="effect-text" id="modalEffect"></div>
         </div>
       </div>
@@ -1665,10 +1694,18 @@
   </div>
 
   <!-- 引入外部数据文件 -->
+  <script src="data/i18n.js"></script>
   <script src="data/gameData.js"></script>
   
-  <!-- 不蒜子访问统计 -->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <!-- 不蒜子访问统计 (只在 http/https 下加载, 避免 file:// 协议下超时) -->
+  <script>
+    if (location.protocol === 'http:' || location.protocol === 'https:') {
+      var s = document.createElement('script');
+      s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+  </script>
   
   <script>
     // ========== 从外部数据文件加载 ==========
@@ -1680,6 +1717,12 @@
 
     // ========== 全局变量 ==========
     let currentView = 'matrix';
+    let currentLang = 'zh'; // 默认中文
+    try {
+      currentLang = localStorage.getItem('lang') || 'zh';
+    } catch (e) {
+      console.warn('无法读取 localStorage:', e);
+    }
     const IMG_BASE = 'img/';
     let searchTimeout = null;
 
@@ -1742,12 +1785,20 @@
     // ========== 当前筛选状态 ==========
     let currentFilter = 'all';
 
+    // ========== 视图渲染状态追踪 ==========
+    // 记录每个视图是否已渲染, 避免重复渲染
+    const viewRendered = {
+      matrix: false,
+      list: false,
+      gallery: false
+    };
+
     // ========== 生成标签 HTML ==========
     function buildTagsHtml(item, size = 'normal') {
       if (!item.tags || item.tags.length === 0) return '';
       const cls = size === 'mini' ? 'mini-tag' : 'tag';
       return item.tags.map(tag => 
-        `<span class="${cls} tag-${tag.id}" style="background-color: ${tag.color}">${tag.nameCn}</span>`
+        `<span class="${cls} tag-${tag.id}" style="background-color: ${tag.color}">${getTagName(tag)}</span>`
       ).join('');
     }
 
@@ -1765,13 +1816,13 @@
       
       // 过滤掉与状态效果名称重复的伤害类型
       if (item.statusEffects && item.statusEffects.length > 0) {
-        const statusNames = new Set(item.statusEffects.map(s => s.nameCn));
-        unique = unique.filter(t => !statusNames.has(t.nameCn));
+        const statusIds = new Set(item.statusEffects.map(s => s.id));
+        unique = unique.filter(t => !statusIds.has(t.id));
       }
       
       if (unique.length === 0) return '';
       return `<div class="damage-types">${unique.map(t => 
-        `<span class="damage-type"><span class="icon">${t.icon}</span>${t.nameCn}</span>`
+        `<span class="damage-type"><span class="icon">${t.icon}</span>${getDamageTypeName(t)}</span>`
       ).join('')}</div>`;
     }
 
@@ -1781,7 +1832,7 @@
       // 去重
       const unique = [...new Map(item.statusEffects.map(s => [s.id, s])).values()];
       return `<div class="status-effects">${unique.map(s => 
-        `<span class="status-effect" title="${s.desc}"><span class="icon">${s.icon}</span>${s.nameCn}</span>`
+        `<span class="status-effect" title="${getStatusEffectDesc(s)}"><span class="icon">${s.icon}</span>${getStatusEffectName(s)}</span>`
       ).join('')}</div>`;
     }
 
@@ -1789,7 +1840,7 @@
     function buildAoeHtml(item) {
       if (!item.aoeType) return '';
       const aoe = item.aoeType;
-      return `<div class="aoe-badge"><span class="icon">${aoe.icon}</span>${aoe.nameCn}: ${aoe.desc}</div>`;
+      return `<div class="aoe-badge"><span class="icon">${aoe.icon}</span>${getAoeTypeName(aoe)}: ${getAoeTypeDesc(aoe)}</div>`;
     }
 
     // ========== 检查item是否匹配筛选 ==========
@@ -1818,12 +1869,124 @@
       return `<img${cls} src="${getImg(src)}" alt="${alt || ''}" onerror="this.src='${getImg('placeholder.png')}'">`;
     }
 
+    // ========== 语言相关函数 ==========
     function getName(item) {
+      if (currentLang === 'en') {
+        return item.name;
+      }
       return item.nameCn || item.name;
     }
 
     function getEffect(item) {
+      if (currentLang === 'en') {
+        return item.effect || item.effectCn || '';
+      }
       return item.effectCn || item.effect || '';
+    }
+
+    // 获取标签名称
+    function getTagName(tag) {
+      if (currentLang === 'en') {
+        return tag.name;
+      }
+      return tag.nameCn || tag.name;
+    }
+
+    // 获取伤害类型名称
+    function getDamageTypeName(type) {
+      if (currentLang === 'en') {
+        return type.name;
+      }
+      return type.nameCn || type.name;
+    }
+
+    // 获取状态效果名称
+    function getStatusEffectName(effect) {
+      if (currentLang === 'en') {
+        return effect.name;
+      }
+      return effect.nameCn || effect.name;
+    }
+
+    // 获取状态效果描述
+    function getStatusEffectDesc(effect) {
+      if (currentLang === 'en') {
+        return effect.desc || effect.descCn || '';
+      }
+      return effect.descCn || effect.desc || '';
+    }
+
+    // 获取 AOE 类型名称
+    function getAoeTypeName(aoe) {
+      if (currentLang === 'en') {
+        return aoe.name;
+      }
+      return aoe.nameCn || aoe.name;
+    }
+
+    // 获取 AOE 类型描述
+    function getAoeTypeDesc(aoe) {
+      if (currentLang === 'en') {
+        return aoe.desc || aoe.descCn || '';
+      }
+      return aoe.descCn || aoe.desc || '';
+    }
+
+    // 更新界面文字
+    function updateUIText() {
+      // 确保 I18N 对象存在
+      if (typeof I18N === 'undefined') {
+        console.error('I18N 对象未定义, 请检查 i18n.js 是否正确加载');
+        return;
+      }
+      
+      const texts = I18N[currentLang];
+      if (!texts) {
+        console.error('语言配置不存在:', currentLang);
+        return;
+      }
+      
+      // 更新所有带 data-i18n 属性的元素
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (texts[key]) {
+          el.textContent = texts[key];
+        }
+      });
+      
+      // 更新 placeholder
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (texts[key]) {
+          el.placeholder = texts[key];
+        }
+      });
+      
+      // 更新语言切换按钮文字
+      const langBtn = document.getElementById('langSwitch');
+      if (langBtn && texts.langSwitch) {
+        langBtn.textContent = texts.langSwitch;
+      }
+      
+      // 更新页面标题
+      if (texts.title) {
+        document.title = texts.title;
+      }
+    }
+
+    // 切换语言
+    function switchLanguage() {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', currentLang);
+      
+      // 更新界面文字
+      updateUIText();
+      
+      // 重新渲染所有视图
+      renderAll();
+      
+      // 重新应用当前筛选
+      applyFilter(currentFilter);
     }
 
     function getBaseBall(id) {
@@ -1847,10 +2010,11 @@
       return ballByName.get(name) || evoByName.get(name) || itemByName.get(name);
     }
 
-    // 获取组件的中文名称
-    function getComponentNameCn(name) {
+    // 获取组件名称 (根据当前语言)
+    function getComponentName(name) {
       const comp = findComponent(name);
-      return comp ? (comp.nameCn || name) : name;
+      if (!comp) return name;
+      return getName(comp);
     }
 
     // ========== 矩阵视图 ==========
@@ -1895,6 +2059,7 @@
     // ========== 列表视图 ==========
     function renderList() {
       let html = '';
+      const combosText = (I18N && I18N[currentLang]) ? I18N[currentLang].combosCount : '种组合';
 
       BASE_BALLS.forEach(baseBall => {
         const combos = EVOLUTIONS.filter(e => e.row === baseBall.id || e.col === baseBall.id);
@@ -1905,7 +2070,7 @@
             ${imgHtml(baseBall.img, baseBall.name)}
             <div>
               <h3>${getName(baseBall)}</h3>
-              <div class="subtitle">${combos.length} 种组合</div>
+              <div class="subtitle">${combos.length} ${combosText}</div>
             </div>
           </div>
           <div class="list-card-body">`;
@@ -1937,12 +2102,14 @@
     // 注意: data-* 属性使用原始值, 不需要 safeName() 转义
     function galleryItemHtml(item, type, idOrName) {
       const dataAttr = type === 'base' ? `data-id="${idOrName}"` : `data-evo="${idOrName}"`;
-      const tagsData = item.tags ? item.tags.map(t => t.id).join(',') : '';
+      // 使用预计算的 tagsData, 避免渲染时重复计算
+      const tagsData = item.tagsData || '';
       const tagsHtml = buildTagsHtml(item, 'mini');
+      // 根据语言显示名称 (只显示当前语言)
+      const displayName = getName(item);
       return `<div class="gallery-item" ${dataAttr} data-type="${type}" data-tags="${tagsData}">
         ${imgHtml(item.img, item.name)}
-        <div class="item-name">${item.name}</div>
-        <div class="item-name-cn">${item.nameCn || ''}</div>
+        <div class="item-name">${displayName}</div>
         ${tagsHtml ? `<div class="item-tags">${tagsHtml}</div>` : ''}
       </div>`;
     }
@@ -1966,14 +2133,15 @@
     // 生成高级卡片 HTML
     // 注意: data-evo 使用原始值, 不需要 safeName() 转义
     function advancedCardHtml(evo) {
-      const componentsCn = evo.components.map(c => getComponentNameCn(c)).join(' + ');
-      const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
+      const componentsText = evo.components.map(c => getComponentName(c)).join(' + ');
+      // 使用预计算的 tagsData, 避免渲染时重复计算
+      const tagsData = evo.tagsData || '';
       const tagsHtml = buildTagsHtml(evo, 'mini');
       return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo" data-tags="${tagsData}">
         ${imgHtml(evo.img, evo.name)}
         <div class="advanced-card-info">
           <h4>${getName(evo)}</h4>
-          <p>${componentsCn}</p>
+          <p>${componentsText}</p>
           ${tagsHtml ? `<div class="tags-container">${tagsHtml}</div>` : ''}
         </div>
       </div>`;
@@ -2004,7 +2172,7 @@
         item.components.forEach((comp, i) => {
           const c = findComponent(comp);
           if (c) {
-            html += `<img src="${getImg(c.img)}"><span>${c.nameCn || comp}</span>`;
+            html += `<img src="${getImg(c.img)}"><span>${getName(c)}</span>`;
           }
           else {
             html += `<span>${comp}</span>`;
@@ -2086,8 +2254,11 @@
 
       // 填充内容 (使用缓存的 DOM)
       DOM.tooltipImg.src = getImg(item.img);
-      DOM.tooltipTitle.textContent = item.name;
-      DOM.tooltipTitleCn.textContent = item.nameCn || '';
+      // 根据语言设置主标题和副标题
+      const primaryName = currentLang === 'en' ? item.name : (item.nameCn || item.name);
+      const secondaryName = currentLang === 'en' ? (item.nameCn || '') : item.name;
+      DOM.tooltipTitle.textContent = primaryName;
+      DOM.tooltipTitleCn.textContent = secondaryName;
       DOM.tooltipEffect.textContent = getEffect(item);
 
       // 元数据 (伤害类型, 状态效果, AOE)
@@ -2160,18 +2331,27 @@
       if (!evo) return;
 
       DOM.modalImg.src = getImg(evo.img);
-      DOM.modalTitle.textContent = evo.name;
-      DOM.modalTitleCn.textContent = evo.nameCn || '';
+      // 根据语言设置主标题和副标题
+      const primaryName = currentLang === 'en' ? evo.name : (evo.nameCn || evo.name);
+      const secondaryName = currentLang === 'en' ? (evo.nameCn || '') : evo.name;
+      DOM.modalTitle.textContent = primaryName;
+      DOM.modalTitleCn.textContent = secondaryName;
       DOM.modalEffect.textContent = getEffect(evo);
 
       // 构建元数据 HTML
       let metaHtml = '';
+      const texts = (I18N && I18N[currentLang]) ? I18N[currentLang] : {
+        attrDamageType: '伤害类型',
+        attrStatusEffect: '状态效果',
+        attrAoeType: '范围类型',
+        attrTags: '特性标签'
+      };
       
       // 伤害类型
       const damageHtml = buildDamageTypesHtml(evo);
       if (damageHtml) {
         metaHtml += `<div class="modal-meta-section">
-          <div class="modal-meta-title">伤害类型</div>
+          <div class="modal-meta-title">${texts.attrDamageType}</div>
           ${damageHtml}
         </div>`;
       }
@@ -2180,7 +2360,7 @@
       const statusHtml = buildStatusEffectsHtml(evo);
       if (statusHtml) {
         metaHtml += `<div class="modal-meta-section">
-          <div class="modal-meta-title">状态效果</div>
+          <div class="modal-meta-title">${texts.attrStatusEffect}</div>
           ${statusHtml}
         </div>`;
       }
@@ -2189,7 +2369,7 @@
       const aoeHtml = buildAoeHtml(evo);
       if (aoeHtml) {
         metaHtml += `<div class="modal-meta-section">
-          <div class="modal-meta-title">范围类型</div>
+          <div class="modal-meta-title">${texts.attrAoeType}</div>
           ${aoeHtml}
         </div>`;
       }
@@ -2198,9 +2378,9 @@
       const tagsHtml = buildTagsHtml(evo);
       if (tagsHtml) {
         metaHtml += `<div class="modal-meta-section">
-          <div class="modal-meta-title">特性标签</div>
+          <div class="modal-meta-title">${texts.attrTags}</div>
           <div class="modal-tags">${evo.tags.map(tag => 
-            `<span class="modal-tag" style="background-color: ${tag.color}">${tag.nameCn}</span>`
+            `<span class="modal-tag" style="background-color: ${tag.color}">${getTagName(tag)}</span>`
           ).join('')}</div>
         </div>`;
       }
@@ -2349,6 +2529,9 @@
     function switchView(view) {
       currentView = view;
       
+      // 按需渲染: 只有首次切换到该视图时才渲染
+      renderView(view);
+      
       document.querySelectorAll('.view-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.view === view);
       });
@@ -2361,14 +2544,46 @@
       const showAdvanced = view !== 'gallery';
       DOM.advancedSection.style.display = showAdvanced ? 'block' : 'none';
       DOM.passiveSection.style.display = showAdvanced ? 'block' : 'none';
+      
+      // 切换视图后重新应用当前筛选
+      applyFilter(currentFilter);
     }
 
-    // ========== 渲染全部 ==========
+    // ========== 按需渲染指定视图 ==========
+    function renderView(view) {
+      if (viewRendered[view]) return;
+      
+      switch (view) {
+        case 'matrix':
+          renderMatrix();
+          // 矩阵视图需要高级进化区
+          renderAdvancedSections();
+          break;
+        case 'list':
+          renderList();
+          break;
+        case 'gallery':
+          renderGallery();
+          break;
+      }
+      
+      viewRendered[view] = true;
+    }
+
+    // ========== 渲染全部 (用于语言切换时强制重新渲染) ==========
     function renderAll() {
-      renderMatrix();
-      renderList();
-      renderGallery();
-      renderAdvancedSections();
+      // 重置渲染状态
+      viewRendered.matrix = false;
+      viewRendered.list = false;
+      viewRendered.gallery = false;
+      
+      // 渲染当前视图
+      renderView(currentView);
+      
+      // 高级进化区在非图鉴视图时都需要渲染
+      if (currentView !== 'gallery') {
+        renderAdvancedSections();
+      }
     }
 
     // ========== 事件委托 ==========
@@ -2457,17 +2672,14 @@
 
     // ========== 初始化 ==========
     document.addEventListener('DOMContentLoaded', () => {
-      // 构建数据索引
       buildIndexes();
-      
-      // 缓存 DOM 元素
       cacheDOM();
-      
-      // 渲染视图
-      renderAll();
-      
-      // 设置事件委托
+      updateUIText();
+      renderView(currentView);
       setupEventDelegation();
+      
+      // 语言切换按钮
+      document.getElementById('langSwitch').addEventListener('click', switchLanguage);
 
       // 视图切换
       document.querySelectorAll('.view-tab').forEach(tab => {
