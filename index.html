@@ -2409,7 +2409,6 @@
     function strategyCardHtml(strategy) {
       const t = I18N[currentLang];
       const name = currentLang === 'zh' ? strategy.nameCn : strategy.name;
-      const nameSub = currentLang === 'zh' ? strategy.name : strategy.nameCn;
       const desc = currentLang === 'zh' ? strategy.descCn : strategy.desc;
       
       // 难度和强度星星
@@ -2431,8 +2430,11 @@
       // 机制说明
       const mechanismHtml = strategy.mechanism.map(m => {
         const role = currentLang === 'zh' ? m.roleCn : m.role;
+        // 获取球的本地化名称
+        const ballInfo = findBallData(m.ball);
+        const ballDisplayName = ballInfo ? getName(ballInfo.data) : m.ball;
         return `<div class="mechanism-item">
-          <span class="mechanism-ball-name">${m.ball}:</span> ${role}
+          <span class="mechanism-ball-name">${ballDisplayName}:</span> ${role}
         </div>`;
       }).join('');
       
@@ -2444,7 +2446,6 @@
             </div>
             <div>
               <div class="strategy-name">${name}</div>
-              <div class="strategy-name-cn">${nameSub}</div>
             </div>
           </div>
           <div class="strategy-meta">
