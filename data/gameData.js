@@ -78,6 +78,156 @@ const TAGS = {
   MULTI_HIT: { id: "multiHit", name: "Multi-Hit", nameCn: "多段攻击", color: "#e67e22" }
 };
 
+// ==================== 策略协同类型定义 ====================
+const SYNERGY_TYPE = {
+  DAMAGE_AMP: { id: "dmgAmp", name: "Damage Amplify", nameCn: "增伤", color: "#e74c3c" },
+  SUSTAIN: { id: "sustain", name: "Sustain", nameCn: "续航", color: "#27ae60" },
+  CONTROL: { id: "control", name: "Control", nameCn: "控制", color: "#3498db" },
+  AOE_COMBO: { id: "aoeCombo", name: "AoE Combo", nameCn: "范围联动", color: "#f39c12" },
+  DOT_STACK: { id: "dotStack", name: "DoT Stack", nameCn: "持续叠加", color: "#9b59b6" },
+  SUMMON_ARMY: { id: "summonArmy", name: "Summon Army", nameCn: "召唤流", color: "#1abc9c" }
+};
+
+// ==================== 策略组合推荐 ====================
+const STRATEGIES = [
+  {
+    id: "bleed_burst",
+    name: "Bleed Burst",
+    nameCn: "流血爆发",
+    type: SYNERGY_TYPE.DOT_STACK,
+    difficulty: 2,
+    rating: 5,
+    core: ["BLEED", "Hemorrhage"],
+    synergy: ["Vampire Lord", "Sacrifice", "Leech"],
+    desc: "Stack bleed to 15, then use Hemorrhage to deal % current HP damage.",
+    descCn: "堆叠流血至15层, 然后使用出血症造成当前生命百分比伤害。",
+    mechanism: [
+      { ball: "Bleed", role: "Core stacker", roleCn: "核心叠层" },
+      { ball: "Hemorrhage", role: "Burst finisher", roleCn: "爆发收割" },
+      { ball: "Vampire Lord", role: "Sustain + stack", roleCn: "续航+叠层" }
+    ]
+  },
+  {
+    id: "freeze_nuke",
+    name: "Freeze & Nuke",
+    nameCn: "冰冻核爆",
+    type: SYNERGY_TYPE.DAMAGE_AMP,
+    difficulty: 2,
+    rating: 5,
+    core: ["FREEZE", "Nuclear Bomb"],
+    synergy: ["Frozen Flame", "Blizzard", "Glacier"],
+    desc: "Frozen enemies take 25% more damage. Radiation stacks further amplify damage.",
+    descCn: "冰冻的敌人受到25%额外伤害, 辐射层数进一步增幅伤害。",
+    mechanism: [
+      { ball: "Freeze", role: "+25% damage taken", roleCn: "增伤25%" },
+      { ball: "Nuclear Bomb", role: "Massive AoE + Radiation", roleCn: "大范围+辐射" },
+      { ball: "Frozen Flame", role: "Frostburn DoT + amp", roleCn: "霜焰+增伤" }
+    ]
+  },
+  {
+    id: "sun_satan",
+    name: "Hellfire",
+    nameCn: "地狱烈焰",
+    type: SYNERGY_TYPE.AOE_COMBO,
+    difficulty: 3,
+    rating: 5,
+    core: ["Sun", "Satan"],
+    synergy: ["BURN", "Inferno", "Berserk"],
+    desc: "Sun blinds all enemies, Satan makes them berserk and burn. Enemies kill each other.",
+    descCn: "太阳致盲所有敌人, 撒旦使其狂暴并燃烧, 敌人互相残杀。",
+    mechanism: [
+      { ball: "Sun", role: "Global blind + burn", roleCn: "全屏致盲+燃烧" },
+      { ball: "Satan", role: "Global burn + berserk", roleCn: "全屏燃烧+狂暴" },
+      { ball: "Berserk", role: "Make enemies fight", roleCn: "敌人互攻" }
+    ]
+  },
+  {
+    id: "vampire_sustain",
+    name: "Eternal Life",
+    nameCn: "永生不灭",
+    type: SYNERGY_TYPE.SUSTAIN,
+    difficulty: 1,
+    rating: 4,
+    core: ["VAMPIRE", "Vampire Lord"],
+    synergy: ["Succubus", "Mosquito King", "Soul Sucker"],
+    desc: "Multiple lifesteal sources ensure you never die.",
+    descCn: "多重吸血来源确保永不死亡。",
+    mechanism: [
+      { ball: "Vampire", role: "Basic lifesteal", roleCn: "基础吸血" },
+      { ball: "Vampire Lord", role: "Bleed + heal burst", roleCn: "流血+爆发回复" },
+      { ball: "Succubus", role: "Charm + heal", roleCn: "魅惑+回复" }
+    ]
+  },
+  {
+    id: "spider_army",
+    name: "Spider Army",
+    nameCn: "蜘蛛大军",
+    type: SYNERGY_TYPE.SUMMON_ARMY,
+    difficulty: 2,
+    rating: 4,
+    core: ["BROOD_MOTHER", "Spider Queen"],
+    synergy: ["EGG_SAC", "Maggot", "CELL"],
+    desc: "Spawn endless baby balls and egg sacs to overwhelm enemies.",
+    descCn: "无限生成小球和卵囊淹没敌人。",
+    mechanism: [
+      { ball: "Brood Mother", role: "Spawn babies", roleCn: "产生小球" },
+      { ball: "Spider Queen", role: "Spawn egg sacs", roleCn: "产生卵囊" },
+      { ball: "Maggot", role: "Death explosion", roleCn: "死亡爆炸" }
+    ]
+  },
+  {
+    id: "cc_chain",
+    name: "CC Chain",
+    nameCn: "控制链",
+    type: SYNERGY_TYPE.CONTROL,
+    difficulty: 2,
+    rating: 4,
+    core: ["FREEZE", "CHARM"],
+    synergy: ["LIGHT", "Lovestruck", "Succubus"],
+    desc: "Keep enemies permanently disabled with overlapping CC effects.",
+    descCn: "通过叠加控制效果使敌人永久失能。",
+    mechanism: [
+      { ball: "Freeze", role: "Hard CC + amp", roleCn: "硬控+增伤" },
+      { ball: "Charm", role: "Make allies", roleCn: "转化友军" },
+      { ball: "Light", role: "50% miss chance", roleCn: "50%闪避" }
+    ]
+  },
+  {
+    id: "lightning_storm",
+    name: "Lightning Storm",
+    nameCn: "雷霆风暴",
+    type: SYNERGY_TYPE.AOE_COMBO,
+    difficulty: 2,
+    rating: 4,
+    core: ["LIGHTNING", "Storm"],
+    synergy: ["Lightning Rod", "Flash"],
+    desc: "Chain lightning bounces between enemies. Storm provides continuous AoE damage.",
+    descCn: "连锁闪电在敌人之间弹射, 风暴提供持续范围伤害。",
+    mechanism: [
+      { ball: "Lightning", role: "Chain damage", roleCn: "连锁伤害" },
+      { ball: "Storm", role: "AoE + Lightning", roleCn: "范围+闪电" },
+      { ball: "Lightning Rod", role: "Attract lightning", roleCn: "吸引闪电" }
+    ]
+  },
+  {
+    id: "poison_swamp",
+    name: "Toxic Swamp",
+    nameCn: "毒沼地狱",
+    type: SYNERGY_TYPE.DOT_STACK,
+    difficulty: 2,
+    rating: 4,
+    core: ["POISON", "Swamp"],
+    synergy: ["Noxious", "Virus"],
+    desc: "Poison stacks deal continuous damage. Swamp leaves toxic tar that slows and poisons.",
+    descCn: "毒素层数持续伤害, 沼泽留下毒焦油减速并中毒。",
+    mechanism: [
+      { ball: "Poison", role: "Stack poison", roleCn: "叠加毒素" },
+      { ball: "Swamp", role: "Tar + slow + poison", roleCn: "焦油+减速+中毒" },
+      { ball: "Noxious", role: "Enhanced poison", roleCn: "强化中毒" }
+    ]
+  }
+];
+
 const GAME_DATA = {
   // ==================== 基础球 ====================
   baseBalls: [
@@ -414,4 +564,6 @@ if (typeof window !== 'undefined') {
   window.STATUS_EFFECT = STATUS_EFFECT;
   window.AOE_TYPE = AOE_TYPE;
   window.TAGS = TAGS;
+  window.SYNERGY_TYPE = SYNERGY_TYPE;
+  window.STRATEGIES = STRATEGIES;
 }

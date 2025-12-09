@@ -508,6 +508,224 @@
       color: var(--accent-warning);
     }
 
+    /* ========== 策略视图 ========== */
+    .strategy-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .strategy-filter-btn {
+      padding: 8px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .strategy-filter-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .strategy-filter-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+    }
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+
+    .strategy-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition-normal);
+    }
+
+    .strategy-card:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .strategy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .strategy-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .strategy-type-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .strategy-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .strategy-name-cn {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .strategy-meta {
+      text-align: right;
+    }
+
+    .strategy-difficulty,
+    .strategy-rating {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .strategy-stars {
+      color: #f1c40f;
+      letter-spacing: -2px;
+    }
+
+    .strategy-body {
+      padding: 20px;
+    }
+
+    .strategy-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    .strategy-balls-section {
+      margin-bottom: 16px;
+    }
+
+    .strategy-balls-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .strategy-balls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .strategy-ball {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .strategy-ball:hover {
+      border-color: var(--accent-primary);
+      background: var(--bg-hover);
+    }
+
+    .strategy-ball.core {
+      border-color: var(--accent-danger);
+      background: rgba(248, 81, 73, 0.1);
+    }
+
+    .strategy-ball img {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+    }
+
+    .strategy-ball-name {
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+
+    .strategy-ball-role {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .strategy-mechanism {
+      margin-top: 16px;
+    }
+
+    .strategy-mechanism-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .mechanism-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mechanism-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .mechanism-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .mechanism-ball-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
     /* ========== 弹窗 ========== */
     .modal-overlay {
       position: fixed;
@@ -1574,6 +1792,7 @@
       <button class="view-tab active" data-view="matrix" data-i18n="viewMatrix">矩阵</button>
       <button class="view-tab" data-view="list" data-i18n="viewList">列表</button>
       <button class="view-tab" data-view="gallery" data-i18n="viewGallery">图鉴</button>
+      <button class="view-tab" data-view="strategy" data-i18n="viewStrategy">策略</button>
     </div>
     
     <button class="lang-switch" id="langSwitch" title="Switch Language">🌐 English</button>
@@ -1625,6 +1844,12 @@
         <h3 class="gallery-section-title" data-i18n="sectionPassive">被动道具 Passive Items</h3>
         <div class="gallery-grid" id="galleryPassive"></div>
       </div>
+    </div>
+
+    <!-- 策略视图 -->
+    <div id="strategyView" class="view-container">
+      <div class="strategy-filters" id="strategyFilters"></div>
+      <div class="strategy-grid" id="strategyGrid"></div>
     </div>
 
     <!-- 高级进化区 -->
@@ -1790,7 +2015,8 @@
     const viewRendered = {
       matrix: false,
       list: false,
-      gallery: false
+      gallery: false,
+      strategy: false
     };
 
     // ========== 生成标签 HTML ==========
@@ -2129,6 +2355,193 @@
       DOM.galleryPassive.innerHTML = PASSIVE_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
     }
 
+    // ========== 策略视图 ==========
+    let currentStrategyFilter = 'all';
+
+    // 根据球名称查找球数据
+    function findBallData(ballName) {
+      // 先从基础球中查找 (使用 id 或 name)
+      let ball = BASE_BALLS.find(b => b.id === ballName || b.name === ballName);
+      if (ball) return { data: ball, type: 'base' };
+      
+      // 从进化球中查找
+      ball = EVOLUTIONS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'evo' };
+      
+      // 从高级进化中查找
+      ball = ADVANCED_EVOLUTIONS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'evo' };
+      
+      return null;
+    }
+
+    // 生成策略卡片中的球元素 HTML
+    function strategyBallHtml(ballName, role, roleCn, isCore) {
+      const ballInfo = findBallData(ballName);
+      if (!ballInfo) {
+        return `<div class="strategy-ball ${isCore ? 'core' : ''}">
+          <span class="strategy-ball-name">${ballName}</span>
+        </div>`;
+      }
+      
+      const { data, type } = ballInfo;
+      const displayName = getName(data);
+      const displayRole = currentLang === 'zh' ? roleCn : role;
+      const dataAttr = type === 'base' ? `data-id="${data.id}"` : `data-evo="${data.name}"`;
+      
+      return `<div class="strategy-ball ${isCore ? 'core' : ''}" ${dataAttr} data-type="${type}">
+        ${imgHtml(data.img, data.name)}
+        <div>
+          <div class="strategy-ball-name">${displayName}</div>
+          ${displayRole ? `<div class="strategy-ball-role">${displayRole}</div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // 生成策略卡片 HTML
+    function strategyCardHtml(strategy) {
+      const t = I18N[currentLang];
+      const name = currentLang === 'zh' ? strategy.nameCn : strategy.name;
+      const nameSub = currentLang === 'zh' ? strategy.name : strategy.nameCn;
+      const desc = currentLang === 'zh' ? strategy.descCn : strategy.desc;
+      
+      // 难度和强度星星
+      const difficultyStars = '★'.repeat(strategy.difficulty) + '☆'.repeat(3 - strategy.difficulty);
+      const ratingStars = '★'.repeat(strategy.rating) + '☆'.repeat(5 - strategy.rating);
+      
+      // 核心球
+      const coreBallsHtml = strategy.core.map(ballName => {
+        const mech = strategy.mechanism.find(m => m.ball === ballName);
+        return strategyBallHtml(ballName, mech?.role || '', mech?.roleCn || '', true);
+      }).join('');
+      
+      // 协同球
+      const synergyBallsHtml = strategy.synergy.map(ballName => {
+        const mech = strategy.mechanism.find(m => m.ball === ballName);
+        return strategyBallHtml(ballName, mech?.role || '', mech?.roleCn || '', false);
+      }).join('');
+      
+      // 机制说明
+      const mechanismHtml = strategy.mechanism.map(m => {
+        const role = currentLang === 'zh' ? m.roleCn : m.role;
+        return `<div class="mechanism-item">
+          <span class="mechanism-ball-name">${m.ball}:</span> ${role}
+        </div>`;
+      }).join('');
+      
+      return `<div class="strategy-card" data-type="${strategy.type.id}">
+        <div class="strategy-header">
+          <div class="strategy-title">
+            <div class="strategy-type-badge" style="background: ${strategy.type.color}20; color: ${strategy.type.color}">
+              ${getTypeIcon(strategy.type.id)}
+            </div>
+            <div>
+              <div class="strategy-name">${name}</div>
+              <div class="strategy-name-cn">${nameSub}</div>
+            </div>
+          </div>
+          <div class="strategy-meta">
+            <div class="strategy-difficulty">${t.strategyDifficulty}: <span class="strategy-stars">${difficultyStars}</span></div>
+            <div class="strategy-rating">${t.strategyRating}: <span class="strategy-stars">${ratingStars}</span></div>
+          </div>
+        </div>
+        <div class="strategy-body">
+          <div class="strategy-desc">${desc}</div>
+          
+          <div class="strategy-balls-section">
+            <div class="strategy-balls-title">${t.strategyCore}</div>
+            <div class="strategy-balls">${coreBallsHtml}</div>
+          </div>
+          
+          <div class="strategy-balls-section">
+            <div class="strategy-balls-title">${t.strategySynergy}</div>
+            <div class="strategy-balls">${synergyBallsHtml}</div>
+          </div>
+          
+          <div class="strategy-mechanism">
+            <div class="strategy-mechanism-title">${t.strategyMechanism}</div>
+            <div class="mechanism-list">${mechanismHtml}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // 获取策略类型图标
+    function getTypeIcon(typeId) {
+      const icons = {
+        dmgAmp: '⚔️',
+        sustain: '❤️',
+        control: '🔒',
+        aoeCombo: '💥',
+        dotStack: '🩸',
+        summonArmy: '👾'
+      };
+      return icons[typeId] || '🎯';
+    }
+
+    // 渲染策略筛选按钮
+    function renderStrategyFilters() {
+      const t = I18N[currentLang];
+      const filters = [
+        { id: 'all', label: t.filterAll },
+        { id: 'dmgAmp', label: t.filterDmgAmp, color: SYNERGY_TYPE.DAMAGE_AMP.color },
+        { id: 'sustain', label: t.filterSustain, color: SYNERGY_TYPE.SUSTAIN.color },
+        { id: 'control', label: t.filterControl, color: SYNERGY_TYPE.CONTROL.color },
+        { id: 'aoeCombo', label: t.filterAoeCombo, color: SYNERGY_TYPE.AOE_COMBO.color },
+        { id: 'dotStack', label: t.filterDotStack, color: SYNERGY_TYPE.DOT_STACK.color },
+        { id: 'summonArmy', label: t.filterSummonArmy, color: SYNERGY_TYPE.SUMMON_ARMY.color }
+      ];
+      
+      const filtersContainer = document.getElementById('strategyFilters');
+      filtersContainer.innerHTML = filters.map(f => {
+        const activeClass = f.id === currentStrategyFilter ? 'active' : '';
+        const style = f.color && f.id === currentStrategyFilter ? `background: ${f.color}; border-color: ${f.color};` : '';
+        return `<button class="strategy-filter-btn ${activeClass}" data-filter="${f.id}" style="${style}">${f.label}</button>`;
+      }).join('');
+      
+      // 绑定筛选事件
+      filtersContainer.querySelectorAll('.strategy-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentStrategyFilter = btn.dataset.filter;
+          renderStrategyFilters();
+          renderStrategyGrid();
+        });
+      });
+    }
+
+    // 渲染策略卡片网格
+    function renderStrategyGrid() {
+      const grid = document.getElementById('strategyGrid');
+      const filtered = currentStrategyFilter === 'all' 
+        ? STRATEGIES 
+        : STRATEGIES.filter(s => s.type.id === currentStrategyFilter);
+      
+      grid.innerHTML = filtered.map(s => strategyCardHtml(s)).join('');
+      
+      // 为策略卡片中的球元素绑定点击事件
+      grid.querySelectorAll('.strategy-ball[data-id], .strategy-ball[data-evo]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = el.dataset.id;
+          const evoName = el.dataset.evo;
+          
+          // 使用 openModal, 它支持通过 id 或 name 查找基础球和进化球
+          if (id) {
+            openModal(id);
+          }
+          else if (evoName) {
+            openModal(evoName);
+          }
+        });
+      });
+    }
+
+    // 渲染策略视图
+    function renderStrategy() {
+      renderStrategyFilters();
+      renderStrategyGrid();
+    }
+
     // ========== 高级/被动进化区 ==========
     // 生成高级卡片 HTML
     // 注意: data-evo 使用原始值, 不需要 safeName() 转义
@@ -2326,16 +2739,15 @@
       </div>`;
     }
 
-    function openModal(evoName) {
-      const evo = getEvolution(evoName);
+    function openModal(name) {
+      // 查找进化球或基础球
+      const evo = evoByName.get(name) || ballByName.get(name) || ballById.get(name);
       if (!evo) return;
 
       DOM.modalImg.src = getImg(evo.img);
-      // 根据语言设置主标题和副标题
-      const primaryName = currentLang === 'en' ? evo.name : (evo.nameCn || evo.name);
-      const secondaryName = currentLang === 'en' ? (evo.nameCn || '') : evo.name;
-      DOM.modalTitle.textContent = primaryName;
-      DOM.modalTitleCn.textContent = secondaryName;
+      // 只显示当前语言的名称
+      DOM.modalTitle.textContent = getName(evo);
+      DOM.modalTitleCn.textContent = '';
       DOM.modalEffect.textContent = getEffect(evo);
 
       // 构建元数据 HTML
@@ -2540,13 +2952,15 @@
         container.classList.toggle('active', container.id === view + 'View');
       });
 
-      // 图鉴视图自带高级区域, 其他视图显示底部区域
-      const showAdvanced = view !== 'gallery';
+      // 图鉴视图和策略视图自带区域, 其他视图显示底部区域
+      const showAdvanced = view !== 'gallery' && view !== 'strategy';
       DOM.advancedSection.style.display = showAdvanced ? 'block' : 'none';
       DOM.passiveSection.style.display = showAdvanced ? 'block' : 'none';
       
-      // 切换视图后重新应用当前筛选
-      applyFilter(currentFilter);
+      // 切换视图后重新应用当前筛选 (策略视图有自己的筛选)
+      if (view !== 'strategy') {
+        applyFilter(currentFilter);
+      }
     }
 
     // ========== 按需渲染指定视图 ==========
@@ -2565,6 +2979,9 @@
         case 'gallery':
           renderGallery();
           break;
+        case 'strategy':
+          renderStrategy();
+          break;
       }
       
       viewRendered[view] = true;
@@ -2576,12 +2993,13 @@
       viewRendered.matrix = false;
       viewRendered.list = false;
       viewRendered.gallery = false;
+      viewRendered.strategy = false;
       
       // 渲染当前视图
       renderView(currentView);
       
       // 高级进化区在非图鉴视图时都需要渲染
-      if (currentView !== 'gallery') {
+      if (currentView !== 'gallery' && currentView !== 'strategy') {
         renderAdvancedSections();
       }
     }

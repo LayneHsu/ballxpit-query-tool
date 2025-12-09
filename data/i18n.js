@@ -18,6 +18,7 @@ const I18N = {
     viewMatrix: "矩阵",
     viewList: "列表",
     viewGallery: "图鉴",
+    viewStrategy: "策略",
     
     // 筛选按钮
     filterAll: "全部",
@@ -27,6 +28,21 @@ const I18N = {
     filterSummon: "召唤",
     filterLifesteal: "吸血",
     filterPenetrate: "穿透",
+    
+    // 策略筛选按钮
+    filterDmgAmp: "增伤",
+    filterSustain: "续航",
+    filterControl: "控制",
+    filterAoeCombo: "范围联动",
+    filterDotStack: "持续叠加",
+    filterSummonArmy: "召唤流",
+    
+    // 策略视图
+    strategyCore: "核心球",
+    strategySynergy: "协同球",
+    strategyDifficulty: "难度",
+    strategyRating: "强度",
+    strategyMechanism: "机制说明",
     
     // 图鉴分类标题
     sectionBasic: "基础球 Basic Balls",
@@ -76,6 +92,7 @@ const I18N = {
     viewMatrix: "Matrix",
     viewList: "List",
     viewGallery: "Gallery",
+    viewStrategy: "Strategy",
     
     // 筛选按钮
     filterAll: "All",
@@ -85,6 +102,21 @@ const I18N = {
     filterSummon: "Summon",
     filterLifesteal: "Lifesteal",
     filterPenetrate: "Penetrate",
+    
+    // 策略筛选按钮
+    filterDmgAmp: "Damage Amp",
+    filterSustain: "Sustain",
+    filterControl: "Control",
+    filterAoeCombo: "AoE Combo",
+    filterDotStack: "DoT Stack",
+    filterSummonArmy: "Summon Army",
+    
+    // 策略视图
+    strategyCore: "Core Balls",
+    strategySynergy: "Synergy Balls",
+    strategyDifficulty: "Difficulty",
+    strategyRating: "Rating",
+    strategyMechanism: "Mechanism",
     
     // 图鉴分类标题
     sectionBasic: "Basic Balls",
