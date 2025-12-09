@@ -521,14 +521,17 @@
     }
 
     .strategy-filter-btn {
-      padding: 8px 16px;
-      background: var(--bg-tertiary);
+      padding: 6px 12px;
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
+      border-radius: 16px;
+      background: var(--bg-secondary);
       color: var(--text-secondary);
-      font-size: 13px;
+      font-size: 12px;
       cursor: pointer;
       transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .strategy-filter-btn:hover {
@@ -540,6 +543,10 @@
       background: var(--accent-primary);
       border-color: var(--accent-primary);
       color: white;
+    }
+
+    .strategy-filter-btn .icon {
+      font-size: 14px;
     }
 
     .strategy-grid {
@@ -2483,20 +2490,20 @@
     function renderStrategyFilters() {
       const t = I18N[currentLang];
       const filters = [
-        { id: 'all', label: t.filterAll },
-        { id: 'dmgAmp', label: t.filterDmgAmp, color: SYNERGY_TYPE.DAMAGE_AMP.color },
-        { id: 'sustain', label: t.filterSustain, color: SYNERGY_TYPE.SUSTAIN.color },
-        { id: 'control', label: t.filterControl, color: SYNERGY_TYPE.CONTROL.color },
-        { id: 'aoeCombo', label: t.filterAoeCombo, color: SYNERGY_TYPE.AOE_COMBO.color },
-        { id: 'dotStack', label: t.filterDotStack, color: SYNERGY_TYPE.DOT_STACK.color },
-        { id: 'summonArmy', label: t.filterSummonArmy, color: SYNERGY_TYPE.SUMMON_ARMY.color }
+        { id: 'all', label: t.filterAll, icon: '🎯' },
+        { id: 'dmgAmp', label: t.filterDmgAmp, icon: '⚔️', color: SYNERGY_TYPE.DAMAGE_AMP.color },
+        { id: 'sustain', label: t.filterSustain, icon: '❤️', color: SYNERGY_TYPE.SUSTAIN.color },
+        { id: 'control', label: t.filterControl, icon: '🔒', color: SYNERGY_TYPE.CONTROL.color },
+        { id: 'aoeCombo', label: t.filterAoeCombo, icon: '💥', color: SYNERGY_TYPE.AOE_COMBO.color },
+        { id: 'dotStack', label: t.filterDotStack, icon: '🩸', color: SYNERGY_TYPE.DOT_STACK.color },
+        { id: 'summonArmy', label: t.filterSummonArmy, icon: '👾', color: SYNERGY_TYPE.SUMMON_ARMY.color }
       ];
       
       const filtersContainer = document.getElementById('strategyFilters');
       filtersContainer.innerHTML = filters.map(f => {
         const activeClass = f.id === currentStrategyFilter ? 'active' : '';
         const style = f.color && f.id === currentStrategyFilter ? `background: ${f.color}; border-color: ${f.color};` : '';
-        return `<button class="strategy-filter-btn ${activeClass}" data-filter="${f.id}" style="${style}">${f.label}</button>`;
+        return `<button class="strategy-filter-btn ${activeClass}" data-filter="${f.id}" style="${style}"><span class="icon">${f.icon}</span><span>${f.label}</span></button>`;
       }).join('');
       
       // 绑定筛选事件
@@ -2868,19 +2875,26 @@
       
       // 列表视图 - 根据内容匹配
       document.querySelectorAll('.list-card').forEach(card => {
+        const combos = card.querySelectorAll('.combo-item');
+        
         if (filter === 'all') {
+          // 显示全部时, 恢复所有组合项的显示
           card.style.display = 'block';
+          combos.forEach(combo => {
+            combo.style.display = 'flex';
+          });
           return;
         }
+        
         // 检查卡片中的进化是否匹配
-        const combos = card.querySelectorAll('.combo-item');
         let hasMatch = false;
         combos.forEach(combo => {
           const evo = getEvolution(combo.dataset.evo);
           if (evo && matchesFilter(evo, filter)) {
             hasMatch = true;
             combo.style.display = 'flex';
-          } else {
+          }
+          else {
             combo.style.display = 'none';
           }
         });
@@ -2956,6 +2970,9 @@
       const showAdvanced = view !== 'gallery' && view !== 'strategy';
       DOM.advancedSection.style.display = showAdvanced ? 'block' : 'none';
       DOM.passiveSection.style.display = showAdvanced ? 'block' : 'none';
+      
+      // 策略视图隐藏球体筛选栏 (策略视图有自己的筛选栏)
+      DOM.filterBar.style.display = view === 'strategy' ? 'none' : 'flex';
       
       // 切换视图后重新应用当前筛选 (策略视图有自己的筛选)
       if (view !== 'strategy') {
