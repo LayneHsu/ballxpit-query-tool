@@ -75,6 +75,7 @@ const I18N = {
     footerTimes: "次",
     footerPeople: "人",
     footerFeedback: "反馈留言",
+    submitFeedback: "问题反馈",
     
     // 语言切换
     langSwitch: "🌐 English"
@@ -150,6 +151,7 @@ const I18N = {
     footerTimes: "",
     footerPeople: "",
     footerFeedback: "Feedback",
+    submitFeedback: "Report",
     
     // 语言切换
     langSwitch: "🌐 中文"
