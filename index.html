@@ -1944,7 +1944,11 @@
         <div class="gallery-grid" id="galleryAdvanced"></div>
       </div>
       <div class="gallery-section">
-        <h3 class="gallery-section-title" data-i18n="sectionPassive">被动道具 Passive Items</h3>
+        <h3 class="gallery-section-title" data-i18n="sectionBaseItems">基础被动 Base Passives</h3>
+        <div class="gallery-grid" id="galleryBaseItems"></div>
+      </div>
+      <div class="gallery-section">
+        <h3 class="gallery-section-title" data-i18n="sectionPassive">被动进化 Passive Evolutions</h3>
         <div class="gallery-grid" id="galleryPassive"></div>
       </div>
     </div>
@@ -2102,6 +2106,7 @@
       DOM.galleryBasic = document.getElementById('galleryBasic');
       DOM.galleryEvolved = document.getElementById('galleryEvolved');
       DOM.galleryAdvanced = document.getElementById('galleryAdvanced');
+      DOM.galleryBaseItems = document.getElementById('galleryBaseItems');
       DOM.galleryPassive = document.getElementById('galleryPassive');
       DOM.advancedGrid = document.getElementById('advancedGrid');
       DOM.passiveGrid = document.getElementById('passiveGrid');
@@ -2430,7 +2435,16 @@
     // 生成图鉴项 HTML
     // 注意: data-* 属性使用原始值, 不需要 safeName() 转义
     function galleryItemHtml(item, type, idOrName) {
-      const dataAttr = type === 'base' ? `data-id="${idOrName}"` : `data-evo="${idOrName}"`;
+      let dataAttr;
+      if (type === 'base') {
+        dataAttr = `data-id="${idOrName}"`;
+      }
+      else if (type === 'item') {
+        dataAttr = `data-item="${idOrName}"`;
+      }
+      else {
+        dataAttr = `data-evo="${idOrName}"`;
+      }
       // 使用预计算的 tagsData, 避免渲染时重复计算
       const tagsData = item.tagsData || '';
       const tagsHtml = buildTagsHtml(item, 'mini');
@@ -2454,7 +2468,10 @@
       // 高级进化
       DOM.galleryAdvanced.innerHTML = ADVANCED_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
 
-      // 被动道具
+      // 基础被动道具
+      DOM.galleryBaseItems.innerHTML = BASE_ITEMS.map(i => galleryItemHtml(i, 'item', i.name)).join('');
+
+      // 被动道具进化
       DOM.galleryPassive.innerHTML = PASSIVE_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
     }
 
@@ -2766,16 +2783,23 @@
     }
 
     function showTooltip(event, name, type) {
-      const item = type === 'base' ? getBaseBall(name) : getEvolution(name);
+      let item;
+      if (type === 'base') {
+        item = getBaseBall(name);
+      }
+      else if (type === 'item') {
+        item = getBaseItem(name);
+      }
+      else {
+        item = getEvolution(name);
+      }
       if (!item) return;
 
       // 填充内容 (使用缓存的 DOM)
       DOM.tooltipImg.src = getImg(item.img);
-      // 根据语言设置主标题和副标题
-      const primaryName = currentLang === 'en' ? item.name : (item.nameCn || item.name);
-      const secondaryName = currentLang === 'en' ? (item.nameCn || '') : item.name;
-      DOM.tooltipTitle.textContent = primaryName;
-      DOM.tooltipTitleCn.textContent = secondaryName;
+      // 只显示当前语言的名称
+      DOM.tooltipTitle.textContent = getName(item);
+      DOM.tooltipTitleCn.textContent = '';
       DOM.tooltipEffect.textContent = getEffect(item);
 
       // 元数据 (伤害类型, 状态效果, AOE)
@@ -2844,8 +2868,8 @@
     }
 
     function openModal(name) {
-      // 查找进化球或基础球
-      const evo = evoByName.get(name) || ballByName.get(name) || ballById.get(name);
+      // 查找进化球或基础球或基础装备
+      const evo = evoByName.get(name) || ballByName.get(name) || ballById.get(name) || itemByName.get(name);
       if (!evo) return;
 
       DOM.modalImg.src = getImg(evo.img);
@@ -2905,15 +2929,22 @@
       DOM.modalMetaSection.style.display = metaHtml ? 'block' : 'none';
 
       let formulaHtml = '';
+      let hasFormula = false;
       
       if (evo.row && evo.col) {
+        // 基础进化: 两球合成
+        hasFormula = true;
         const ball1 = getBaseBall(evo.row);
         const ball2 = getBaseBall(evo.col);
         if (ball1) formulaHtml += comboBallHtml(ball1, false);
         formulaHtml += '<span class="combo-plus">+</span>';
         if (ball2) formulaHtml += comboBallHtml(ball2, false);
+        formulaHtml += '<span class="combo-equals">=</span>';
+        formulaHtml += comboBallHtml(evo, false);
       }
       else if (evo.components) {
+        // 高级/被动进化: 多组件合成
+        hasFormula = true;
         evo.components.forEach((comp, i) => {
           const c = findComponent(comp);
           if (c) {
@@ -2927,12 +2958,23 @@
             formulaHtml += '<span class="combo-plus">+</span>';
           }
         });
+        formulaHtml += '<span class="combo-equals">=</span>';
+        formulaHtml += comboBallHtml(evo, false);
+      }
+      // 基础球和基础装备: 无合成配方, 只显示自身
+      else {
+        formulaHtml = comboBallHtml(evo, false);
       }
 
-      formulaHtml += '<span class="combo-equals">=</span>';
-      formulaHtml += comboBallHtml(evo, false);
-
       DOM.modalFormula.innerHTML = formulaHtml;
+      // 隐藏配方区域标题 (针对无配方的基础道具)
+      const recipeSection = DOM.modalFormula.closest('.modal-section');
+      if (recipeSection) {
+        const title = recipeSection.querySelector('h4');
+        if (title) {
+          title.style.display = hasFormula ? 'block' : 'none';
+        }
+      }
       DOM.modalOverlay.classList.add('active');
     }
 
@@ -3165,14 +3207,42 @@
       // 图鉴视图: 悬停提示
       const galleryContainer = document.getElementById('galleryView');
       galleryContainer.addEventListener('mouseover', (e) => {
-        handleMouseOver(e, '.gallery-item', (el) => ({
-          type: el.dataset.type,
-          name: el.dataset.type === 'base' ? el.dataset.id : el.dataset.evo
-        }));
+        handleMouseOver(e, '.gallery-item', (el) => {
+          const type = el.dataset.type;
+          let name;
+          if (type === 'base') {
+            name = el.dataset.id;
+          }
+          else if (type === 'item') {
+            name = el.dataset.item;
+          }
+          else {
+            name = el.dataset.evo;
+          }
+          return { type, name };
+        });
       });
       
       galleryContainer.addEventListener('mouseout', (e) => {
         handleMouseOut(e, '.gallery-item');
+      });
+
+      // 图鉴视图: 点击打开弹窗
+      galleryContainer.addEventListener('click', (e) => {
+        const item = e.target.closest('.gallery-item');
+        if (!item) return;
+        const type = item.dataset.type;
+        let name;
+        if (type === 'base') {
+          name = item.dataset.id;
+        }
+        else if (type === 'item') {
+          name = item.dataset.item;
+        }
+        else {
+          name = item.dataset.evo;
+        }
+        if (name) openModal(name);
       });
 
       // 高级/被动区域: 悬停提示

@@ -48,7 +48,8 @@ const I18N = {
     sectionBasic: "基础球 Basic Balls",
     sectionEvolved: "进化球 Evolved Balls",
     sectionAdvanced: "高级进化 Advanced Evolutions",
-    sectionPassive: "被动道具 Passive Items",
+    sectionBaseItems: "基础被动 Base Passives",
+    sectionPassive: "被动进化 Passive Evolutions",
     
     // 底部区域标题
     advancedTitle: "高级弹珠进化",
@@ -124,7 +125,8 @@ const I18N = {
     sectionBasic: "Basic Balls",
     sectionEvolved: "Evolved Balls",
     sectionAdvanced: "Advanced Evolutions",
-    sectionPassive: "Passive Items",
+    sectionBaseItems: "Base Passives",
+    sectionPassive: "Passive Evolutions",
     
     // 底部区域标题
     advancedTitle: "Advanced Ball Evolutions",
