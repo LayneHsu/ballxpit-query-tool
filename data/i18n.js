@@ -74,6 +74,7 @@ const I18N = {
     footerPageViews: "本页浏览",
     footerTimes: "次",
     footerPeople: "人",
+    footerFeedback: "反馈留言",
     
     // 语言切换
     langSwitch: "🌐 English"
@@ -148,6 +149,7 @@ const I18N = {
     footerPageViews: "Page Views",
     footerTimes: "",
     footerPeople: "",
+    footerFeedback: "Feedback",
     
     // 语言切换
     langSwitch: "🌐 中文"
