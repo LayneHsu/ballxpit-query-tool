@@ -441,17 +441,21 @@
       padding: 8px 16px;
     }
 
-    .combo-item img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      margin-right: 10px;
-      border-radius: 4px;
-    }
-
     .combo-item .combo-text {
       flex: 1;
       font-size: 13px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .combo-item .combo-text img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 4px;
+      vertical-align: middle;
     }
 
     .combo-item .partner {
@@ -2416,11 +2420,12 @@
           const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
 
           html += `<div class="combo-item" data-evo="${evo.name}" data-tags="${tagsData}">
-            ${imgHtml(evo.img, evo.name)}
             <div class="combo-text">
-              <span class="partner">+ ${getName(partner)}</span>
+              ${imgHtml(baseBall.img, baseBall.name)}<span class="partner">${getName(baseBall)}</span>
+              <span class="plus"> + </span>
+              ${imgHtml(partner.img, partner.name)}<span class="partner">${getName(partner)}</span>
               <span class="arrow">→</span>
-              <span class="result">${getName(evo)}${evo.alt ? '*' : ''}</span>
+              ${imgHtml(evo.img, evo.name)}<span class="result">${getName(evo)}${evo.alt ? '*' : ''}</span>
             </div>
           </div>`;
         });
