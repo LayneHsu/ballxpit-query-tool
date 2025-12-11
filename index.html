@@ -71,14 +71,11 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: relative;
     }
 
     .header-content {
       text-align: center;
-      flex: 1;
     }
 
     .header-tools {
@@ -86,8 +83,7 @@
       gap: 8px;
       position: absolute;
       right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
+      top: 20px;
     }
 
     .header h1 {
@@ -1083,13 +1079,22 @@
 
       .header {
         padding: 16px 12px;
-        flex-direction: column;
-        gap: 12px;
+        padding-top: 50px;
       }
 
       .header-tools {
-        position: static;
-        transform: none;
+        top: 12px;
+        right: 12px;
+      }
+      
+      .header-tools .feedback-btn span,
+      .header-tools .form-btn span {
+        display: none;
+      }
+      
+      .header-tools .feedback-btn,
+      .header-tools .form-btn {
+        padding: 8px;
       }
 
       .header h1 {
@@ -1855,10 +1860,6 @@
 
   <!-- 头部 -->
   <header class="header">
-    <div class="header-content">
-      <h1 data-i18n="title">BALL x PIT 进化图鉴</h1>
-      <p data-i18n="subtitle">完整进化组合参考</p>
-    </div>
     <div class="header-tools">
       <button class="lang-switch" id="langSwitch" title="Switch Language">🌐 English</button>
       <a class="feedback-btn" href="https://www.bilibili.com/video/BV1a521BYEdw" target="_blank" rel="noopener noreferrer">
@@ -1873,6 +1874,10 @@
         </svg>
         <span data-i18n="submitFeedback">问题反馈</span>
       </a>
+    </div>
+    <div class="header-content">
+      <h1 data-i18n="title">BALL x PIT 进化图鉴</h1>
+      <p data-i18n="subtitle">完整进化组合参考</p>
     </div>
   </header>
 
