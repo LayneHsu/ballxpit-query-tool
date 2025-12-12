@@ -78,8 +78,8 @@ const I18N = {
     footerPageViews: "本页浏览",
     footerTimes: "次",
     footerPeople: "人",
-    footerFeedback: "反馈留言",
-    submitFeedback: "问题反馈",
+    footerFeedback: "B站反馈",
+    submitFeedback: "问卷反馈",
     
     // 语言切换
     langSwitch: "🌐 English"
