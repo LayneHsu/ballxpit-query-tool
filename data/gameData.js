@@ -149,7 +149,7 @@ const STRATEGIES = [
     difficulty: 1,
     rating: 4,
     core: ["VAMPIRE", "Vampire Lord"],
-    synergy: ["Succubus", "Mosquito King", "Soul Sucker"],
+    synergy: ["Succubus", "Mosquito Swarm", "Soul Sucker"],
     desc: "Multiple lifesteal sources ensure you never die.",
     descCn: "多重吸血来源确保永不死亡。",
     mechanism: [
@@ -481,7 +481,7 @@ const GAME_DATA = {
       effect: "Summons Satan, the demon king. Combines Incubus control and Succubus lifesteal abilities.",
       effectCn: "召唤恶魔之王撒旦，同时拥有梦魇的控制和魅魔的吸取能力，是战场上的终极主宰。",
       damageTypes: [DAMAGE_TYPE.CHARM, DAMAGE_TYPE.DARK, DAMAGE_TYPE.VAMPIRE], statusEffects: [STATUS_EFFECT.CHARM], tags: [TAGS.CC, TAGS.LIFESTEAL] },
-    { name: "Nosferatu", nameCn: "诺斯费拉图", components: ["Vampire Lord", "Mosquito King", "Spider Queen"], img: "ball_icon_nosferatu.png",
+    { name: "Nosferatu", nameCn: "诺斯费拉图", components: ["Vampire Lord", "Mosquito Swarm", "Spider Queen"], img: "ball_icon_nosferatu.png",
       effect: "Spawns vampire bats. Ultimate fusion of vampire, mosquito and spider with unmatched lifesteal and minion army.",
       effectCn: "吸血鬼、蚊子和蜘蛛的终极融合体，拥有无与伦比的生命汲取能力和仆从大军，是真正的不死君王。",
       damageTypes: [DAMAGE_TYPE.VAMPIRE, DAMAGE_TYPE.BLEED], statusEffects: [STATUS_EFFECT.BLEED], tags: [TAGS.LIFESTEAL, TAGS.SUMMON, TAGS.DOT] }
