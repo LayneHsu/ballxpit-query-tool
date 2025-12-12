@@ -225,6 +225,40 @@ const STRATEGIES = [
       { ball: "Swamp", role: "Tar + slow + poison", roleCn: "焦油+减速+中毒" },
       { ball: "Noxious", role: "Enhanced poison", roleCn: "强化中毒" }
     ]
+  },
+  {
+    id: "overgrowth_flicker",
+    name: "Overgrowth Flicker",
+    nameCn: "蔓延闪烁",
+    type: SYNERGY_TYPE.AOE_COMBO,
+    difficulty: 2,
+    rating: 4,
+    core: ["Overgrowth", "Flicker"],
+    synergy: ["CELL", "EARTHQUAKE", "DARK", "LIGHT"],
+    desc: "Flicker periodically damages all enemies on screen, stacking Overgrowth. When stacks reach max, Overgrowth explodes for massive AoE damage.",
+    descCn: "闪烁每隔数秒对全屏敌人造成伤害并叠加蔓延层数, 层数堆满后蔓延爆发造成范围伤害。",
+    mechanism: [
+      { ball: "Flicker", role: "Periodic global damage", roleCn: "周期性全屏伤害" },
+      { ball: "Overgrowth", role: "Stack & burst AoE", roleCn: "叠层+范围爆发" },
+      { ball: "Cell", role: "Clone for more hits", roleCn: "分裂增加命中" }
+    ]
+  },
+  {
+    id: "nuke_blackhole",
+    name: "Gravitational Annihilation",
+    nameCn: "引力湮灭",
+    type: SYNERGY_TYPE.AOE_COMBO,
+    difficulty: 3,
+    rating: 5,
+    core: ["Nuclear Bomb", "Black Hole"],
+    synergy: ["Sun", "DARK", "Bomb", "POISON"],
+    desc: "Black Hole pulls enemies together and annihilates them. Nuclear Bomb delivers devastating full-screen damage with lingering radiation.",
+    descCn: "黑洞将敌人聚集并湮灭, 核弹释放毁灭性全屏伤害并留下持续辐射。",
+    mechanism: [
+      { ball: "Black Hole", role: "Pull & instant kill", roleCn: "吸引+秒杀" },
+      { ball: "Nuclear Bomb", role: "Full screen nuke + radiation", roleCn: "全屏核爆+辐射" },
+      { ball: "Sun", role: "Global blind + burn", roleCn: "全屏致盲+燃烧" }
+    ]
   }
 ];
 
