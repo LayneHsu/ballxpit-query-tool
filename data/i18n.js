@@ -68,6 +68,9 @@ const I18N = {
     
     // 列表视图
     combosCount: "种组合",
+    listGroupByMaterial: "按材料",
+    listGroupByResult: "按结果",
+    recipesCount: "种配方",
     
     // 页脚
     footerVisits: "总访问量",
@@ -145,6 +148,9 @@ const I18N = {
     
     // 列表视图
     combosCount: "combos",
+    listGroupByMaterial: "By Material",
+    listGroupByResult: "By Result",
+    recipesCount: "recipes",
     
     // 页脚
     footerVisits: "Total Visits",

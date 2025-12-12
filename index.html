@@ -371,6 +371,41 @@
     }
 
     /* ========== 列表视图 ========== */
+    .list-view-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .list-mode-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-secondary);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .list-mode-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .list-mode-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .list-mode-btn.active {
+      background: var(--accent-primary);
+      color: white;
+    }
+
     .list-view {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -1930,6 +1965,12 @@
 
     <!-- 列表视图 -->
     <div id="listView" class="view-container">
+      <div class="list-view-header">
+        <div class="list-mode-toggle">
+          <button class="list-mode-btn active" data-mode="material" data-i18n="listGroupByMaterial">按材料</button>
+          <button class="list-mode-btn" data-mode="result" data-i18n="listGroupByResult">按结果</button>
+        </div>
+      </div>
       <div class="list-view" id="listContainer"></div>
     </div>
 
@@ -2054,6 +2095,7 @@
     // ========== 全局变量 ==========
     let currentView = 'matrix';
     let currentLang = 'zh'; // 默认中文
+    let listGroupMode = 'material'; // 列表分组模式: material(按材料) / result(按结果)
     try {
       currentLang = localStorage.getItem('lang') || 'zh';
     } catch (e) {
@@ -2396,6 +2438,16 @@
 
     // ========== 列表视图 ==========
     function renderList() {
+      if (listGroupMode === 'result') {
+        renderListByResult();
+      }
+      else {
+        renderListByMaterial();
+      }
+    }
+
+    // 按材料分组渲染列表
+    function renderListByMaterial() {
       let html = '';
       const combosText = (I18N && I18N[currentLang]) ? I18N[currentLang].combosCount : '种组合';
 
@@ -2426,6 +2478,59 @@
               ${imgHtml(partner.img, partner.name)}<span class="partner">${getName(partner)}</span>
               <span class="arrow">→</span>
               ${imgHtml(evo.img, evo.name)}<span class="result">${getName(evo)}${evo.alt ? '*' : ''}</span>
+            </div>
+          </div>`;
+        });
+
+        html += '</div></div>';
+      });
+
+      DOM.listContainer.innerHTML = html;
+    }
+
+    // 按结果分组渲染列表
+    function renderListByResult() {
+      let html = '';
+      const recipesText = (I18N && I18N[currentLang]) ? I18N[currentLang].recipesCount : '种配方';
+
+      // 按进化球名称分组
+      const evoGroups = new Map();
+      EVOLUTIONS.forEach(evo => {
+        const name = evo.name;
+        if (!evoGroups.has(name)) {
+          evoGroups.set(name, []);
+        }
+        evoGroups.get(name).push(evo);
+      });
+
+      // 渲染每个进化球的卡片
+      evoGroups.forEach((recipes, evoName) => {
+        const firstEvo = recipes[0];
+        const hasAlt = recipes.length > 1;
+
+        html += `<div class="list-card">
+          <div class="list-card-header">
+            ${imgHtml(firstEvo.img, firstEvo.name)}
+            <div>
+              <h3>${getName(firstEvo)}${hasAlt ? '*' : ''}</h3>
+              <div class="subtitle">${recipes.length} ${recipesText}</div>
+            </div>
+          </div>
+          <div class="list-card-body">`;
+
+        recipes.forEach(evo => {
+          const ball1 = getBaseBall(evo.row);
+          const ball2 = getBaseBall(evo.col);
+          if (!ball1 || !ball2) return;
+          const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
+
+          html += `<div class="combo-item" data-evo="${evo.name}" data-tags="${tagsData}">
+            <div class="combo-text">
+              ${imgHtml(ball1.img, ball1.name)}<span class="partner">${getName(ball1)}</span>
+              <span class="plus"> + </span>
+              ${imgHtml(ball2.img, ball2.name)}<span class="partner">${getName(ball2)}</span>
+              <span class="arrow">→</span>
+              ${imgHtml(evo.img, evo.name)}<span class="result">${getName(evo)}</span>
             </div>
           </div>`;
         });
@@ -3261,6 +3366,21 @@
         
         grid.addEventListener('mouseout', (e) => {
           handleMouseOut(e, '.advanced-card');
+        });
+      });
+
+      // 列表视图: 切换分组模式
+      document.querySelectorAll('.list-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mode = btn.dataset.mode;
+          if (mode === listGroupMode) return;
+          
+          listGroupMode = mode;
+          // 更新按钮状态
+          document.querySelectorAll('.list-mode-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          // 重新渲染列表
+          renderList();
         });
       });
 
