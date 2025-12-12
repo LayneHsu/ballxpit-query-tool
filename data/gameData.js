@@ -227,18 +227,18 @@ const STRATEGIES = [
     ]
   },
   {
-    id: "overgrowth_flicker",
-    name: "Overgrowth Flicker",
-    nameCn: "蔓延闪烁",
+    id: "overgrowth_flash",
+    name: "Overgrowth Flash",
+    nameCn: "蔓延闪光",
     type: SYNERGY_TYPE.AOE_COMBO,
     difficulty: 2,
     rating: 4,
-    core: ["Overgrowth", "Flicker"],
-    synergy: ["CELL", "EARTHQUAKE", "DARK", "LIGHT"],
-    desc: "Flicker periodically damages all enemies on screen, stacking Overgrowth. When stacks reach max, Overgrowth explodes for massive AoE damage.",
-    descCn: "闪烁每隔数秒对全屏敌人造成伤害并叠加蔓延层数, 层数堆满后蔓延爆发造成范围伤害。",
+    core: ["Overgrowth", "Flash"],
+    synergy: ["CELL", "EARTHQUAKE", "LIGHT", "LIGHTNING"],
+    desc: "Flash deals global damage and blinds all enemies, while stacking Overgrowth. When stacks reach max, Overgrowth explodes for massive AoE damage.",
+    descCn: "闪光对全屏敌人造成伤害并致盲, 同时叠加蔓延层数, 层数堆满后蔓延爆发造成范围伤害。",
     mechanism: [
-      { ball: "Flicker", role: "Periodic global damage", roleCn: "周期性全屏伤害" },
+      { ball: "Flash", role: "Global damage + blind", roleCn: "全屏伤害+致盲" },
       { ball: "Overgrowth", role: "Stack & burst AoE", roleCn: "叠层+范围爆发" },
       { ball: "Cell", role: "Clone for more hits", roleCn: "分裂增加命中" }
     ]
