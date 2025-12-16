@@ -165,15 +165,15 @@ const STRATEGIES = [
     type: SYNERGY_TYPE.SUSTAIN,
     difficulty: 2,
     rating: 5,
-    core: ["Flash", "VAMPIRE", "Soul Reaver"],
+    core: ["Flash", "Vampire", "Everflowing Goblet"],
     synergy: ["Flicker", "Vampire Lord", "Soul Sucker"],
-    desc: "Flash/Flicker deals full-screen AoE damage, triggering lifesteal on all enemies. Soul Reaver removes HP cap, allowing infinite health stacking. More enemies = more healing = unkillable.",
-    descCn: "闪光/闪烁造成全屏伤害, 对所有敌人触发吸血判定。灵魂收割者解除血量上限, 允许无限堆血。敌人越多回血越多, 几乎无敌。",
+    desc: "Flash/Flicker deals full-screen AoE damage, triggering lifesteal on all enemies. Everflowing Goblet removes HP cap, allowing infinite health stacking. More enemies = more healing = unkillable.",
+    descCn: "闪光/闪烁造成全屏伤害, 对所有敌人触发吸血判定。不竭圣杯解除血量上限, 允许无限堆血。敌人越多回血越多, 几乎无敌。",
     mechanism: [
       { ball: "Flash", role: "Full-screen AoE damage", roleCn: "全屏AOE伤害" },
       { ball: "Flicker", role: "Periodic full-screen damage", roleCn: "周期性全屏伤害" },
       { ball: "Vampire", role: "Lifesteal per hit", roleCn: "每次命中吸血" },
-      { ball: "Soul Reaver", role: "Remove HP cap + kill heal", roleCn: "解除血量上限+击杀回血" }
+      { ball: "Everflowing Goblet", role: "Remove HP cap", roleCn: "解除血量上限" }
     ]
   },
   {

@@ -2638,6 +2638,14 @@
       ball = ADVANCED_EVOLUTIONS.find(e => e.name === ballName);
       if (ball) return { data: ball, type: 'evo' };
       
+      // 从被动道具进化中查找
+      ball = PASSIVE_EVOLUTIONS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'passive' };
+      
+      // 从基础道具中查找
+      ball = BASE_ITEMS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'item' };
+      
       return null;
     }
 
@@ -2653,7 +2661,21 @@
       const { data, type } = ballInfo;
       const displayName = getName(data);
       const displayRole = currentLang === 'zh' ? roleCn : role;
-      const dataAttr = type === 'base' ? `data-id="${data.id}"` : `data-evo="${data.name}"`;
+      
+      // 根据类型设置正确的数据属性
+      let dataAttr = '';
+      if (type === 'base') {
+        dataAttr = `data-id="${data.id}"`;
+      }
+      else if (type === 'evo') {
+        dataAttr = `data-evo="${data.name}"`;
+      }
+      else if (type === 'passive') {
+        dataAttr = `data-passive="${data.name}"`;
+      }
+      else if (type === 'item') {
+        dataAttr = `data-item="${data.name}"`;
+      }
       
       return `<div class="strategy-ball ${isCore ? 'core' : ''}" ${dataAttr} data-type="${type}">
         ${imgHtml(data.img, data.name)}
