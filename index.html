@@ -2132,13 +2132,29 @@
     let currentView = 'matrix';
     let currentLang = 'zh'; // 默认中文
     let listGroupMode = 'material'; // 列表分组模式: material(按材料) / result(按结果)
-    try {
-      currentLang = localStorage.getItem('lang') || 'zh';
-    } catch (e) {
-      console.warn('无法读取 localStorage:', e);
-    }
     const IMG_BASE = 'img/';
     let searchTimeout = null;
+
+    function detectPreferredLang() {
+      if (typeof navigator === 'undefined') return 'zh';
+      const langs = (navigator.languages && navigator.languages.length)
+        ? navigator.languages
+        : [navigator.language || navigator.userLanguage || ''];
+      const normalized = langs.map(l => (l || '').toLowerCase());
+      return normalized.some(l => l.startsWith('zh')) ? 'zh' : 'en';
+    }
+
+    try {
+      const storedLang = localStorage.getItem('lang');
+      if (storedLang === 'zh' || storedLang === 'en') {
+        currentLang = storedLang;
+      } else {
+        currentLang = detectPreferredLang();
+      }
+    } catch (e) {
+      console.warn('无法读取 localStorage:', e);
+      currentLang = detectPreferredLang();
+    }
 
     // ========== 数据索引 (O(1) 查找) ==========
     const ballById = new Map();
@@ -2388,12 +2404,21 @@
       if (texts.title) {
         document.title = texts.title;
       }
+
+      // 更新文档语言
+      if (document.documentElement) {
+        document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+      }
     }
 
     // 切换语言
     function switchLanguage() {
       currentLang = currentLang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('lang', currentLang);
+      try {
+        localStorage.setItem('lang', currentLang);
+      } catch (e) {
+        console.warn('无法写入 localStorage:', e);
+      }
       
       // 更新界面文字
       updateUIText();
@@ -3524,4 +3549,3 @@
 
 </body>
 </html>
-
