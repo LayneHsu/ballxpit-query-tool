@@ -1063,7 +1063,7 @@
 
     .advanced-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
       gap: 12px;
     }
 
@@ -1114,6 +1114,45 @@
     .advanced-card-info .mini-tag {
       padding: 2px 8px;
       font-size: 10px;
+    }
+
+    /* ========== 基础原料显示 ========== */
+    .base-materials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 6px 8px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      border-left: 2px solid var(--accent-primary);
+    }
+
+    .base-material-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 6px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+
+    .base-material-item img {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+    }
+
+    .base-material-item .count {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* 直接原料样式 (进化球组件) */
+    .direct-components {
+      border-left-color: var(--accent-purple);
     }
 
     /* ========== 空状态 ========== */
@@ -1660,6 +1699,14 @@
       border-left: 2px solid var(--accent-primary);
     }
 
+    .tooltip-materials {
+      margin-top: 8px;
+    }
+
+    .tooltip-materials .base-materials {
+      margin-top: 0;
+    }
+
     /* ========== 隐藏类 ========== */
     .hidden {
       display: none !important;
@@ -2075,6 +2122,7 @@
     <div class="tooltip-meta" id="tooltipMeta"></div>
     <div class="tooltip-effect" id="tooltipEffect"></div>
     <div class="tooltip-formula" id="tooltipFormula"></div>
+    <div class="tooltip-materials" id="tooltipMaterials"></div>
     <div class="tooltip-tags" id="tooltipTags"></div>
   </div>
 
@@ -2172,6 +2220,7 @@
       DOM.tooltipTitleCn = document.getElementById('tooltipTitleCn');
       DOM.tooltipEffect = document.getElementById('tooltipEffect');
       DOM.tooltipFormula = document.getElementById('tooltipFormula');
+      DOM.tooltipMaterials = document.getElementById('tooltipMaterials');
       DOM.tooltipMeta = document.getElementById('tooltipMeta');
       DOM.tooltipTags = document.getElementById('tooltipTags');
       DOM.modalOverlay = document.getElementById('modalOverlay');
@@ -2431,6 +2480,94 @@
       const comp = findComponent(name);
       if (!comp) return name;
       return getName(comp);
+    }
+
+    // 计算高级进化所需的基础球及数量
+    // 返回: Map<ballId, { ball: baseBall, count: number }>
+    function getBaseMaterials(evo) {
+      const materials = new Map();
+      
+      if (!evo.components) return materials;
+      
+      evo.components.forEach(compName => {
+        // 先检查是否是基础球
+        const baseBall = ballByName.get(compName);
+        if (baseBall) {
+          // 是基础球, 直接计数
+          const id = baseBall.id;
+          if (materials.has(id)) {
+            materials.get(id).count++;
+          } else {
+            materials.set(id, { ball: baseBall, count: 1 });
+          }
+          return;
+        }
+        
+        // 不是基础球, 查找进化球
+        const evolution = evoByName.get(compName);
+        if (evolution && evolution.row && evolution.col) {
+          // 是进化球, 获取其两个基础球组件
+          [evolution.row, evolution.col].forEach(ballId => {
+            const ball = ballById.get(ballId);
+            if (ball) {
+              if (materials.has(ballId)) {
+                materials.get(ballId).count++;
+              } else {
+                materials.set(ballId, { ball: ball, count: 1 });
+              }
+            }
+          });
+        }
+      });
+      
+      return materials;
+    }
+
+    // 生成基础原料 HTML (仅高级进化使用)
+    function buildBaseMaterialsHtml(evo) {
+      const materials = getBaseMaterials(evo);
+      if (materials.size === 0) return '';
+      
+      let itemsHtml = '';
+      
+      materials.forEach(({ ball, count }) => {
+        const displayName = getName(ball);
+        itemsHtml += `<span class="base-material-item">
+          <img src="${getImg(ball.img)}" alt="${ball.name}">
+          <span>${displayName}</span>
+          <span class="count">×${count}</span>
+        </span>`;
+      });
+      
+      return `<div class="base-materials">${itemsHtml}</div>`;
+    }
+
+    // 生成直接原料 HTML (进化球组件, 带图标)
+    function buildDirectComponentsHtml(evo) {
+      if (!evo.components || evo.components.length === 0) return '';
+      
+      let itemsHtml = '';
+      
+      evo.components.forEach((compName, i) => {
+        const comp = findComponent(compName);
+        if (comp) {
+          itemsHtml += `<span class="base-material-item">
+            <img src="${getImg(comp.img)}" alt="${comp.name}">
+            <span>${getName(comp)}</span>
+          </span>`;
+        } else {
+          itemsHtml += `<span class="base-material-item"><span>${compName}</span></span>`;
+        }
+      });
+      
+      return `<div class="base-materials direct-components">${itemsHtml}</div>`;
+    }
+
+    // 检查是否为高级进化 (组件是进化球, 而非基础装备)
+    function isAdvancedEvolution(evo) {
+      if (!evo.components || evo.components.length === 0) return false;
+      // 检查第一个组件是否为进化球
+      return evoByName.has(evo.components[0]);
     }
 
     // ========== 矩阵视图 ==========
@@ -2835,15 +2972,24 @@
     // 生成高级卡片 HTML
     // 注意: data-evo 使用原始值, 不需要 safeName() 转义
     function advancedCardHtml(evo) {
-      const componentsText = evo.components.map(c => getComponentName(c)).join(' + ');
       // 使用预计算的 tagsData, 避免渲染时重复计算
       const tagsData = evo.tagsData || '';
       const tagsHtml = buildTagsHtml(evo, 'mini');
+      
+      let materialsHtml = '';
+      if (isAdvancedEvolution(evo)) {
+        // 高级进化: 显示直接原料 (进化球) + 基础原料 (基础球)
+        materialsHtml = buildDirectComponentsHtml(evo) + buildBaseMaterialsHtml(evo);
+      } else {
+        // 被动道具进化: 只显示组件 (基础装备)
+        materialsHtml = buildDirectComponentsHtml(evo);
+      }
+      
       return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo" data-tags="${tagsData}">
         ${imgHtml(evo.img, evo.name)}
         <div class="advanced-card-info">
           <h4>${getName(evo)}</h4>
-          <p>${componentsText}</p>
+          ${materialsHtml}
           ${tagsHtml ? `<div class="tags-container">${tagsHtml}</div>` : ''}
         </div>
       </div>`;
@@ -2990,10 +3136,28 @@
       DOM.tooltipTags.innerHTML = tagsHtml;
       DOM.tooltipTags.style.display = tagsHtml ? 'flex' : 'none';
 
-      // 配方
-      const formulaHtml = buildFormulaHtml(item);
+      // 配方 (基础进化显示完整配方)
+      let formulaHtml = '';
+      if (item.row && item.col) {
+        // 基础进化: 显示合成配方
+        formulaHtml = buildFormulaHtml(item);
+      }
       DOM.tooltipFormula.innerHTML = formulaHtml;
       DOM.tooltipFormula.style.display = formulaHtml ? 'flex' : 'none';
+
+      // 高级进化/被动进化: 显示原料
+      let materialsHtml = '';
+      if (item.components) {
+        if (isAdvancedEvolution(item)) {
+          // 高级进化: 显示直接原料 (进化球) + 基础原料 (基础球)
+          materialsHtml = buildDirectComponentsHtml(item) + buildBaseMaterialsHtml(item);
+        } else {
+          // 被动道具进化: 只显示组件 (基础装备)
+          materialsHtml = buildDirectComponentsHtml(item);
+        }
+      }
+      DOM.tooltipMaterials.innerHTML = materialsHtml;
+      DOM.tooltipMaterials.style.display = materialsHtml ? 'block' : 'none';
 
       const isMobile = window.innerWidth < 768;
       
