@@ -28,7 +28,8 @@ const DAMAGE_TYPE = {
   INSTANT_KILL: { id: "kInstantKill", name: "Instant Kill", nameCn: "即死", icon: "💀" },
   CHARM: { id: "kCharm", name: "Charm", nameCn: "魅惑", icon: "💕" },
   LIGHT: { id: "kLight", name: "Light", nameCn: "光明", icon: "✨" },
-  DARK: { id: "kDark", name: "Dark", nameCn: "黑暗", icon: "🌑" }
+  DARK: { id: "kDark", name: "Dark", nameCn: "黑暗", icon: "🌑" },
+  TIME: { id: "kTime", name: "Time", nameCn: "时间", icon: "⏱️" }
 };
 
 // ==================== 状态效果定义 ====================
@@ -727,11 +728,11 @@ const GAME_DATA = {
       effect: "Emits an X-shaped laser that applies radiation.",
       effectCn: "命中时施放X形激光，造成伤害并施加核辐射。每层核辐射使敌人额外承受伤害。",
       damageTypes: [DAMAGE_TYPE.LASER], statusEffects: [STATUS_EFFECT.RADIATION], aoeType: AOE_TYPE.LASER_CROSS, tags: [TAGS.AOE, TAGS.DOT, TAGS.PENETRATE] },
-    { name: "Laser Cutter", nameCn: "激光切割器", components: ["Laser (Horizontal)", "Steel"], img: "ball_icon_lasercutter.png",
+    { name: "Laser Cutter", nameCn: "激光切割器", components: ["Laser H", "Steel"], img: "ball_icon_lasercutter.png",
       effect: "Constantly emits a laser in front of it.",
       effectCn: "持续朝正前方发射激光，造成持续伤害。",
       damageTypes: [DAMAGE_TYPE.LASER], aoeType: AOE_TYPE.LASER_H, tags: [TAGS.AOE, TAGS.DOT, TAGS.PENETRATE] },
-    { name: "Laser Cutter", nameCn: "激光切割器", components: ["Laser (Vertical)", "Steel"], img: "ball_icon_lasercutter.png", alt: true,
+    { name: "Laser Cutter", nameCn: "激光切割器", components: ["Laser V", "Steel"], img: "ball_icon_lasercutter.png", alt: true,
       effect: "Constantly emits a laser in front of it.",
       effectCn: "持续朝正前方发射激光，造成持续伤害。",
       damageTypes: [DAMAGE_TYPE.LASER], aoeType: AOE_TYPE.LASER_V, tags: [TAGS.AOE, TAGS.DOT, TAGS.PENETRATE] },
