@@ -1160,6 +1160,22 @@
       border-left-color: var(--accent-purple);
     }
 
+    /* 多配方行样式 */
+    .recipe-row {
+      margin-top: 4px;
+    }
+
+    .recipe-row:first-child {
+      margin-top: 6px;
+    }
+
+    .recipe-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
     /* ========== 空状态 ========== */
     .empty-state {
       text-align: center;
@@ -2977,6 +2993,26 @@
     }
 
     // ========== 高级/被动进化区 ==========
+    // 生成单个配方的组件 HTML
+    function buildRecipeComponentsHtml(components) {
+      if (!components || components.length === 0) return '';
+      
+      let itemsHtml = '';
+      components.forEach((compName) => {
+        const comp = findComponent(compName);
+        if (comp) {
+          itemsHtml += `<span class="base-material-item">
+            <img src="${getImg(comp.img)}" alt="${comp.name}">
+            <span>${getName(comp)}</span>
+          </span>`;
+        } else {
+          itemsHtml += `<span class="base-material-item"><span>${compName}</span></span>`;
+        }
+      });
+      
+      return itemsHtml;
+    }
+
     // 生成高级卡片 HTML
     // 注意: data-evo 使用原始值, 不需要 safeName() 转义
     function advancedCardHtml(evo) {
@@ -2985,12 +3021,26 @@
       const tagsHtml = buildTagsHtml(evo, 'mini');
       
       let materialsHtml = '';
+      
+      // 检查是否有多个配方 (allRecipes)
+      const recipes = evo.allRecipes || [evo.components];
+      
+      recipes.forEach((recipe, idx) => {
+        const recipeHtml = buildRecipeComponentsHtml(recipe);
+        if (recipes.length > 1) {
+          // 多配方: 每个配方单独一行, 加上配方编号
+          materialsHtml += `<div class="base-materials direct-components recipe-row">
+            <span class="recipe-label">配方${idx + 1}:</span>${recipeHtml}
+          </div>`;
+        } else {
+          // 单配方: 原有样式
+          materialsHtml += `<div class="base-materials direct-components">${recipeHtml}</div>`;
+        }
+      });
+      
+      // 高级进化还需要显示基础原料
       if (isAdvancedEvolution(evo)) {
-        // 高级进化: 显示直接原料 (进化球) + 基础原料 (基础球)
-        materialsHtml = buildDirectComponentsHtml(evo) + buildBaseMaterialsHtml(evo);
-      } else {
-        // 被动道具进化: 只显示组件 (基础装备)
-        materialsHtml = buildDirectComponentsHtml(evo);
+        materialsHtml += buildBaseMaterialsHtml(evo);
       }
       
       return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo" data-tags="${tagsData}">
@@ -3003,9 +3053,27 @@
       </div>`;
     }
 
+    // 合并同名进化的所有配方
+    function mergeEvolutionRecipes(evolutions) {
+      const merged = new Map();
+      evolutions.forEach(evo => {
+        if (merged.has(evo.name)) {
+          // 已存在, 添加配方
+          merged.get(evo.name).allRecipes.push(evo.components);
+        } else {
+          // 新条目, 复制并添加配方数组
+          merged.set(evo.name, { ...evo, allRecipes: [evo.components] });
+        }
+      });
+      return Array.from(merged.values());
+    }
+
     function renderAdvancedSections() {
-      DOM.advancedGrid.innerHTML = ADVANCED_EVOLUTIONS.map(advancedCardHtml).join('');
-      DOM.passiveGrid.innerHTML = PASSIVE_EVOLUTIONS.map(advancedCardHtml).join('');
+      // 合并同名进化的不同配方
+      const mergedAdvanced = mergeEvolutionRecipes(ADVANCED_EVOLUTIONS);
+      const mergedPassive = mergeEvolutionRecipes(PASSIVE_EVOLUTIONS);
+      DOM.advancedGrid.innerHTML = mergedAdvanced.map(advancedCardHtml).join('');
+      DOM.passiveGrid.innerHTML = mergedPassive.map(advancedCardHtml).join('');
     }
 
     // ========== 悬浮提示框 ==========
