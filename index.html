@@ -2772,14 +2772,16 @@
       const uniqueEvos = [...new Map(EVOLUTIONS.map(e => [e.name, e])).values()];
       DOM.galleryEvolved.innerHTML = uniqueEvos.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
 
-      // 高级进化
-      DOM.galleryAdvanced.innerHTML = ADVANCED_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
+      // 高级进化 (去重)
+      const uniqueAdvanced = [...new Map(ADVANCED_EVOLUTIONS.map(e => [e.name, e])).values()];
+      DOM.galleryAdvanced.innerHTML = uniqueAdvanced.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
 
       // 基础被动道具
       DOM.galleryBaseItems.innerHTML = BASE_ITEMS.map(i => galleryItemHtml(i, 'item', i.name)).join('');
 
-      // 被动道具进化
-      DOM.galleryPassive.innerHTML = PASSIVE_EVOLUTIONS.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
+      // 被动道具进化 (去重)
+      const uniquePassive = [...new Map(PASSIVE_EVOLUTIONS.map(e => [e.name, e])).values()];
+      DOM.galleryPassive.innerHTML = uniquePassive.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
     }
 
     // ========== 策略视图 ==========
