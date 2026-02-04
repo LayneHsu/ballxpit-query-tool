@@ -29,7 +29,7 @@ const DAMAGE_TYPE = {
   CHARM: { id: "kCharm", name: "Charm", nameCn: "魅惑", released: true, icon: "💕" },
   LIGHT: { id: "kLight", name: "Light", nameCn: "光明", released: true, icon: "✨" },
   DARK: { id: "kDark", name: "Dark", nameCn: "黑暗", released: true, icon: "🌑" },
-  TIME: { id: "kTime", name: "Time", nameCn: "时间", icon: "⏱️" }
+  TIME: { id: "kTime", name: "Time", nameCn: "时间", released: true, icon: "⏱️" }
 };
 
 // ==================== 状态效果定义 ====================
@@ -360,7 +360,7 @@ const GAME_DATA = {
       effect: "Inflicts stacks of bleed. When hitting an enemy with max stacks of bleed, consumes all stacks to deal percentage of their current health.",
       effectCn: "施加流血层数。如果敌人身上的流血效果已达上限，击中敌人时将消耗所有流血层数，并造成等同于敌人最大生命值一定百分比的伤害。",
       damageTypes: [DAMAGE_TYPE.BLEED], statusEffects: [STATUS_EFFECT.BLEED], tags: [TAGS.DOT, TAGS.PENETRATE] },
-    { name: "Hemorrhage", nameCn: "血流如注", released: true, row: "BLEED", col: "FLESH", img: "ball_icon_hemorrhage.png",
+    { name: "Hemorrhage", nameCn: "血流如注", released: false, row: "BLEED", col: "FLESH", img: "ball_icon_hemorrhage.png",
       effect: "Inflicts stacks of bleed. When hitting an enemy with max stacks of bleed, consumes all stacks to deal percentage of their current health.", alt: true,
       effectCn: "施加流血层数。如果敌人身上的流血效果已达上限，击中敌人时将消耗所有流血层数，并造成等同于敌人最大生命值一定百分比的伤害。",
       damageTypes: [DAMAGE_TYPE.BLEED], statusEffects: [STATUS_EFFECT.BLEED], tags: [TAGS.DOT, TAGS.PENETRATE] },
@@ -404,7 +404,7 @@ const GAME_DATA = {
       effect: "Applies 1 stack of burn every second to all enemies within a certain tile radius.",
       effectCn: "每秒对一定范围内的敌人施加1层燃烧。",
       damageTypes: [DAMAGE_TYPE.FIRE, DAMAGE_TYPE.WIND], statusEffects: [STATUS_EFFECT.BURN], aoeType: AOE_TYPE.AURA, tags: [TAGS.DOT, TAGS.AOE] },
-    { name: "Inferno", nameCn: "炼狱", released: true, row: "BURN", col: "TIME", img: "ball_icon_inferno.png",
+    { name: "Inferno", nameCn: "炼狱", released: false, row: "BURN", col: "TIME", img: "ball_icon_inferno.png",
       effect: "Applies 1 stack of burn every second to all enemies within a certain tile radius.", alt: true,
       effectCn: "每秒对一定范围内的敌人施加1层燃烧。",
       damageTypes: [DAMAGE_TYPE.FIRE, DAMAGE_TYPE.WIND], statusEffects: [STATUS_EFFECT.BURN], aoeType: AOE_TYPE.AURA, tags: [TAGS.DOT, TAGS.AOE] },
@@ -452,7 +452,7 @@ const GAME_DATA = {
       effect: "Inflicts lovestruck on hit enemies. Lovestruck units have a 50% chance of healing you when they attack.", alt: true,
       effectCn: "对命中的敌人施加热恋。陷入热恋的单位在发起攻击时将有50%几率转而为你恢复生命值。",
       damageTypes: [DAMAGE_TYPE.CHARM, DAMAGE_TYPE.LIGHTNING], statusEffects: [STATUS_EFFECT.LOVESTRUCK], tags: [TAGS.CC, TAGS.DEBUFF] },
-    { name: "Lovestruck", nameCn: "热恋", released: true, row: "CHARM", col: "TIME", img: "ball_icon_lovestruck.png",
+    { name: "Lovestruck", nameCn: "热恋", released: false, row: "CHARM", col: "TIME", img: "ball_icon_lovestruck.png",
       effect: "Inflicts lovestruck on hit enemies. Lovestruck units have a 50% chance of healing you when they attack.", alt: true,
       effectCn: "对命中的敌人施加热恋。陷入热恋的单位在发起攻击时将有50%几率转而为你恢复生命值。",
       damageTypes: [DAMAGE_TYPE.CHARM, DAMAGE_TYPE.TIME], statusEffects: [STATUS_EFFECT.LOVESTRUCK], tags: [TAGS.CC, TAGS.DEBUFF] },
@@ -650,7 +650,7 @@ const GAME_DATA = {
       effect: "Instantly kills the first non-boss enemy it hits, then destroys itself. Has a 7 second cooldown.",
       effectCn: "在屏幕上创建一个强大的引力奇点，将周围的敌人和投射物全部吸入并湮灭。",
       damageTypes: [DAMAGE_TYPE.DARK], aoeType: AOE_TYPE.AURA, tags: [TAGS.AOE, TAGS.CC] },
-    { name: "Black Hole", nameCn: "黑洞", released: true, components: ["Time", "Sun"], img: "ball_icon_black_hole.png", alt: true,
+    { name: "Black Hole", nameCn: "黑洞", released: false, components: ["Time", "Sun"], img: "ball_icon_black_hole.png", alt: true,
       effect: "Instantly kills the first non-boss enemy it hits, then destroys itself. Has a 7 second cooldown.",
       effectCn: "在屏幕上创建一个强大的引力奇点，将周围的敌人和投射物全部吸入并湮灭。",
       damageTypes: [DAMAGE_TYPE.DARK], aoeType: AOE_TYPE.AURA, tags: [TAGS.AOE, TAGS.CC] },
