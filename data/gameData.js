@@ -29,7 +29,7 @@ const DAMAGE_TYPE = {
   CHARM: { id: "kCharm", name: "Charm", nameCn: "魅惑", released: true, icon: "💕" },
   LIGHT: { id: "kLight", name: "Light", nameCn: "光明", released: true, icon: "✨" },
   DARK: { id: "kDark", name: "Dark", nameCn: "黑暗", released: true, icon: "🌑" },
-  TIME: { id: "kTime", name: "Time", nameCn: "时间", released: true, icon: "⏱️" }
+  TIME: { id: "kTime", name: "Time", nameCn: "时间", released: false, icon: "⏱️" }
 };
 
 // ==================== 状态效果定义 ====================
