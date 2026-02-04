@@ -2194,11 +2194,12 @@
   
   <script>
     // ========== 从外部数据文件加载 ==========
-    const BASE_BALLS = GAME_DATA.baseBalls;
-    const EVOLUTIONS = GAME_DATA.evolutions;
-    const ADVANCED_EVOLUTIONS = GAME_DATA.advancedEvolutions;
-    const BASE_ITEMS = GAME_DATA.baseItems;
-    const PASSIVE_EVOLUTIONS = GAME_DATA.passiveEvolutions;
+    // 过滤未发布内容 (released: false 的条目不显示)
+    const BASE_BALLS = GAME_DATA.baseBalls.filter(item => item.released !== false);
+    const EVOLUTIONS = GAME_DATA.evolutions.filter(item => item.released !== false);
+    const ADVANCED_EVOLUTIONS = GAME_DATA.advancedEvolutions.filter(item => item.released !== false);
+    const BASE_ITEMS = GAME_DATA.baseItems.filter(item => item.released !== false);
+    const PASSIVE_EVOLUTIONS = GAME_DATA.passiveEvolutions.filter(item => item.released !== false);
 
     // ========== 全局变量 ==========
     let currentView = 'matrix';
