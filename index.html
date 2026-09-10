@@ -1,0 +1,3825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BALL x PIT 进化图鉴</title>
+  <meta name="description" content="Ball x Pit 完整进化图鉴 - 矩阵/列表/图鉴三种视图">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KNF2CGY3Y2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KNF2CGY3Y2');
+  </script>
+  
+  <style>
+    /* ========== CSS 变量 ========== */
+    :root {
+      --bg-primary: #0a0e14;
+      --bg-secondary: #141b22;
+      --bg-tertiary: #1a2332;
+      --bg-hover: #243044;
+      --border-color: #2a3a4a;
+      --text-primary: #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --accent-primary: #58a6ff;
+      --accent-secondary: #3fb950;
+      --accent-warning: #d29922;
+      --accent-danger: #f85149;
+      --accent-purple: #a371f7;
+      --accent-pink: #db61a2;
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --transition-fast: 0.15s ease;
+      --transition-normal: 0.25s ease;
+    }
+
+    /* ========== 基础样式 ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    /* ========== 头部 ========== */
+    .header {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      position: relative;
+    }
+
+    .header-content {
+      text-align: center;
+    }
+
+    .header-tools {
+      display: flex;
+      gap: 8px;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .lang-switch {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+      border: none;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .lang-switch:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+    }
+
+    .feedback-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #FB7299;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .feedback-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(251, 114, 153, 0.4);
+    }
+
+    .form-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #6366f1;
+      border-radius: var(--radius-md);
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .form-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    /* ========== 控制栏 ========== */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 20px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 320px;
+      min-width: 0;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: var(--transition-fast);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+    }
+
+    .search-box::before {
+      content: "🔍";
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    .view-tabs {
+      display: flex;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .view-tab {
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 14px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      font-weight: 500;
+    }
+
+    .view-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    .view-tab.active {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    /* ========== 主内容区 ========== */
+    .main-content {
+      padding: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+
+    .view-container {
+      display: none;
+    }
+
+    .view-container.active {
+      display: block;
+    }
+
+    /* ========== 矩阵视图 ========== */
+    .matrix-wrapper {
+      overflow: hidden;
+      padding-bottom: 20px;
+      width: 100%;
+    }
+
+    .matrix-table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      border: 2px solid #4a5a6a;
+      table-layout: fixed;
+      width: 100%;
+      max-width: 1564px;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      width: 68px;
+      height: 68px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 10px;
+      position: relative;
+      border: 1px solid #2a3a4a;
+    }
+
+    .matrix-table th {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 4px;
+      border: 1px solid #3a4a5a;
+    }
+
+    /* 第一行和第一列的表头加粗边框 */
+    .matrix-table tr:first-child th {
+      border-bottom: 2px solid #5a6a7a;
+    }
+
+    .matrix-table th:first-child {
+      border-right: 2px solid #5a6a7a;
+    }
+
+    /* 每5行/列添加分隔线便于阅读 */
+    .matrix-table tr:nth-child(6) td,
+    .matrix-table tr:nth-child(6) th,
+    .matrix-table tr:nth-child(11) td,
+    .matrix-table tr:nth-child(11) th,
+    .matrix-table tr:nth-child(16) td,
+    .matrix-table tr:nth-child(16) th {
+      border-top: 2px solid #3d4d5d;
+    }
+
+    .matrix-table td:nth-child(6),
+    .matrix-table th:nth-child(6),
+    .matrix-table td:nth-child(11),
+    .matrix-table th:nth-child(11),
+    .matrix-table td:nth-child(16),
+    .matrix-table th:nth-child(16) {
+      border-left: 2px solid #3d4d5d;
+    }
+
+    .matrix-table th img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 2px;
+      border-radius: 4px;
+    }
+
+    .matrix-table th span {
+      display: block;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .matrix-cell {
+      background: var(--bg-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      padding: 4px;
+    }
+
+    .matrix-cell:hover {
+      background: var(--bg-hover);
+      box-shadow: inset 0 0 0 2px var(--accent-primary);
+      z-index: 10;
+    }
+
+    .matrix-cell.empty {
+      background: var(--bg-primary);
+      cursor: default;
+    }
+
+    .matrix-cell.empty:hover {
+      box-shadow: none;
+    }
+
+    .matrix-cell img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      border-radius: 4px;
+    }
+
+    .matrix-cell .cell-name {
+      font-size: 10px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .matrix-cell.highlight {
+      box-shadow: 0 0 0 2px var(--accent-primary);
+    }
+
+    /* ========== 列表视图 ========== */
+    .list-view-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+    }
+
+    .list-mode-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-secondary);
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .list-mode-btn {
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .list-mode-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .list-mode-btn.active {
+      background: var(--accent-primary);
+      color: white;
+    }
+
+    .list-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .list-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition-normal);
+    }
+
+    .list-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .list-card-header {
+      background: var(--bg-tertiary);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .list-card-header img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .list-card-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .list-card-header .subtitle {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .list-card-body {
+      padding: 12px 16px;
+    }
+
+    .combo-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .combo-item:last-child {
+      border-bottom: none;
+    }
+
+    .combo-item:hover {
+      background: var(--bg-hover);
+      margin: 0 -16px;
+      padding: 8px 16px;
+    }
+
+    .combo-item .combo-text {
+      flex: 1;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .combo-item .combo-text img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 4px;
+      vertical-align: middle;
+    }
+
+    .combo-item .partner {
+      color: var(--text-secondary);
+    }
+
+    .combo-item .arrow {
+      color: var(--accent-primary);
+      margin: 0 8px;
+    }
+
+    .combo-item .result {
+      color: var(--accent-secondary);
+      font-weight: 500;
+    }
+
+    /* ========== 图鉴视图 ========== */
+    .gallery-section {
+      margin-bottom: 32px;
+    }
+
+    .gallery-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .gallery-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .gallery-section-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--accent-primary);
+      border-radius: 2px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-normal);
+    }
+
+    .gallery-item:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .gallery-item img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
+
+    .gallery-item .item-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .gallery-item .item-name-cn {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .gallery-item .item-tier {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      margin-top: 6px;
+    }
+
+    .tier-basic {
+      background: rgba(88, 166, 255, 0.2);
+      color: var(--accent-primary);
+    }
+
+    .tier-evolved {
+      background: rgba(63, 185, 80, 0.2);
+      color: var(--accent-secondary);
+    }
+
+    .tier-advanced {
+      background: rgba(163, 113, 247, 0.2);
+      color: var(--accent-purple);
+    }
+
+    .tier-passive {
+      background: rgba(210, 153, 34, 0.2);
+      color: var(--accent-warning);
+    }
+
+    /* ========== 策略视图 ========== */
+    .strategy-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    .strategy-filter-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .strategy-filter-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .strategy-filter-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+    }
+
+    .strategy-filter-btn .icon {
+      font-size: 14px;
+    }
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+
+    .strategy-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition-normal);
+    }
+
+    .strategy-card:hover {
+      border-color: var(--accent-primary);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .strategy-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .strategy-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .strategy-type-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .strategy-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .strategy-name-cn {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .strategy-meta {
+      text-align: right;
+    }
+
+    .strategy-difficulty,
+    .strategy-rating {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .strategy-stars {
+      color: #f1c40f;
+      letter-spacing: -2px;
+    }
+
+    .strategy-body {
+      padding: 20px;
+    }
+
+    .strategy-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    .strategy-balls-section {
+      margin-bottom: 16px;
+    }
+
+    .strategy-balls-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .strategy-balls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .strategy-ball {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .strategy-ball:hover {
+      border-color: var(--accent-primary);
+      background: var(--bg-hover);
+    }
+
+    .strategy-ball.core {
+      border-color: var(--accent-danger);
+      background: rgba(248, 81, 73, 0.1);
+    }
+
+    .strategy-ball img {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+    }
+
+    .strategy-ball-name {
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+
+    .strategy-ball-role {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .strategy-mechanism {
+      margin-top: 16px;
+    }
+
+    .strategy-mechanism-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .mechanism-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mechanism-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .mechanism-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .mechanism-ball-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ========== 弹窗 ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      max-width: calc(100vw - 40px);
+      width: fit-content;
+      min-width: 320px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalIn 0.25s ease;
+      box-sizing: border-box;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-header img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      background: var(--bg-secondary);
+      padding: 8px;
+    }
+
+    .modal-header-info h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .modal-header-info .cn-name {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      background: var(--bg-hover);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-secondary);
+      font-size: 18px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .modal-close:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    .modal-body {
+      padding: 20px;
+      min-width: min-content;
+    }
+
+    .modal-section {
+      margin-bottom: 20px;
+    }
+
+    .modal-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-section h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .combo-formula {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      flex-wrap: nowrap;
+    }
+
+    .combo-ball {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-fast);
+      flex-shrink: 0;
+    }
+
+    .combo-ball:hover {
+      background: var(--bg-hover);
+    }
+
+    .combo-ball img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .combo-ball span {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .combo-plus,
+    .combo-equals {
+      flex-shrink: 0;
+    }
+
+    .combo-plus {
+      font-size: 24px;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .combo-equals {
+      font-size: 24px;
+      color: var(--accent-primary);
+    }
+
+    /* 多配方容器: 每个配方单独一行 */
+    .combo-formula-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .combo-formula-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 多配方时, 外层容器变为纵向排列 */
+    .combo-formula:has(.combo-formula-row) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .effect-text {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--accent-primary);
+    }
+
+    /* ========== 高级/被动进化区 ========== */
+    .advanced-section {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      background: var(--accent-purple);
+      border-radius: 2px;
+    }
+
+    .advanced-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 12px;
+    }
+
+    .advanced-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .advanced-card:hover {
+      border-color: var(--accent-purple);
+      background: var(--bg-tertiary);
+    }
+
+    .advanced-card img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .advanced-card-info {
+      flex: 1;
+    }
+
+    .advanced-card-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .advanced-card-info p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .advanced-card-info .tags-container {
+      margin-top: 6px;
+    }
+
+    .advanced-card-info .mini-tag {
+      padding: 2px 8px;
+      font-size: 10px;
+    }
+
+    /* ========== 基础原料显示 ========== */
+    .base-materials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      padding: 6px 8px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      border-left: 2px solid var(--accent-primary);
+    }
+
+    .base-material-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 6px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+
+    .base-material-item img {
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+    }
+
+    .base-material-item .count {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* 直接原料样式 (进化球组件) */
+    .direct-components {
+      border-left-color: var(--accent-purple);
+    }
+
+    /* 多配方行样式 */
+    .recipe-row {
+      margin-top: 4px;
+    }
+
+    .recipe-row:first-child {
+      margin-top: 6px;
+    }
+
+    .recipe-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+
+    /* ========== 空状态 ========== */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    /* ========== 响应式 ========== */
+    @media (max-width: 768px) {
+      /* 全局容器限制 */
+      .header,
+      .controls,
+      .main-content,
+      .advanced-section {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      .header {
+        padding: 16px 12px;
+        padding-top: 50px;
+      }
+
+      .header-tools {
+        top: 12px;
+        right: 12px;
+      }
+      
+      .header-tools .feedback-btn span,
+      .header-tools .form-btn span {
+        display: none;
+      }
+      
+      .header-tools .feedback-btn,
+      .header-tools .form-btn {
+        padding: 8px;
+      }
+
+      .header h1 {
+        font-size: 20px;
+      }
+
+      .header p {
+        font-size: 12px;
+      }
+
+      .lang-switch {
+        padding: 6px 12px;
+        font-size: 12px;
+        order: -1;
+        width: calc(100% - 44px);
+      }
+
+      .feedback-btn,
+      .form-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+        order: -1;
+      }
+
+      .controls {
+        padding: 10px;
+        gap: 8px;
+        flex-direction: column;
+      }
+
+      .search-box {
+        min-width: unset;
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .view-tabs {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .main-content {
+        padding: 10px;
+      }
+
+      /* 矩阵表格 - 允许水平滚动, 不缩小格子 */
+      .matrix-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        margin: 0 -10px;
+        padding: 0 10px;
+      }
+
+      .matrix-table th,
+      .matrix-table td {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        min-height: 80px;
+      }
+
+      .matrix-table th img {
+        width: 42px;
+        height: 42px;
+      }
+
+      .matrix-table th span {
+        font-size: 9px;
+      }
+
+      .matrix-cell img {
+        width: 46px;
+        height: 46px;
+      }
+
+      .matrix-cell .cell-name {
+        font-size: 9px;
+      }
+
+      /* 列表视图 */
+      .list-view {
+        grid-template-columns: 1fr;
+      }
+
+      .list-card {
+        max-width: 100%;
+      }
+
+      /* 图鉴视图 */
+      .gallery-section {
+        max-width: 100%;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 8px;
+      }
+
+      .gallery-item {
+        padding: 10px;
+      }
+
+      .gallery-item img {
+        width: 44px;
+        height: 44px;
+      }
+
+      .gallery-item .item-name {
+        font-size: 11px;
+        word-break: break-word;
+      }
+
+      .gallery-item .item-name-cn {
+        font-size: 10px;
+      }
+
+      /* 高级进化区域 */
+      .advanced-section {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .section-title {
+        font-size: 16px;
+        padding: 0 10px;
+      }
+
+      .advanced-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .advanced-card {
+        padding: 10px;
+        max-width: 100%;
+      }
+
+      .advanced-card img {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+      }
+
+      .advanced-card-info {
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .advanced-card-info h4 {
+        font-size: 13px;
+        word-break: break-word;
+      }
+
+      .advanced-card-info p {
+        font-size: 11px;
+        word-break: break-word;
+      }
+
+      /* 移动端 tooltip 优化 - 宽度自适应屏幕 */
+      .tooltip {
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        min-width: unset !important;
+      }
+
+      .tooltip-formula {
+        flex-wrap: wrap !important;
+        white-space: normal !important;
+        justify-content: flex-start;
+      }
+
+      .tooltip-formula img {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+      }
+
+      .tooltip-formula span {
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .tooltip-header img {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+      }
+
+      .tooltip-effect {
+        word-break: break-word;
+        overflow-wrap: break-word;
+      }
+
+      /* 弹窗优化 */
+      .modal-overlay {
+        padding: 10px;
+      }
+
+      .modal {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+      }
+
+      .modal-header {
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .modal-header img {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+      }
+
+      .modal-header-info {
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .modal-header-info h2 {
+        font-size: 16px;
+        word-break: break-word;
+      }
+
+      .modal-body {
+        padding: 16px;
+      }
+
+      .combo-formula {
+        gap: 8px;
+        padding: 10px;
+        flex-wrap: wrap !important;
+        white-space: normal !important;
+      }
+
+      .combo-formula-row {
+        gap: 8px;
+        padding: 6px 10px;
+        flex-wrap: wrap !important;
+      }
+
+      .combo-ball {
+        padding: 4px;
+      }
+
+      .combo-ball img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .combo-ball span {
+        font-size: 10px;
+        word-break: break-word;
+      }
+
+      .combo-plus,
+      .combo-equals {
+        font-size: 18px;
+      }
+
+      .effect-text {
+        font-size: 13px;
+      }
+    }
+
+    /* 更小屏幕适配 */
+    @media (max-width: 480px) {
+      .header {
+        padding: 12px 10px;
+      }
+
+      .header h1 {
+        font-size: 18px;
+        letter-spacing: 1px;
+      }
+
+      .controls {
+        padding: 8px;
+      }
+
+      .main-content {
+        padding: 8px;
+      }
+
+      .matrix-wrapper {
+        margin: 0 -8px;
+        padding: 0 8px;
+      }
+
+      /* 小屏幕保持格子尺寸, 通过滚动查看 */
+      .matrix-table th,
+      .matrix-table td {
+        width: 70px;
+        height: 70px;
+        min-width: 70px;
+        min-height: 70px;
+      }
+
+      .matrix-table th img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .matrix-table th span {
+        font-size: 8px;
+      }
+
+      .matrix-cell img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .matrix-cell .cell-name {
+        font-size: 8px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 6px;
+      }
+
+      .gallery-item {
+        padding: 8px;
+      }
+
+      .gallery-item img {
+        width: 36px;
+        height: 36px;
+      }
+
+      .gallery-item .item-name {
+        font-size: 10px;
+      }
+
+      .gallery-item .item-name-cn {
+        font-size: 9px;
+      }
+
+      .advanced-card {
+        padding: 8px;
+      }
+
+      .advanced-card img {
+        width: 36px;
+        height: 36px;
+      }
+
+      /* tooltip */
+      .tooltip {
+        left: 8px !important;
+        right: 8px !important;
+      }
+
+      /* 弹窗 */
+      .modal-overlay {
+        padding: 8px;
+      }
+
+      .modal-header {
+        padding: 12px;
+      }
+
+      .modal-header img {
+        width: 48px;
+        height: 48px;
+      }
+
+      .modal-body {
+        padding: 12px;
+      }
+
+      .combo-ball img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .combo-ball span {
+        font-size: 9px;
+      }
+    }
+
+    /* ========== 滚动条 ========== */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* ========== 悬浮提示框 ========== */
+    .tooltip {
+      position: fixed;
+      z-index: 2000;
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent-primary);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      max-width: calc(100vw - 40px);
+      min-width: 0;
+      width: fit-content;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      overflow: visible;
+      box-sizing: border-box;
+    }
+
+    .tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .tooltip-header img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: var(--bg-tertiary);
+      padding: 4px;
+    }
+
+    .tooltip-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .tooltip-title-cn {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .tooltip-formula {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+      padding: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      box-sizing: border-box;
+    }
+    
+    .tooltip-formula-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
+    .tooltip-formula img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .tooltip-formula .plus {
+      color: var(--text-muted);
+    }
+
+    .tooltip-formula .equals {
+      color: var(--accent-primary);
+      font-weight: bold;
+    }
+
+    .tooltip-effect {
+      font-size: 12px;
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      border-left: 2px solid var(--accent-primary);
+    }
+
+    .tooltip-materials {
+      margin-top: 8px;
+    }
+
+    .tooltip-materials .base-materials {
+      margin-top: 0;
+    }
+
+    /* ========== 隐藏类 ========== */
+    .hidden {
+      display: none !important;
+    }
+
+    /* ========== 加载提示 ========== */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-secondary);
+    }
+
+    .loading::after {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-color);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ========== 页脚 ========== */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .footer .divider {
+      margin: 0 12px;
+      opacity: 0.5;
+    }
+
+    .footer span#busuanzi_value_site_pv,
+    .footer span#busuanzi_value_site_uv,
+    .footer span#busuanzi_value_page_pv {
+      color: var(--accent-primary);
+    }
+
+    /* ========== 标签系统 ========== */
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag, .mini-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .tag[class*="tag-"], .mini-tag[class*="tag-"] {
+      color: white;
+    }
+
+    /* ========== 伤害类型 ========== */
+    .damage-types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .damage-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+    }
+
+    .damage-type .icon {
+      font-size: 14px;
+    }
+
+    /* ========== 状态效果 ========== */
+    .status-effects {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .status-effect {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      background: rgba(248, 81, 73, 0.15);
+      border: 1px solid rgba(248, 81, 73, 0.3);
+      color: #f85149;
+    }
+
+    .status-effect .icon {
+      font-size: 13px;
+    }
+
+    /* ========== AOE类型 ========== */
+    .aoe-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      background: rgba(243, 156, 18, 0.15);
+      border: 1px solid rgba(243, 156, 18, 0.3);
+      color: #f39c12;
+      margin-bottom: 8px;
+    }
+
+    /* ========== Tooltip 增强 ========== */
+    .tooltip-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .tooltip-meta {
+      margin-bottom: 8px;
+    }
+
+    .tooltip-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    /* ========== Modal 增强 ========== */
+    .modal-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-meta-section {
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+    }
+
+    .modal-meta-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modal-tag {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ========== 图鉴卡片标签 ========== */
+    .gallery-item .item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .gallery-item .mini-tag {
+      padding: 2px 8px;
+      font-size: 9px;
+    }
+
+    /* ========== 筛选栏 ========== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 12px 20px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+    }
+
+    .filter-btn .icon {
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .filter-bar {
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .filter-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+      .tag, .mini-tag {
+        font-size: 9px;
+        padding: 2px 8px;
+      }
+      .damage-type, .status-effect, .aoe-badge {
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 头部 -->
+  <header class="header">
+    <div class="header-tools">
+      <button class="lang-switch" id="langSwitch" title="Switch Language">🌐 English</button>
+      <a class="feedback-btn" href="https://www.bilibili.com/video/BV1a521BYEdw" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.659.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906l-1.174 1.12zm-1.187 15.2h1.027c.764-.036 1.4-.312 1.907-.827.506-.516.778-1.152.813-1.907V9.76c-.035-.755-.307-1.391-.813-1.907-.507-.515-1.143-.79-1.907-.826H5.333c-.764.035-1.4.311-1.907.826-.506.516-.778 1.152-.813 1.907v7.36c.035.755.307 1.391.813 1.907.507.515 1.143.79 1.907.826h11.293zM7.68 9.92c.444 0 .826.159 1.147.48.32.32.48.702.48 1.146v2.56c0 .445-.16.827-.48 1.147a1.56 1.56 0 0 1-1.147.48 1.56 1.56 0 0 1-1.146-.48 1.56 1.56 0 0 1-.48-1.147v-2.56c0-.444.16-.826.48-1.146.32-.321.702-.48 1.146-.48zm8.533 0c.445 0 .827.159 1.147.48.32.32.48.702.48 1.146v2.56c0 .445-.16.827-.48 1.147a1.56 1.56 0 0 1-1.147.48 1.56 1.56 0 0 1-1.146-.48 1.56 1.56 0 0 1-.48-1.147v-2.56c0-.444.16-.826.48-1.146.32-.321.701-.48 1.146-.48z"/>
+        </svg>
+        <span data-i18n="footerFeedback">B站反馈</span>
+      </a>
+      <a class="form-btn" href="https://forms.gle/Pr8DGVkTVu91WVQ46" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm5-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+        </svg>
+        <span data-i18n="submitFeedback">问卷反馈</span>
+      </a>
+    </div>
+    <div class="header-content">
+      <h1 data-i18n="title">BALL x PIT 进化图鉴</h1>
+      <p data-i18n="subtitle">完整进化组合参考</p>
+    </div>
+  </header>
+
+  <!-- 控制栏 -->
+  <div class="controls">
+    <div class="search-box">
+      <input 
+        type="text" 
+        id="searchInput" 
+        data-i18n-placeholder="searchPlaceholder"
+        placeholder="搜索球名..."
+        autocomplete="off"
+      >
+    </div>
+    
+    <div class="view-tabs">
+      <button class="view-tab active" data-view="matrix" data-i18n="viewMatrix">矩阵</button>
+      <button class="view-tab" data-view="list" data-i18n="viewList">列表</button>
+      <button class="view-tab" data-view="gallery" data-i18n="viewGallery">图鉴</button>
+      <button class="view-tab" data-view="strategy" data-i18n="viewStrategy">策略</button>
+    </div>
+  </div>
+
+  <!-- 筛选栏 -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-filter="all"><span class="icon">🎯</span><span data-i18n="filterAll">全部</span></button>
+    <button class="filter-btn" data-filter="dot"><span class="icon">🔥</span><span data-i18n="filterDot">持续伤害</span></button>
+    <button class="filter-btn" data-filter="cc"><span class="icon">❄️</span><span data-i18n="filterCc">控制</span></button>
+    <button class="filter-btn" data-filter="aoe"><span class="icon">💥</span><span data-i18n="filterAoe">范围</span></button>
+    <button class="filter-btn" data-filter="summon"><span class="icon">🕷️</span><span data-i18n="filterSummon">召唤</span></button>
+    <button class="filter-btn" data-filter="lifesteal"><span class="icon">🧛</span><span data-i18n="filterLifesteal">吸血</span></button>
+    <button class="filter-btn" data-filter="penetrate"><span class="icon">👻</span><span data-i18n="filterPenetrate">穿透</span></button>
+  </div>
+
+  <!-- 主内容 -->
+  <main class="main-content">
+    
+    <!-- 矩阵视图 -->
+    <div id="matrixView" class="view-container active">
+      <div class="matrix-wrapper">
+        <table class="matrix-table" id="matrixTable">
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 列表视图 -->
+    <div id="listView" class="view-container">
+      <div class="list-view-header">
+        <div class="list-mode-toggle">
+          <button class="list-mode-btn active" data-mode="material" data-i18n="listGroupByMaterial">按材料</button>
+          <button class="list-mode-btn" data-mode="result" data-i18n="listGroupByResult">按结果</button>
+        </div>
+      </div>
+      <div class="list-view" id="listContainer"></div>
+    </div>
+
+    <!-- 图鉴视图 -->
+    <div id="galleryView" class="view-container">
+      <div class="gallery-section">
+        <h3 class="gallery-section-title" data-i18n="sectionBasic">基础球 Basic Balls</h3>
+        <div class="gallery-grid" id="galleryBasic"></div>
+      </div>
+      <div class="gallery-section">
+        <h3 class="gallery-section-title" data-i18n="sectionEvolved">进化球 Evolved Balls</h3>
+        <div class="gallery-grid" id="galleryEvolved"></div>
+      </div>
+      <div class="gallery-section">
+        <h3 class="gallery-section-title" data-i18n="sectionAdvanced">高级进化 Advanced Evolutions</h3>
+        <div class="gallery-grid" id="galleryAdvanced"></div>
+      </div>
+      <div class="gallery-section">
+        <h3 class="gallery-section-title" data-i18n="sectionBaseItems">基础被动 Base Passives</h3>
+        <div class="gallery-grid" id="galleryBaseItems"></div>
+      </div>
+      <div class="gallery-section">
+        <h3 class="gallery-section-title" data-i18n="sectionPassive">被动进化 Passive Evolutions</h3>
+        <div class="gallery-grid" id="galleryPassive"></div>
+      </div>
+    </div>
+
+    <!-- 策略视图 -->
+    <div id="strategyView" class="view-container">
+      <div class="strategy-filters" id="strategyFilters"></div>
+      <div class="strategy-grid" id="strategyGrid"></div>
+    </div>
+
+    <!-- 高级进化区 -->
+    <section class="advanced-section" id="advancedSection">
+      <h3 class="section-title" data-i18n="advancedTitle">高级弹珠进化</h3>
+      <div class="advanced-grid" id="advancedGrid"></div>
+    </section>
+
+    <!-- 被动道具进化区 -->
+    <section class="advanced-section" id="passiveSection">
+      <h3 class="section-title" data-i18n="passiveTitle">被动道具进化</h3>
+      <div class="advanced-grid" id="passiveGrid"></div>
+    </section>
+
+  </main>
+
+  <!-- 页脚统计 -->
+  <footer class="footer">
+    <span>📊 <span data-i18n="footerVisits">总访问量</span>: <span id="busuanzi_value_site_pv">--</span> <span data-i18n="footerTimes">次</span></span>
+    <span class="divider">|</span>
+    <span>👥 <span data-i18n="footerVisitors">总访客</span>: <span id="busuanzi_value_site_uv">--</span> <span data-i18n="footerPeople">人</span></span>
+    <span class="divider">|</span>
+    <span>📄 <span data-i18n="footerPageViews">本页浏览</span>: <span id="busuanzi_value_page_pv">--</span> <span data-i18n="footerTimes">次</span></span>
+  </footer>
+
+  <!-- 悬浮提示框 -->
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-header">
+      <img id="tooltipImg" src="" alt="">
+      <div class="tooltip-title-wrap">
+        <div class="tooltip-title" id="tooltipTitle"></div>
+        <div class="tooltip-title-cn" id="tooltipTitleCn"></div>
+      </div>
+    </div>
+    <div class="tooltip-meta" id="tooltipMeta"></div>
+    <div class="tooltip-effect" id="tooltipEffect"></div>
+    <div class="tooltip-formula" id="tooltipFormula"></div>
+    <div class="tooltip-materials" id="tooltipMaterials"></div>
+    <div class="tooltip-tags" id="tooltipTags"></div>
+  </div>
+
+  <!-- 详情弹窗 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-header">
+        <img id="modalImg" src="" alt="">
+        <div class="modal-header-info">
+          <h2 id="modalTitle"></h2>
+          <div class="cn-name" id="modalTitleCn"></div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h4 data-i18n="modalRecipe">合成配方 / Recipe</h4>
+          <div class="combo-formula" id="modalFormula"></div>
+        </div>
+        <div class="modal-section" id="modalMetaSection">
+          <h4 data-i18n="modalAttributes">属性信息 / Attributes</h4>
+          <div class="modal-meta" id="modalMeta"></div>
+        </div>
+        <div class="modal-section">
+          <h4 data-i18n="modalEffect">效果描述 / Effect</h4>
+          <div class="effect-text" id="modalEffect"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入外部数据文件 -->
+  <script src="data/i18n.js"></script>
+  <script src="data/gameData.js"></script>
+  <script src="data/effectProperties.js"></script>
+  
+  <!-- 不蒜子访问统计 (只在 http/https 下加载, 避免 file:// 协议下超时) -->
+  <script>
+    if (location.protocol === 'http:' || location.protocol === 'https:') {
+      var s = document.createElement('script');
+      s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+      s.async = true;
+      document.head.appendChild(s);
+    }
+  </script>
+  
+  <script>
+    // ========== 从外部数据文件加载 ==========
+    // 过滤未发布内容 (released: false 的条目不显示)
+    const BASE_BALLS = GAME_DATA.baseBalls.filter(item => item.released !== false);
+    const EVOLUTIONS = GAME_DATA.evolutions.filter(item => item.released !== false);
+    const ADVANCED_EVOLUTIONS = GAME_DATA.advancedEvolutions.filter(item => item.released !== false);
+    const BASE_ITEMS = GAME_DATA.baseItems.filter(item => item.released !== false);
+    const PASSIVE_EVOLUTIONS = GAME_DATA.passiveEvolutions.filter(item => item.released !== false);
+
+    // ========== 全局变量 ==========
+    let currentView = 'matrix';
+    let currentLang = 'zh'; // 默认中文
+    let listGroupMode = 'material'; // 列表分组模式: material(按材料) / result(按结果)
+    try {
+      currentLang = localStorage.getItem('lang') || 'zh';
+    } catch (e) {
+      console.warn('无法读取 localStorage:', e);
+    }
+    const IMG_BASE = 'img/';
+    let searchTimeout = null;
+
+    // ========== 数据索引 (O(1) 查找) ==========
+    const ballById = new Map();
+    const ballByName = new Map();
+    const evoByName = new Map();
+    const itemByName = new Map();
+    const evoMatrix = new Map();
+
+    function buildIndexes() {
+      BASE_BALLS.forEach(b => {
+        ballById.set(b.id, b);
+        ballByName.set(b.name, b);
+      });
+      EVOLUTIONS.forEach(e => evoByName.set(e.name, e));
+      ADVANCED_EVOLUTIONS.forEach(e => evoByName.set(e.name, e));
+      PASSIVE_EVOLUTIONS.forEach(e => evoByName.set(e.name, e));
+      BASE_ITEMS.forEach(i => itemByName.set(i.name, i));
+      // 矩阵索引: "ROW_COL" -> evolution
+      EVOLUTIONS.forEach(e => {
+        evoMatrix.set(`${e.row}_${e.col}`, e);
+        evoMatrix.set(`${e.col}_${e.row}`, e);
+      });
+    }
+
+    // ========== DOM 缓存 ==========
+    const DOM = {};
+    function cacheDOM() {
+      DOM.tooltip = document.getElementById('tooltip');
+      DOM.tooltipImg = document.getElementById('tooltipImg');
+      DOM.tooltipTitle = document.getElementById('tooltipTitle');
+      DOM.tooltipTitleCn = document.getElementById('tooltipTitleCn');
+      DOM.tooltipEffect = document.getElementById('tooltipEffect');
+      DOM.tooltipFormula = document.getElementById('tooltipFormula');
+      DOM.tooltipMaterials = document.getElementById('tooltipMaterials');
+      DOM.tooltipMeta = document.getElementById('tooltipMeta');
+      DOM.tooltipTags = document.getElementById('tooltipTags');
+      DOM.modalOverlay = document.getElementById('modalOverlay');
+      DOM.modalImg = document.getElementById('modalImg');
+      DOM.modalTitle = document.getElementById('modalTitle');
+      DOM.modalTitleCn = document.getElementById('modalTitleCn');
+      DOM.modalEffect = document.getElementById('modalEffect');
+      DOM.modalFormula = document.getElementById('modalFormula');
+      DOM.modalMeta = document.getElementById('modalMeta');
+      DOM.modalMetaSection = document.getElementById('modalMetaSection');
+      DOM.searchInput = document.getElementById('searchInput');
+      DOM.matrixTable = document.getElementById('matrixTable');
+      DOM.listContainer = document.getElementById('listContainer');
+      DOM.galleryBasic = document.getElementById('galleryBasic');
+      DOM.galleryEvolved = document.getElementById('galleryEvolved');
+      DOM.galleryAdvanced = document.getElementById('galleryAdvanced');
+      DOM.galleryBaseItems = document.getElementById('galleryBaseItems');
+      DOM.galleryPassive = document.getElementById('galleryPassive');
+      DOM.advancedGrid = document.getElementById('advancedGrid');
+      DOM.passiveGrid = document.getElementById('passiveGrid');
+      DOM.advancedSection = document.getElementById('advancedSection');
+      DOM.passiveSection = document.getElementById('passiveSection');
+      DOM.filterBar = document.getElementById('filterBar');
+    }
+
+    // ========== 当前筛选状态 ==========
+    let currentFilter = 'all';
+
+    // ========== 视图渲染状态追踪 ==========
+    // 记录每个视图是否已渲染, 避免重复渲染
+    const viewRendered = {
+      matrix: false,
+      list: false,
+      gallery: false,
+      strategy: false
+    };
+
+    // ========== 生成标签 HTML ==========
+    function buildTagsHtml(item, size = 'normal') {
+      if (!item.tags || item.tags.length === 0) return '';
+      const cls = size === 'mini' ? 'mini-tag' : 'tag';
+      return item.tags.map(tag => 
+        `<span class="${cls} tag-${tag.id}" style="background-color: ${tag.color}">${getTagName(tag)}</span>`
+      ).join('');
+    }
+
+    // ========== 生成伤害类型 HTML ==========
+    // 过滤掉与状态效果重复的伤害类型 (同名元素只在状态效果区显示)
+    function buildDamageTypesHtml(item) {
+      // 获取伤害类型列表
+      let types = [];
+      if (item.damageType) types.push(item.damageType);
+      if (item.damageTypes) types = types.concat(item.damageTypes);
+      if (types.length === 0) return '';
+      
+      // 去重
+      let unique = [...new Map(types.map(t => [t.id, t])).values()];
+      
+      // 过滤掉与状态效果名称重复的伤害类型
+      if (item.statusEffects && item.statusEffects.length > 0) {
+        const statusIds = new Set(item.statusEffects.map(s => s.id));
+        unique = unique.filter(t => !statusIds.has(t.id));
+      }
+      
+      if (unique.length === 0) return '';
+      return `<div class="damage-types">${unique.map(t => 
+        `<span class="damage-type"><span class="icon">${t.icon}</span>${getDamageTypeName(t)}</span>`
+      ).join('')}</div>`;
+    }
+
+    // ========== 生成状态效果 HTML ==========
+    function buildStatusEffectsHtml(item) {
+      if (!item.statusEffects || item.statusEffects.length === 0) return '';
+      // 去重
+      const unique = [...new Map(item.statusEffects.map(s => [s.id, s])).values()];
+      return `<div class="status-effects">${unique.map(s => 
+        `<span class="status-effect" title="${getStatusEffectDesc(s)}"><span class="icon">${s.icon}</span>${getStatusEffectName(s)}</span>`
+      ).join('')}</div>`;
+    }
+
+    // ========== 生成AOE类型 HTML ==========
+    function buildAoeHtml(item) {
+      if (!item.aoeType) return '';
+      const aoe = item.aoeType;
+      return `<div class="aoe-badge"><span class="icon">${aoe.icon}</span>${getAoeTypeName(aoe)}: ${getAoeTypeDesc(aoe)}</div>`;
+    }
+
+    // ========== 检查item是否匹配筛选 ==========
+    function matchesFilter(item, filter) {
+      if (filter === 'all') return true;
+      if (!item.tags) return false;
+      return item.tags.some(tag => tag.id === filter);
+    }
+
+    // ========== 工具函数 ==========
+    function getImg(filename) {
+      return IMG_BASE + (filename || 'ball_icon_bleed.png');
+    }
+
+    // 转义撇号, 仅用于内联 JavaScript 字符串
+    // 正确用法: onclick="func('${safeName(name)}')"
+    // 错误用法: data-evo="${safeName(name)}"  (data-* 属性不需要转义!)
+    // 原因: data-* 属性值会被浏览器原样保存, 转义字符会变成字面字符
+    function safeName(str) {
+      return str ? str.replace(/'/g, "\\'") : '';
+    }
+
+    // 生成图片 HTML
+    function imgHtml(src, alt, className) {
+      const cls = className ? ` class="${className}"` : '';
+      return `<img${cls} src="${getImg(src)}" alt="${alt || ''}" onerror="this.style.visibility='hidden'; this.onerror=null;">`;
+    }
+
+    // ========== 语言相关函数 ==========
+    function getName(item) {
+      if (currentLang === 'en') {
+        return item.name;
+      }
+      return item.nameCn || item.name;
+    }
+
+    const PERCENT_EFFECT_KEYS = new Set([
+      'acceleration',
+      'base_speed',
+      'overheal_efficiency',
+      'peak_speed'
+    ]);
+    const MULTIPLIER_EFFECT_KEYS = new Set(['damage_multiplier', 'follower_mult']);
+
+    function trimNumber(value) {
+      if (Number.isInteger(value)) return String(value);
+      return value.toFixed(2).replace(/\.?0+$/, '');
+    }
+
+    function isPercentEffectKey(key) {
+      return PERCENT_EFFECT_KEYS.has(key)
+        || key.endsWith('_pct')
+        || key.endsWith('_chance');
+    }
+
+    function formatEffectValue(key, rawValue, template, endIndex) {
+      const value = Number(rawValue);
+      if (!Number.isFinite(value)) return String(rawValue);
+
+      if (MULTIPLIER_EFFECT_KEYS.has(key)) {
+        return trimNumber(value / 100);
+      }
+
+      const displayValue = key === 'damage_pct_tenth' ? value / 10 : value;
+      const displayText = trimNumber(displayValue);
+      if (isPercentEffectKey(key) && template[endIndex] !== '%') {
+        return `${displayText}%`;
+      }
+      return displayText;
+    }
+
+    function formatEffectText(template, item) {
+      if (!template || !item) return template || '';
+      const props = (window.EFFECT_PROPERTIES && window.EFFECT_PROPERTIES[item.name]) || {};
+      return template.replace(/\{\[([A-Za-z0-9_]+)\]\}/g, (token, key, offset) => {
+        if (!Object.prototype.hasOwnProperty.call(props, key)) {
+          return token;
+        }
+        return formatEffectValue(key, props[key], template, offset + token.length);
+      });
+    }
+
+    function getEffect(item) {
+      const template = currentLang === 'en'
+        ? (item.effect || item.effectCn || '')
+        : (item.effectCn || item.effect || '');
+      return formatEffectText(template, item);
+    }
+
+    // 获取标签名称
+    function getTagName(tag) {
+      if (currentLang === 'en') {
+        return tag.name;
+      }
+      return tag.nameCn || tag.name;
+    }
+
+    // 获取伤害类型名称
+    function getDamageTypeName(type) {
+      if (currentLang === 'en') {
+        return type.name;
+      }
+      return type.nameCn || type.name;
+    }
+
+    // 获取状态效果名称
+    function getStatusEffectName(effect) {
+      if (currentLang === 'en') {
+        return effect.name;
+      }
+      return effect.nameCn || effect.name;
+    }
+
+    // 获取状态效果描述
+    function getStatusEffectDesc(effect) {
+      if (currentLang === 'en') {
+        return effect.desc || effect.descCn || '';
+      }
+      return effect.descCn || effect.desc || '';
+    }
+
+    // 获取 AOE 类型名称
+    function getAoeTypeName(aoe) {
+      if (currentLang === 'en') {
+        return aoe.name;
+      }
+      return aoe.nameCn || aoe.name;
+    }
+
+    // 获取 AOE 类型描述
+    function getAoeTypeDesc(aoe) {
+      if (currentLang === 'en') {
+        return aoe.desc || aoe.descCn || '';
+      }
+      return aoe.descCn || aoe.desc || '';
+    }
+
+    // 更新界面文字
+    function updateUIText() {
+      // 确保 I18N 对象存在
+      if (typeof I18N === 'undefined') {
+        console.error('I18N 对象未定义, 请检查 i18n.js 是否正确加载');
+        return;
+      }
+      
+      const texts = I18N[currentLang];
+      if (!texts) {
+        console.error('语言配置不存在:', currentLang);
+        return;
+      }
+      
+      // 更新所有带 data-i18n 属性的元素
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (texts[key]) {
+          el.textContent = texts[key];
+        }
+      });
+      
+      // 更新 placeholder
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.dataset.i18nPlaceholder;
+        if (texts[key]) {
+          el.placeholder = texts[key];
+        }
+      });
+      
+      // 更新语言切换按钮文字
+      const langBtn = document.getElementById('langSwitch');
+      if (langBtn && texts.langSwitch) {
+        langBtn.textContent = texts.langSwitch;
+      }
+      
+      // 更新页面标题
+      if (texts.title) {
+        document.title = texts.title;
+      }
+    }
+
+    // 切换语言
+    function switchLanguage() {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('lang', currentLang);
+      
+      // 更新界面文字
+      updateUIText();
+      
+      // 重新渲染所有视图
+      renderAll();
+      
+      // 重新应用当前筛选
+      applyFilter(currentFilter);
+    }
+
+    function getBaseBall(id) {
+      return ballById.get(id);
+    }
+
+    function getBaseItem(name) {
+      return itemByName.get(name);
+    }
+
+    function getEvolution(name) {
+      return evoByName.get(name);
+    }
+
+    function findEvolution(rowId, colId) {
+      return evoMatrix.get(`${rowId}_${colId}`);
+    }
+
+    // 统一查找组件 (基础球/进化球/装备)
+    function findComponent(name) {
+      return ballByName.get(name) || evoByName.get(name) || itemByName.get(name);
+    }
+
+    // 获取组件名称 (根据当前语言)
+    function getComponentName(name) {
+      const comp = findComponent(name);
+      if (!comp) return name;
+      return getName(comp);
+    }
+
+    // 计算高级进化所需的基础球及数量
+    // 返回: Map<ballId, { ball: baseBall, count: number }>
+    function getBaseMaterials(evo) {
+      const materials = new Map();
+      
+      if (!evo.components) return materials;
+      
+      evo.components.forEach(compName => {
+        // 先检查是否是基础球
+        const baseBall = ballByName.get(compName);
+        if (baseBall) {
+          // 是基础球, 直接计数
+          const id = baseBall.id;
+          if (materials.has(id)) {
+            materials.get(id).count++;
+          } else {
+            materials.set(id, { ball: baseBall, count: 1 });
+          }
+          return;
+        }
+        
+        // 不是基础球, 查找进化球
+        const evolution = evoByName.get(compName);
+        if (evolution && evolution.row && evolution.col) {
+          // 是进化球, 获取其两个基础球组件
+          [evolution.row, evolution.col].forEach(ballId => {
+            const ball = ballById.get(ballId);
+            if (ball) {
+              if (materials.has(ballId)) {
+                materials.get(ballId).count++;
+              } else {
+                materials.set(ballId, { ball: ball, count: 1 });
+              }
+            }
+          });
+        }
+      });
+      
+      return materials;
+    }
+
+    // 生成基础原料 HTML (仅高级进化使用)
+    function buildBaseMaterialsHtml(evo) {
+      const materials = getBaseMaterials(evo);
+      if (materials.size === 0) return '';
+      
+      let itemsHtml = '';
+      
+      materials.forEach(({ ball, count }) => {
+        const displayName = getName(ball);
+        itemsHtml += `<span class="base-material-item">
+          <img src="${getImg(ball.img)}" alt="${ball.name}">
+          <span>${displayName}</span>
+          <span class="count">×${count}</span>
+        </span>`;
+      });
+      
+      return `<div class="base-materials">${itemsHtml}</div>`;
+    }
+
+    // 生成直接原料 HTML (进化球组件, 带图标)
+    function buildDirectComponentsHtml(evo) {
+      if (!evo.components || evo.components.length === 0) return '';
+      
+      let itemsHtml = '';
+      
+      evo.components.forEach((compName, i) => {
+        const comp = findComponent(compName);
+        if (comp) {
+          itemsHtml += `<span class="base-material-item">
+            <img src="${getImg(comp.img)}" alt="${comp.name}">
+            <span>${getName(comp)}</span>
+          </span>`;
+        } else {
+          itemsHtml += `<span class="base-material-item"><span>${compName}</span></span>`;
+        }
+      });
+      
+      return `<div class="base-materials direct-components">${itemsHtml}</div>`;
+    }
+
+    // 检查是否为高级进化 (组件是进化球, 而非基础装备)
+    function isAdvancedEvolution(evo) {
+      if (!evo.components || evo.components.length === 0) return false;
+      // 检查第一个组件是否为进化球
+      return evoByName.has(evo.components[0]);
+    }
+
+    // ========== 矩阵视图 ==========
+    function renderMatrix() {
+      let html = '<tr><th></th>';
+      
+      // 表头
+      BASE_BALLS.forEach(ball => {
+        html += `<th data-id="${ball.id}" data-type="base">
+          ${imgHtml(ball.img, ball.name)}
+          <span>${getName(ball)}</span>
+        </th>`;
+      });
+      html += '</tr>';
+
+      // 表体
+      BASE_BALLS.forEach(rowBall => {
+        html += `<tr><th data-id="${rowBall.id}" data-type="base">
+          ${imgHtml(rowBall.img, rowBall.name)}
+          <span>${getName(rowBall)}</span>
+        </th>`;
+
+        BASE_BALLS.forEach(colBall => {
+          const evo = findEvolution(rowBall.id, colBall.id);
+          if (evo) {
+            html += `<td class="matrix-cell" data-evo="${evo.name}" data-type="evo">
+              ${imgHtml(evo.img, evo.name)}
+              <div class="cell-name">${getName(evo)}${evo.alt ? '*' : ''}</div>
+            </td>`;
+          }
+          else {
+            html += `<td class="matrix-cell empty"></td>`;
+          }
+        });
+
+        html += '</tr>';
+      });
+
+      DOM.matrixTable.innerHTML = html;
+    }
+
+    // ========== 列表视图 ==========
+    function renderList() {
+      if (listGroupMode === 'result') {
+        renderListByResult();
+      }
+      else {
+        renderListByMaterial();
+      }
+    }
+
+    // 按材料分组渲染列表
+    function renderListByMaterial() {
+      let html = '';
+      const combosText = (I18N && I18N[currentLang]) ? I18N[currentLang].combosCount : '种组合';
+
+      BASE_BALLS.forEach(baseBall => {
+        const combos = EVOLUTIONS.filter(e => e.row === baseBall.id || e.col === baseBall.id);
+        if (combos.length === 0) return;
+
+        html += `<div class="list-card">
+          <div class="list-card-header">
+            ${imgHtml(baseBall.img, baseBall.name)}
+            <div>
+              <h3>${getName(baseBall)}</h3>
+              <div class="subtitle">${combos.length} ${combosText}</div>
+            </div>
+          </div>
+          <div class="list-card-body">`;
+
+        combos.forEach(evo => {
+          const partnerId = evo.row === baseBall.id ? evo.col : evo.row;
+          const partner = getBaseBall(partnerId);
+          if (!partner) return;
+          const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
+
+          html += `<div class="combo-item" data-evo="${evo.name}" data-tags="${tagsData}">
+            <div class="combo-text">
+              ${imgHtml(baseBall.img, baseBall.name)}<span class="partner">${getName(baseBall)}</span>
+              <span class="plus"> + </span>
+              ${imgHtml(partner.img, partner.name)}<span class="partner">${getName(partner)}</span>
+              <span class="arrow">→</span>
+              ${imgHtml(evo.img, evo.name)}<span class="result">${getName(evo)}${evo.alt ? '*' : ''}</span>
+            </div>
+          </div>`;
+        });
+
+        html += '</div></div>';
+      });
+
+      DOM.listContainer.innerHTML = html;
+    }
+
+    // 按结果分组渲染列表
+    function renderListByResult() {
+      let html = '';
+      const recipesText = (I18N && I18N[currentLang]) ? I18N[currentLang].recipesCount : '种配方';
+
+      // 按进化球名称分组
+      const evoGroups = new Map();
+      EVOLUTIONS.forEach(evo => {
+        const name = evo.name;
+        if (!evoGroups.has(name)) {
+          evoGroups.set(name, []);
+        }
+        evoGroups.get(name).push(evo);
+      });
+
+      // 渲染每个进化球的卡片
+      evoGroups.forEach((recipes, evoName) => {
+        const firstEvo = recipes[0];
+        const hasAlt = recipes.length > 1;
+
+        html += `<div class="list-card">
+          <div class="list-card-header">
+            ${imgHtml(firstEvo.img, firstEvo.name)}
+            <div>
+              <h3>${getName(firstEvo)}${hasAlt ? '*' : ''}</h3>
+              <div class="subtitle">${recipes.length} ${recipesText}</div>
+            </div>
+          </div>
+          <div class="list-card-body">`;
+
+        recipes.forEach(evo => {
+          const ball1 = getBaseBall(evo.row);
+          const ball2 = getBaseBall(evo.col);
+          if (!ball1 || !ball2) return;
+          const tagsData = evo.tags ? evo.tags.map(t => t.id).join(',') : '';
+
+          html += `<div class="combo-item" data-evo="${evo.name}" data-tags="${tagsData}">
+            <div class="combo-text">
+              ${imgHtml(ball1.img, ball1.name)}<span class="partner">${getName(ball1)}</span>
+              <span class="plus"> + </span>
+              ${imgHtml(ball2.img, ball2.name)}<span class="partner">${getName(ball2)}</span>
+              <span class="arrow">→</span>
+              ${imgHtml(evo.img, evo.name)}<span class="result">${getName(evo)}</span>
+            </div>
+          </div>`;
+        });
+
+        html += '</div></div>';
+      });
+
+      DOM.listContainer.innerHTML = html;
+    }
+
+    // ========== 图鉴视图 ==========
+    // 生成图鉴项 HTML
+    // 注意: data-* 属性使用原始值, 不需要 safeName() 转义
+    function galleryItemHtml(item, type, idOrName) {
+      let dataAttr;
+      if (type === 'base') {
+        dataAttr = `data-id="${idOrName}"`;
+      }
+      else if (type === 'item') {
+        dataAttr = `data-item="${idOrName}"`;
+      }
+      else {
+        dataAttr = `data-evo="${idOrName}"`;
+      }
+      // 使用预计算的 tagsData, 避免渲染时重复计算
+      const tagsData = item.tagsData || '';
+      const tagsHtml = buildTagsHtml(item, 'mini');
+      // 根据语言显示名称 (只显示当前语言)
+      const displayName = getName(item);
+      return `<div class="gallery-item" ${dataAttr} data-type="${type}" data-tags="${tagsData}">
+        ${imgHtml(item.img, item.name)}
+        <div class="item-name">${displayName}</div>
+        ${tagsHtml ? `<div class="item-tags">${tagsHtml}</div>` : ''}
+      </div>`;
+    }
+
+    function renderGallery() {
+      // 基础球
+      DOM.galleryBasic.innerHTML = BASE_BALLS.map(b => galleryItemHtml(b, 'base', b.id)).join('');
+
+      // 进化球 (去重)
+      const uniqueEvos = [...new Map(EVOLUTIONS.map(e => [e.name, e])).values()];
+      DOM.galleryEvolved.innerHTML = uniqueEvos.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
+
+      // 高级进化 (去重)
+      const uniqueAdvanced = [...new Map(ADVANCED_EVOLUTIONS.map(e => [e.name, e])).values()];
+      DOM.galleryAdvanced.innerHTML = uniqueAdvanced.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
+
+      // 基础被动道具
+      DOM.galleryBaseItems.innerHTML = BASE_ITEMS.map(i => galleryItemHtml(i, 'item', i.name)).join('');
+
+      // 被动道具进化 (去重)
+      const uniquePassive = [...new Map(PASSIVE_EVOLUTIONS.map(e => [e.name, e])).values()];
+      DOM.galleryPassive.innerHTML = uniquePassive.map(e => galleryItemHtml(e, 'evo', e.name)).join('');
+    }
+
+    // ========== 策略视图 ==========
+    let currentStrategyFilter = 'all';
+
+    // 根据球名称查找球数据
+    function findBallData(ballName) {
+      // 先从基础球中查找 (使用 id 或 name)
+      let ball = BASE_BALLS.find(b => b.id === ballName || b.name === ballName);
+      if (ball) return { data: ball, type: 'base' };
+      
+      // 从进化球中查找
+      ball = EVOLUTIONS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'evo' };
+      
+      // 从高级进化中查找
+      ball = ADVANCED_EVOLUTIONS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'evo' };
+      
+      // 从被动道具进化中查找
+      ball = PASSIVE_EVOLUTIONS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'passive' };
+      
+      // 从基础道具中查找
+      ball = BASE_ITEMS.find(e => e.name === ballName);
+      if (ball) return { data: ball, type: 'item' };
+      
+      return null;
+    }
+
+    // 生成策略卡片中的球元素 HTML
+    function strategyBallHtml(ballName, role, roleCn, isCore) {
+      const ballInfo = findBallData(ballName);
+      if (!ballInfo) {
+        return `<div class="strategy-ball ${isCore ? 'core' : ''}">
+          <span class="strategy-ball-name">${ballName}</span>
+        </div>`;
+      }
+      
+      const { data, type } = ballInfo;
+      const displayName = getName(data);
+      const displayRole = currentLang === 'zh' ? roleCn : role;
+      
+      // 根据类型设置正确的数据属性
+      let dataAttr = '';
+      if (type === 'base') {
+        dataAttr = `data-id="${data.id}"`;
+      }
+      else if (type === 'evo') {
+        dataAttr = `data-evo="${data.name}"`;
+      }
+      else if (type === 'passive') {
+        dataAttr = `data-passive="${data.name}"`;
+      }
+      else if (type === 'item') {
+        dataAttr = `data-item="${data.name}"`;
+      }
+      
+      return `<div class="strategy-ball ${isCore ? 'core' : ''}" ${dataAttr} data-type="${type}">
+        ${imgHtml(data.img, data.name)}
+        <div>
+          <div class="strategy-ball-name">${displayName}</div>
+          ${displayRole ? `<div class="strategy-ball-role">${displayRole}</div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // 生成策略卡片 HTML
+    function strategyCardHtml(strategy) {
+      const t = I18N[currentLang];
+      const name = currentLang === 'zh' ? strategy.nameCn : strategy.name;
+      const desc = currentLang === 'zh' ? strategy.descCn : strategy.desc;
+      
+      // 难度和强度星星
+      const difficultyStars = '★'.repeat(strategy.difficulty) + '☆'.repeat(3 - strategy.difficulty);
+      const ratingStars = '★'.repeat(strategy.rating) + '☆'.repeat(5 - strategy.rating);
+      
+      // 核心球
+      const coreBallsHtml = strategy.core.map(ballName => {
+        const mech = strategy.mechanism.find(m => m.ball === ballName);
+        return strategyBallHtml(ballName, mech?.role || '', mech?.roleCn || '', true);
+      }).join('');
+      
+      // 协同球
+      const synergyBallsHtml = strategy.synergy.map(ballName => {
+        const mech = strategy.mechanism.find(m => m.ball === ballName);
+        return strategyBallHtml(ballName, mech?.role || '', mech?.roleCn || '', false);
+      }).join('');
+      
+      // 机制说明
+      const mechanismHtml = strategy.mechanism.map(m => {
+        const role = currentLang === 'zh' ? m.roleCn : m.role;
+        // 获取球的本地化名称
+        const ballInfo = findBallData(m.ball);
+        const ballDisplayName = ballInfo ? getName(ballInfo.data) : m.ball;
+        return `<div class="mechanism-item">
+          <span class="mechanism-ball-name">${ballDisplayName}:</span> ${role}
+        </div>`;
+      }).join('');
+      
+      return `<div class="strategy-card" data-type="${strategy.type.id}">
+        <div class="strategy-header">
+          <div class="strategy-title">
+            <div class="strategy-type-badge" style="background: ${strategy.type.color}20; color: ${strategy.type.color}">
+              ${getTypeIcon(strategy.type.id)}
+            </div>
+            <div>
+              <div class="strategy-name">${name}</div>
+            </div>
+          </div>
+          <div class="strategy-meta">
+            <div class="strategy-difficulty">${t.strategyDifficulty}: <span class="strategy-stars">${difficultyStars}</span></div>
+            <div class="strategy-rating">${t.strategyRating}: <span class="strategy-stars">${ratingStars}</span></div>
+          </div>
+        </div>
+        <div class="strategy-body">
+          <div class="strategy-desc">${desc}</div>
+          
+          <div class="strategy-balls-section">
+            <div class="strategy-balls-title">${t.strategyCore}</div>
+            <div class="strategy-balls">${coreBallsHtml}</div>
+          </div>
+          
+          <div class="strategy-balls-section">
+            <div class="strategy-balls-title">${t.strategySynergy}</div>
+            <div class="strategy-balls">${synergyBallsHtml}</div>
+          </div>
+          
+          <div class="strategy-mechanism">
+            <div class="strategy-mechanism-title">${t.strategyMechanism}</div>
+            <div class="mechanism-list">${mechanismHtml}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    // 获取策略类型图标
+    function getTypeIcon(typeId) {
+      const icons = {
+        dmgAmp: '⚔️',
+        sustain: '❤️',
+        control: '🔒',
+        aoeCombo: '💥',
+        dotStack: '🩸',
+        summonArmy: '👾'
+      };
+      return icons[typeId] || '🎯';
+    }
+
+    // 渲染策略筛选按钮
+    function renderStrategyFilters() {
+      const t = I18N[currentLang];
+      const filters = [
+        { id: 'all', label: t.filterAll, icon: '🎯' },
+        { id: 'dmgAmp', label: t.filterDmgAmp, icon: '⚔️', color: SYNERGY_TYPE.DAMAGE_AMP.color },
+        { id: 'sustain', label: t.filterSustain, icon: '❤️', color: SYNERGY_TYPE.SUSTAIN.color },
+        { id: 'control', label: t.filterControl, icon: '🔒', color: SYNERGY_TYPE.CONTROL.color },
+        { id: 'aoeCombo', label: t.filterAoeCombo, icon: '💥', color: SYNERGY_TYPE.AOE_COMBO.color },
+        { id: 'dotStack', label: t.filterDotStack, icon: '🩸', color: SYNERGY_TYPE.DOT_STACK.color },
+        { id: 'summonArmy', label: t.filterSummonArmy, icon: '👾', color: SYNERGY_TYPE.SUMMON_ARMY.color }
+      ];
+      
+      const filtersContainer = document.getElementById('strategyFilters');
+      filtersContainer.innerHTML = filters.map(f => {
+        const activeClass = f.id === currentStrategyFilter ? 'active' : '';
+        const style = f.color && f.id === currentStrategyFilter ? `background: ${f.color}; border-color: ${f.color};` : '';
+        return `<button class="strategy-filter-btn ${activeClass}" data-filter="${f.id}" style="${style}"><span class="icon">${f.icon}</span><span>${f.label}</span></button>`;
+      }).join('');
+      
+      // 绑定筛选事件
+      filtersContainer.querySelectorAll('.strategy-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentStrategyFilter = btn.dataset.filter;
+          renderStrategyFilters();
+          renderStrategyGrid();
+        });
+      });
+    }
+
+    // 渲染策略卡片网格
+    function renderStrategyGrid() {
+      const grid = document.getElementById('strategyGrid');
+      const filtered = currentStrategyFilter === 'all' 
+        ? STRATEGIES 
+        : STRATEGIES.filter(s => s.type.id === currentStrategyFilter);
+      
+      grid.innerHTML = filtered.map(s => strategyCardHtml(s)).join('');
+      
+      // 为策略卡片中的球元素绑定点击事件
+      grid.querySelectorAll('.strategy-ball[data-id], .strategy-ball[data-evo], .strategy-ball[data-item], .strategy-ball[data-passive]').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = el.dataset.id;
+          const evoName = el.dataset.evo;
+          const itemName = el.dataset.item;
+          const passiveName = el.dataset.passive;
+          
+          // 使用 openModal, 它支持通过 id 或 name 查找基础球和进化球
+          if (id) {
+            openModal(id);
+          }
+          else if (evoName) {
+            openModal(evoName);
+          }
+          else if (itemName) {
+            openModal(itemName);
+          }
+          else if (passiveName) {
+            openModal(passiveName);
+          }
+        });
+      });
+    }
+
+    // 渲染策略视图
+    function renderStrategy() {
+      renderStrategyFilters();
+      renderStrategyGrid();
+    }
+
+    // ========== 高级/被动进化区 ==========
+    // 生成单个配方的组件 HTML
+    function buildRecipeComponentsHtml(components) {
+      if (!components || components.length === 0) return '';
+      
+      let itemsHtml = '';
+      components.forEach((compName) => {
+        const comp = findComponent(compName);
+        if (comp) {
+          itemsHtml += `<span class="base-material-item">
+            <img src="${getImg(comp.img)}" alt="${comp.name}">
+            <span>${getName(comp)}</span>
+          </span>`;
+        } else {
+          itemsHtml += `<span class="base-material-item"><span>${compName}</span></span>`;
+        }
+      });
+      
+      return itemsHtml;
+    }
+
+    // 生成高级卡片 HTML
+    // 注意: data-evo 使用原始值, 不需要 safeName() 转义
+    function advancedCardHtml(evo) {
+      // 使用预计算的 tagsData, 避免渲染时重复计算
+      const tagsData = evo.tagsData || '';
+      const tagsHtml = buildTagsHtml(evo, 'mini');
+      
+      let materialsHtml = '';
+      
+      // 检查是否有多个配方 (allRecipes)
+      const recipes = evo.allRecipes || [evo.components];
+      
+      recipes.forEach((recipe, idx) => {
+        const recipeHtml = buildRecipeComponentsHtml(recipe);
+        if (recipes.length > 1) {
+          // 多配方: 每个配方单独一行, 加上配方编号
+          materialsHtml += `<div class="base-materials direct-components recipe-row">
+            <span class="recipe-label">配方${idx + 1}:</span>${recipeHtml}
+          </div>`;
+        } else {
+          // 单配方: 原有样式
+          materialsHtml += `<div class="base-materials direct-components">${recipeHtml}</div>`;
+        }
+      });
+      
+      // 高级进化还需要显示基础原料
+      if (isAdvancedEvolution(evo)) {
+        materialsHtml += buildBaseMaterialsHtml(evo);
+      }
+      
+      return `<div class="advanced-card" data-evo="${evo.name}" data-type="evo" data-tags="${tagsData}">
+        ${imgHtml(evo.img, evo.name)}
+        <div class="advanced-card-info">
+          <h4>${getName(evo)}</h4>
+          ${materialsHtml}
+          ${tagsHtml ? `<div class="tags-container">${tagsHtml}</div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // 合并同名进化的所有配方
+    function mergeEvolutionRecipes(evolutions) {
+      const merged = new Map();
+      evolutions.forEach(evo => {
+        if (merged.has(evo.name)) {
+          // 已存在, 添加配方
+          merged.get(evo.name).allRecipes.push(evo.components);
+        } else {
+          // 新条目, 复制并添加配方数组
+          merged.set(evo.name, { ...evo, allRecipes: [evo.components] });
+        }
+      });
+      return Array.from(merged.values());
+    }
+
+    function renderAdvancedSections() {
+      // 合并同名进化的不同配方
+      const mergedAdvanced = mergeEvolutionRecipes(ADVANCED_EVOLUTIONS);
+      const mergedPassive = mergeEvolutionRecipes(PASSIVE_EVOLUTIONS);
+      DOM.advancedGrid.innerHTML = mergedAdvanced.map(advancedCardHtml).join('');
+      DOM.passiveGrid.innerHTML = mergedPassive.map(advancedCardHtml).join('');
+    }
+
+    // ========== 悬浮提示框 ==========
+    // 构建配方 HTML
+    function buildFormulaHtml(item) {
+      let html = '';
+      
+      if (item.row && item.col) {
+        // 基础进化: 查找所有同名配方 (可能有多个替代配方)
+        const allRecipes = EVOLUTIONS.filter(e => e.name === item.name);
+        
+        allRecipes.forEach((recipe, idx) => {
+          const ball1 = getBaseBall(recipe.row);
+          const ball2 = getBaseBall(recipe.col);
+          
+          // 每条配方用div包裹, 使其独占一行
+          html += '<div class="tooltip-formula-row">';
+          if (ball1) html += `<img src="${getImg(ball1.img)}"><span>${getName(ball1)}</span>`;
+          html += '<span class="plus">+</span>';
+          if (ball2) html += `<img src="${getImg(ball2.img)}"><span>${getName(ball2)}</span>`;
+          html += '<span class="equals">=</span>';
+          html += `<img src="${getImg(item.img)}"><span>${getName(item)}</span>`;
+          html += '</div>';
+        });
+      }
+      else if (item.components) {
+        // 高级/被动进化: 多个组件
+        html += '<div class="tooltip-formula-row">';
+        item.components.forEach((comp, i) => {
+          const c = findComponent(comp);
+          if (c) {
+            html += `<img src="${getImg(c.img)}"><span>${getName(c)}</span>`;
+          }
+          else {
+            html += `<span>${comp}</span>`;
+          }
+          if (i < item.components.length - 1) html += '<span class="plus">+</span>';
+        });
+        html += '<span class="equals">=</span>';
+        html += `<img src="${getImg(item.img)}"><span>${getName(item)}</span>`;
+        html += '</div>';
+      }
+      
+      return html;
+    }
+
+    // 计算 tooltip 位置 (动态获取实际尺寸, 优化移动端显示)
+    function calcTooltipPosition(targetRect, tooltipRect) {
+      const padding = 10;
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const isMobile = viewportWidth < 768;
+      
+      let left, top;
+      
+      // 移动端: 水平位置由 CSS 控制, 只计算垂直位置
+      if (isMobile) {
+        left = padding; // CSS 会用 !important 覆盖
+        
+        // 优先放在上方
+        const spaceAbove = targetRect.top;
+        const spaceBelow = viewportHeight - targetRect.bottom;
+        
+        if (spaceAbove >= tooltipRect.height + padding) {
+          top = targetRect.top - tooltipRect.height - padding;
+        } else if (spaceBelow >= tooltipRect.height + padding) {
+          top = targetRect.bottom + padding;
+        } else {
+          // 空间都不够, 选择空间大的一侧
+          if (spaceAbove > spaceBelow) {
+            top = padding;
+          } else {
+            top = viewportHeight - tooltipRect.height - padding;
+          }
+        }
+      } else {
+        // 桌面端: 优先放在右侧
+        left = targetRect.right + padding;
+        top = targetRect.top;
+        
+        // 右侧放不下, 尝试左侧
+        if (left + tooltipRect.width > viewportWidth - padding) {
+          left = targetRect.left - tooltipRect.width - padding;
+        }
+        // 左侧也放不下, 放在目标下方
+        if (left < padding) {
+          left = Math.max(padding, targetRect.left);
+          top = targetRect.bottom + padding;
+        }
+        
+        // 确保不超出右边界
+        if (left + tooltipRect.width > viewportWidth - padding) {
+          left = viewportWidth - tooltipRect.width - padding;
+        }
+        // 确保不超出左边界
+        if (left < padding) left = padding;
+      }
+      
+      // 确保不超出下边界
+      if (top + tooltipRect.height > viewportHeight - padding) {
+        top = viewportHeight - tooltipRect.height - padding;
+      }
+      // 确保不超出上边界
+      if (top < padding) top = padding;
+
+      return { left, top };
+    }
+
+    function showTooltip(event, name, type) {
+      let item;
+      if (type === 'base') {
+        item = getBaseBall(name);
+      }
+      else if (type === 'item') {
+        item = getBaseItem(name);
+      }
+      else {
+        item = getEvolution(name);
+      }
+      if (!item) return;
+
+      // 填充内容 (使用缓存的 DOM)
+      DOM.tooltipImg.src = getImg(item.img);
+      // 只显示当前语言的名称
+      DOM.tooltipTitle.textContent = getName(item);
+      DOM.tooltipTitleCn.textContent = '';
+      DOM.tooltipEffect.textContent = getEffect(item);
+
+      // 元数据 (伤害类型, 状态效果, AOE)
+      let metaHtml = buildDamageTypesHtml(item) + buildStatusEffectsHtml(item) + buildAoeHtml(item);
+      DOM.tooltipMeta.innerHTML = metaHtml;
+      DOM.tooltipMeta.style.display = metaHtml ? 'block' : 'none';
+
+      // 标签
+      const tagsHtml = buildTagsHtml(item);
+      DOM.tooltipTags.innerHTML = tagsHtml;
+      DOM.tooltipTags.style.display = tagsHtml ? 'flex' : 'none';
+
+      // 配方 (基础进化显示完整配方)
+      let formulaHtml = '';
+      if (item.row && item.col) {
+        // 基础进化: 显示合成配方
+        formulaHtml = buildFormulaHtml(item);
+      }
+      DOM.tooltipFormula.innerHTML = formulaHtml;
+      DOM.tooltipFormula.style.display = formulaHtml ? 'flex' : 'none';
+
+      // 高级进化/被动进化: 显示原料
+      let materialsHtml = '';
+      if (item.components) {
+        if (isAdvancedEvolution(item)) {
+          // 高级进化: 显示直接原料 (进化球) + 基础原料 (基础球)
+          materialsHtml = buildDirectComponentsHtml(item) + buildBaseMaterialsHtml(item);
+        } else {
+          // 被动道具进化: 只显示组件 (基础装备)
+          materialsHtml = buildDirectComponentsHtml(item);
+        }
+      }
+      DOM.tooltipMaterials.innerHTML = materialsHtml;
+      DOM.tooltipMaterials.style.display = materialsHtml ? 'block' : 'none';
+
+      const isMobile = window.innerWidth < 768;
+      
+      // 先临时显示以获取实际尺寸
+      DOM.tooltip.style.visibility = 'hidden';
+      DOM.tooltip.style.top = '0';
+      // 移动端不设置 left, 让 CSS 控制水平位置
+      if (!isMobile) {
+        DOM.tooltip.style.left = '0';
+        DOM.tooltip.style.right = '';
+      } else {
+        DOM.tooltip.style.left = '';
+        DOM.tooltip.style.right = '';
+      }
+      DOM.tooltip.classList.add('visible');
+
+      // 获取目标和 tooltip 的实际尺寸
+      const target = event.target.closest('th, .matrix-cell, .gallery-item, .advanced-card');
+      if (!target) {
+        DOM.tooltip.classList.remove('visible');
+        DOM.tooltip.style.visibility = '';
+        return;
+      }
+      
+      const targetRect = target.getBoundingClientRect();
+      const tooltipRect = DOM.tooltip.getBoundingClientRect();
+      
+      // 计算最终位置
+      const pos = calcTooltipPosition(targetRect, tooltipRect);
+      // 移动端只设置 top, 水平位置由 CSS 控制
+      if (!isMobile) {
+        DOM.tooltip.style.left = pos.left + 'px';
+      }
+      DOM.tooltip.style.top = pos.top + 'px';
+      DOM.tooltip.style.visibility = '';
+    }
+
+    function hideTooltip() {
+      DOM.tooltip.classList.remove('visible');
+    }
+
+    // ========== 弹窗 ==========
+    // 生成弹窗中的组件球 HTML
+    function comboBallHtml(item, clickable) {
+      const onclick = clickable ? ` data-modal="${safeName(item.name)}"` : '';
+      return `<div class="combo-ball"${onclick}>
+        ${imgHtml(item.img, item.name)}
+        <span>${getName(item)}</span>
+      </div>`;
+    }
+
+    function openModal(name) {
+      // 查找进化球或基础球或基础装备
+      const evo = evoByName.get(name) || ballByName.get(name) || ballById.get(name) || itemByName.get(name);
+      if (!evo) return;
+
+      DOM.modalImg.src = getImg(evo.img);
+      // 只显示当前语言的名称
+      DOM.modalTitle.textContent = getName(evo);
+      DOM.modalTitleCn.textContent = '';
+      DOM.modalEffect.textContent = getEffect(evo);
+
+      // 构建元数据 HTML
+      let metaHtml = '';
+      const texts = (I18N && I18N[currentLang]) ? I18N[currentLang] : {
+        attrDamageType: '伤害类型',
+        attrStatusEffect: '状态效果',
+        attrAoeType: '范围类型',
+        attrTags: '特性标签'
+      };
+      
+      // 伤害类型
+      const damageHtml = buildDamageTypesHtml(evo);
+      if (damageHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">${texts.attrDamageType}</div>
+          ${damageHtml}
+        </div>`;
+      }
+      
+      // 状态效果
+      const statusHtml = buildStatusEffectsHtml(evo);
+      if (statusHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">${texts.attrStatusEffect}</div>
+          ${statusHtml}
+        </div>`;
+      }
+      
+      // AOE类型
+      const aoeHtml = buildAoeHtml(evo);
+      if (aoeHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">${texts.attrAoeType}</div>
+          ${aoeHtml}
+        </div>`;
+      }
+      
+      // 标签
+      const tagsHtml = buildTagsHtml(evo);
+      if (tagsHtml) {
+        metaHtml += `<div class="modal-meta-section">
+          <div class="modal-meta-title">${texts.attrTags}</div>
+          <div class="modal-tags">${evo.tags.map(tag => 
+            `<span class="modal-tag" style="background-color: ${tag.color}">${getTagName(tag)}</span>`
+          ).join('')}</div>
+        </div>`;
+      }
+      
+      DOM.modalMeta.innerHTML = metaHtml;
+      DOM.modalMetaSection.style.display = metaHtml ? 'block' : 'none';
+
+      let formulaHtml = '';
+      let hasFormula = false;
+      
+      if (evo.row && evo.col) {
+        // 基础进化: 查找所有同名配方 (可能有多个替代配方)
+        hasFormula = true;
+        const allRecipes = EVOLUTIONS.filter(e => e.name === evo.name);
+        
+        allRecipes.forEach((recipe, idx) => {
+          const ball1 = getBaseBall(recipe.row);
+          const ball2 = getBaseBall(recipe.col);
+          let recipeHtml = '';
+          if (ball1) recipeHtml += comboBallHtml(ball1, false);
+          recipeHtml += '<span class="combo-plus">+</span>';
+          if (ball2) recipeHtml += comboBallHtml(ball2, false);
+          recipeHtml += '<span class="combo-equals">=</span>';
+          recipeHtml += comboBallHtml(recipe, false);
+          
+          // 多个配方时, 每个配方单独一行
+          if (allRecipes.length > 1) {
+            formulaHtml += `<div class="combo-formula-row">${recipeHtml}</div>`;
+          }
+          else {
+            formulaHtml += recipeHtml;
+          }
+        });
+      }
+      else if (evo.components) {
+        // 高级/被动进化: 多组件合成
+        hasFormula = true;
+        evo.components.forEach((comp, i) => {
+          const c = findComponent(comp);
+          if (c) {
+            const isEvo = evoByName.has(comp);
+            formulaHtml += comboBallHtml(c, isEvo);
+          }
+          else {
+            formulaHtml += `<div class="combo-ball"><span>${comp}</span></div>`;
+          }
+          if (i < evo.components.length - 1) {
+            formulaHtml += '<span class="combo-plus">+</span>';
+          }
+        });
+        formulaHtml += '<span class="combo-equals">=</span>';
+        formulaHtml += comboBallHtml(evo, false);
+      }
+      // 基础球和基础装备: 无合成配方, 只显示自身
+      else {
+        formulaHtml = comboBallHtml(evo, false);
+      }
+
+      DOM.modalFormula.innerHTML = formulaHtml;
+      // 隐藏配方区域标题 (针对无配方的基础道具)
+      const recipeSection = DOM.modalFormula.closest('.modal-section');
+      if (recipeSection) {
+        const title = recipeSection.querySelector('h4');
+        if (title) {
+          title.style.display = hasFormula ? 'block' : 'none';
+        }
+      }
+      DOM.modalOverlay.classList.add('active');
+    }
+
+    function closeModal() {
+      DOM.modalOverlay.classList.remove('active');
+    }
+
+    // ========== 筛选功能 ==========
+    function applyFilter(filter) {
+      currentFilter = filter;
+      
+      // 更新按钮状态
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+      });
+      
+      // 矩阵视图 - 根据标签筛选
+      document.querySelectorAll('.matrix-cell:not(.empty)').forEach(cell => {
+        const evo = getEvolution(cell.dataset.evo);
+        const match = filter === 'all' || (evo && matchesFilter(evo, filter));
+        cell.style.opacity = match ? '1' : '0.15';
+      });
+      
+      // 图鉴视图
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        const tags = item.dataset.tags || '';
+        const match = filter === 'all' || tags.includes(filter);
+        item.style.display = match ? 'block' : 'none';
+      });
+      
+      // 高级/被动区域
+      document.querySelectorAll('.advanced-card').forEach(card => {
+        const tags = card.dataset.tags || '';
+        const match = filter === 'all' || tags.includes(filter);
+        card.style.display = match ? 'flex' : 'none';
+      });
+      
+      // 列表视图 - 根据内容匹配
+      document.querySelectorAll('.list-card').forEach(card => {
+        const combos = card.querySelectorAll('.combo-item');
+        
+        if (filter === 'all') {
+          // 显示全部时, 恢复所有组合项的显示
+          card.style.display = 'block';
+          combos.forEach(combo => {
+            combo.style.display = 'flex';
+          });
+          return;
+        }
+        
+        // 检查卡片中的进化是否匹配
+        let hasMatch = false;
+        combos.forEach(combo => {
+          const evo = getEvolution(combo.dataset.evo);
+          if (evo && matchesFilter(evo, filter)) {
+            hasMatch = true;
+            combo.style.display = 'flex';
+          }
+          else {
+            combo.style.display = 'none';
+          }
+        });
+        card.style.display = hasMatch ? 'block' : 'none';
+      });
+    }
+
+    // ========== 搜索 (带防抖) ==========
+    function doSearch(query) {
+      query = query.toLowerCase().trim();
+      
+      // 先重置筛选
+      if (query) {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.filter === 'all');
+        });
+        currentFilter = 'all';
+      }
+      
+      // 矩阵视图
+      document.querySelectorAll('.matrix-cell:not(.empty)').forEach(cell => {
+        const evoName = cell.dataset.evo?.toLowerCase() || '';
+        const evo = getEvolution(cell.dataset.evo);
+        const nameCn = evo?.nameCn?.toLowerCase() || '';
+        cell.style.opacity = (query && !evoName.includes(query) && !nameCn.includes(query)) ? '0.2' : '1';
+      });
+
+      // 列表视图
+      document.querySelectorAll('.list-card').forEach(card => {
+        const match = !query || card.textContent.toLowerCase().includes(query);
+        card.style.display = match ? 'block' : 'none';
+        // 重置combo-item显示
+        card.querySelectorAll('.combo-item').forEach(combo => {
+          combo.style.display = 'flex';
+        });
+      });
+
+      // 图鉴视图
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        const match = !query || item.textContent.toLowerCase().includes(query);
+        item.style.display = match ? 'block' : 'none';
+      });
+
+      // 高级/被动区域
+      document.querySelectorAll('.advanced-card').forEach(card => {
+        const match = !query || card.textContent.toLowerCase().includes(query);
+        card.style.display = match ? 'flex' : 'none';
+      });
+    }
+
+    // 防抖搜索
+    function handleSearch(query) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => doSearch(query), 150);
+    }
+
+    // ========== 视图切换 ==========
+    function switchView(view) {
+      currentView = view;
+      
+      // 按需渲染: 只有首次切换到该视图时才渲染
+      renderView(view);
+      
+      document.querySelectorAll('.view-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.view === view);
+      });
+
+      document.querySelectorAll('.view-container').forEach(container => {
+        container.classList.toggle('active', container.id === view + 'View');
+      });
+
+      // 图鉴视图和策略视图自带区域, 其他视图显示底部区域
+      const showAdvanced = view !== 'gallery' && view !== 'strategy';
+      DOM.advancedSection.style.display = showAdvanced ? 'block' : 'none';
+      DOM.passiveSection.style.display = showAdvanced ? 'block' : 'none';
+      
+      // 策略视图隐藏球体筛选栏 (策略视图有自己的筛选栏)
+      DOM.filterBar.style.display = view === 'strategy' ? 'none' : 'flex';
+      
+      // 切换视图后重新应用当前筛选 (策略视图有自己的筛选)
+      if (view !== 'strategy') {
+        applyFilter(currentFilter);
+      }
+    }
+
+    // ========== 按需渲染指定视图 ==========
+    function renderView(view) {
+      if (viewRendered[view]) return;
+      
+      switch (view) {
+        case 'matrix':
+          renderMatrix();
+          // 矩阵视图需要高级进化区
+          renderAdvancedSections();
+          break;
+        case 'list':
+          renderList();
+          break;
+        case 'gallery':
+          renderGallery();
+          break;
+        case 'strategy':
+          renderStrategy();
+          break;
+      }
+      
+      viewRendered[view] = true;
+    }
+
+    // ========== 渲染全部 (用于语言切换时强制重新渲染) ==========
+    function renderAll() {
+      // 重置渲染状态
+      viewRendered.matrix = false;
+      viewRendered.list = false;
+      viewRendered.gallery = false;
+      viewRendered.strategy = false;
+      
+      // 渲染当前视图
+      renderView(currentView);
+      
+      // 高级进化区在非图鉴视图时都需要渲染
+      if (currentView !== 'gallery' && currentView !== 'strategy') {
+        renderAdvancedSections();
+      }
+    }
+
+    // ========== 事件委托 ==========
+    let currentHoverElement = null; // 追踪当前悬停的元素
+
+    // 通用的悬停处理函数
+    function handleMouseOver(e, selector, getNameAndType) {
+      const target = e.target.closest(selector);
+      if (!target) return;
+      
+      // 如果是同一个元素, 不重复处理
+      if (target === currentHoverElement) return;
+      
+      currentHoverElement = target;
+      const { name, type } = getNameAndType(target);
+      if (name) showTooltip(e, name, type);
+    }
+
+    function handleMouseOut(e, selector) {
+      const target = e.target.closest(selector);
+      if (!target) return;
+      
+      // 检查 relatedTarget 是否仍在同一个元素内
+      const relatedTarget = e.relatedTarget;
+      if (relatedTarget && target.contains(relatedTarget)) return;
+      
+      // 真正离开了元素
+      if (currentHoverElement === target) {
+        currentHoverElement = null;
+        hideTooltip();
+      }
+    }
+
+    function setupEventDelegation() {
+      // 矩阵表格: 悬停提示
+      DOM.matrixTable.addEventListener('mouseover', (e) => {
+        handleMouseOver(e, '[data-type]', (el) => ({
+          type: el.dataset.type,
+          name: el.dataset.type === 'base' ? el.dataset.id : el.dataset.evo
+        }));
+      });
+      
+      DOM.matrixTable.addEventListener('mouseout', (e) => {
+        handleMouseOut(e, '[data-type]');
+      });
+
+      // 图鉴视图: 悬停提示
+      const galleryContainer = document.getElementById('galleryView');
+      galleryContainer.addEventListener('mouseover', (e) => {
+        handleMouseOver(e, '.gallery-item', (el) => {
+          const type = el.dataset.type;
+          let name;
+          if (type === 'base') {
+            name = el.dataset.id;
+          }
+          else if (type === 'item') {
+            name = el.dataset.item;
+          }
+          else {
+            name = el.dataset.evo;
+          }
+          return { type, name };
+        });
+      });
+      
+      galleryContainer.addEventListener('mouseout', (e) => {
+        handleMouseOut(e, '.gallery-item');
+      });
+
+      // 图鉴视图: 点击打开弹窗
+      galleryContainer.addEventListener('click', (e) => {
+        const item = e.target.closest('.gallery-item');
+        if (!item) return;
+        const type = item.dataset.type;
+        let name;
+        if (type === 'base') {
+          name = item.dataset.id;
+        }
+        else if (type === 'item') {
+          name = item.dataset.item;
+        }
+        else {
+          name = item.dataset.evo;
+        }
+        if (name) openModal(name);
+      });
+
+      // 高级/被动区域: 悬停提示
+      [DOM.advancedGrid, DOM.passiveGrid].forEach(grid => {
+        grid.addEventListener('mouseover', (e) => {
+          handleMouseOver(e, '.advanced-card', (el) => ({
+            type: 'evo',
+            name: el.dataset.evo
+          }));
+        });
+        
+        grid.addEventListener('mouseout', (e) => {
+          handleMouseOut(e, '.advanced-card');
+        });
+      });
+
+      // 列表视图: 切换分组模式
+      document.querySelectorAll('.list-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mode = btn.dataset.mode;
+          if (mode === listGroupMode) return;
+          
+          listGroupMode = mode;
+          // 更新按钮状态
+          document.querySelectorAll('.list-mode-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          // 重新渲染列表
+          renderList();
+        });
+      });
+
+      // 列表视图: 点击打开弹窗
+      DOM.listContainer.addEventListener('click', (e) => {
+        const item = e.target.closest('.combo-item');
+        if (item && item.dataset.evo) openModal(item.dataset.evo);
+      });
+
+      // 弹窗内组件点击
+      DOM.modalFormula.addEventListener('click', (e) => {
+        const ball = e.target.closest('[data-modal]');
+        if (ball) openModal(ball.dataset.modal);
+      });
+    }
+
+    // ========== 初始化 ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      buildIndexes();
+      cacheDOM();
+      updateUIText();
+      renderView(currentView);
+      setupEventDelegation();
+      
+      // 语言切换按钮
+      document.getElementById('langSwitch').addEventListener('click', switchLanguage);
+
+      // 视图切换
+      document.querySelectorAll('.view-tab').forEach(tab => {
+        tab.addEventListener('click', () => switchView(tab.dataset.view));
+      });
+
+      // 筛选按钮
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 清空搜索框
+          DOM.searchInput.value = '';
+          applyFilter(btn.dataset.filter);
+        });
+      });
+
+      // 搜索 (防抖)
+      DOM.searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+
+      // 弹窗关闭
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      DOM.modalOverlay.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // ESC 关闭弹窗和提示框
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+          hideTooltip();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
+
